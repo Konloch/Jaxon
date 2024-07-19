@@ -6,7 +6,9 @@ package java.lang;
  */
 public class StringBuilder
 {
+	@SJC.InlineArrayVar
 	private char[] value;
+	@SJC.InlineArrayCount
 	private int count;
 	
 	//constructor initializes with a default capacity
