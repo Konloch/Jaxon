@@ -28,8 +28,17 @@ public class x86
 
 	//Register instructions
 	public static final int MOV_EBP_EAX = 0x89;
+	public static final int MOV_EBX_MEM = 0x8B;
+	
+	
+	//Stack instructions
+	public static final int PUSH_EDI = 0x57;
+	public static final int POP_EDI = 0x5F;
+	
+	//System call instructions
+	public static final int SYSCALL = 0xCD;
 	
 	//Other instructions
-	public static final int PUSH_EBP_MINUS_4 = 0x45 | (0xFC << 8);
-	public static final int PUSH_EBP_PLUS_8 = 0x45 | (0x08 << 8);
+	public static final int CLD = 0xFC;
+	public static final int REP_STOSD = 0xF3;
 }

@@ -58,13 +58,13 @@ public class DynamicRuntime
 	
 	private static void setMem32(int addr, int cnt, int val)
 	{
-		MAGIC.inline(0x57);             //push edi
-		MAGIC.inline(0xFC);             //cld
-		MAGIC.inline(0x8B, 0x7D, 0x10); //mov edi,[ebp+16]
-		MAGIC.inline(0x8B, 0x45, 0x08); //mov eax,[ebp+8]
-		MAGIC.inline(0x8B, 0x4D, 0x0C); //mov ecx,[ebp+12]
-		MAGIC.inline(0xF3, 0xAB);       //rep stosd
-		MAGIC.inline(0x5F);             //pop edi
+		MAGIC.inline(x86.PUSH_EDI);                 //push edi
+		MAGIC.inline(x86.CLD);                      //cld
+		MAGIC.inline(x86.MOV_EBX_MEM, 0x7D, 0x10);  //mov edi,[ebp+16]
+		MAGIC.inline(x86.MOV_EBX_MEM, 0x45, 0x08);  //mov eax,[ebp+8]
+		MAGIC.inline(x86.MOV_EBX_MEM, 0x4D, 0x0C);  //mov ecx,[ebp+12]
+		MAGIC.inline(x86.REP_STOSD, 0xAB);          //rep stosd
+		MAGIC.inline(x86.POP_EDI);                  //pop edi
 	}
 	
 	public static rte.SArray newArray(int length, int arrDim, int entrySize, int stdType, Object unitType)
@@ -213,18 +213,18 @@ public class DynamicRuntime
 	
 	public static void exit(int status)
 	{
-		MAGIC.inline(0xB8, 0x01, 0x00, 0x00, 0x00); //mov eax,1 (terminate process)
-		MAGIC.inline(0x8B, 0x5D, 0x08);             //mov ebx,[ebp+8] (exit code)
-		MAGIC.inline(0xCD, 0x80);                   //call kernel
+		MAGIC.inline(x86.IMMEDIATE_DWORD, 0x01, 0x00, 0x00, 0x00);  //mov eax,1 (terminate process)
+		MAGIC.inline(x86.MOV_EBX_MEM, 0x5D, 0x08);                  //mov ebx,[ebp+8] (exit code)
+		MAGIC.inline(x86.SYSCALL, 0x80);                            //call kernel
 	}
 	
 	private static int brk(int newEnd)
 	{
 		int tmp = 0;
-		MAGIC.inline(0xB8, 0x2D, 0x00, 0x00, 0x00); //mov eax,45 (brk)
-		MAGIC.inline(0x8B, 0x5D, 0x08);             //mov ebx,[ebp+8] (end_data_segment)
-		MAGIC.inline(0xCD, 0x80);                   //call kernel
-		MAGIC.inline(0x89, 0x45, 0xFC);             //mov [ebp-4],eax
+		MAGIC.inline(x86.IMMEDIATE_DWORD, 0x2D, 0x00, 0x00, 0x00);  //mov eax,45 (brk)
+		MAGIC.inline(x86.MOV_EBX_MEM, 0x5D, 0x08);                  //mov ebx,[ebp+8] (end_data_segment)
+		MAGIC.inline(x86.SYSCALL, 0x80);                            //call kernel
+		MAGIC.inline(x86.MOV_EBP_EAX, 0x45, 0xFC);                  //mov [ebp-4],eax
 		return tmp;
 	}
 }
