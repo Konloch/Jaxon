@@ -8,6 +8,7 @@ public class x86
 {
 	//Push instructions
 	public static final int PUSH_BYTE = 0x6A;
+	public static final int PUSH_WORD = 0x68;
 	public static final int PUSH_EAX = 0x50;
 	
 	//Load Effective Address instructions
@@ -24,6 +25,9 @@ public class x86
 	public static final int IMMEDIATE_BYTE = 0x6A;
 	public static final int IMMEDIATE_WORD = 0x68;
 	public static final int IMMEDIATE_DWORD = 0xB8;
+
+	//Register instructions
+	public static final int MOV_EBP_EAX = 0x89;
 	
 	//Other instructions
 	public static final int PUSH_EBP_MINUS_4 = 0x45 | (0xFC << 8);
