@@ -21,11 +21,14 @@ Jaxon is a Software Development Kit built on top of SJC.
 
 ## Getting Started
 + First start by downloading and installing Jaxon.
-+ Then start by creating a new project, this is done through code templates.
++ Then start by creating a new project, this is done through code templates. (such as `jaxon template graphical`)
   + `Console` - Cross-platform minified template for printing to console.
   + `Graphical` - Cross-platform template for windowed graphical applications.
+  + `ATmega` - ARM7 ATmega embedded controller template. 
+  + `Operating-System` - 32bit / 64bit template for operating system.
 + Once you've decided, create a new template by running `jaxon template [your-choice]` such as `jaxon template graphical`
   + This for example will create the cross-platform template for a graphical windowed program.
+  + Use the build scripts to build binaries & read them to write your own.
 
 ## Programming Jaxon
 + The templates all contain the basics to get you running (`Console` shows hello world, `Graphical` shows windowing & image drawing)
