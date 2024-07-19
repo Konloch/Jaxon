@@ -29,14 +29,13 @@ public abstract class System
 	
 	public abstract void write(String path, int offset, byte[] bytes, int length, boolean append);
 	
-	public abstract void printCharacter(int c);
+	public abstract void print(int c);
 	
 	public static class Out
 	{
-		
 		public void printChar(int c)
 		{
-			_system.printCharacter(c);
+			_system.print(c);
 		}
 		
 		public void print(int i)
@@ -79,6 +78,7 @@ public abstract class System
 			for (p = 0; p < 2; p++)
 			{
 				v = (b >>> ((1 - p) << 2)) & 0xF;
+				
 				if (v < 10)
 					printChar(48 + v); //'0'..'9'
 				else

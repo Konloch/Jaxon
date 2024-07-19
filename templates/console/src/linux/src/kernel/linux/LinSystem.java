@@ -51,7 +51,7 @@ public class LinSystem extends System
 	}
 	
 	@Override
-	public void printCharacter(int c)
+	public void print(int c)
 	{
 		MAGIC.inline(0xB8, 0x04, 0x00, 0x00, 0x00); //mov eax,4 (print string)
 		MAGIC.inline(0xBB, 0x01, 0x00, 0x00, 0x00); //mov ebx,1 (handle for std-out)

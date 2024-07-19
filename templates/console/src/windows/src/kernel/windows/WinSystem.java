@@ -52,7 +52,7 @@ public class WinSystem extends System
 	}
 	
 	@Override
-	public void printCharacter(int c)
+	public void print(int c)
 	{
 		MAGIC.inline(x86.PUSH_BYTE, 0x00);                      //push byte 0 (no overlap)
 		MAGIC.inline(x86.LEA_EAX, x86.MODRM_EAX, 0xFC);         //lea eax,[ebp-4] (address of result)
