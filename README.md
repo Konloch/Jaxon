@@ -27,10 +27,16 @@ Jaxon is a Software Development Kit built on top of SJC.
   + You can find this class by going into Windows/kernel/Kernel.java & Linux/kernel/Kernel.java
 + The templates contain the entire standard library, edit these as much as you want
   + One benefit is you are not restricted by the concept of precompiled libraries, you are always provided the source unless you are invoking a DLL
-+ Strings cannot be concat'd through +, you'll need to use a String Builder and chain your debug calls.
+
+## Jaxon vs Java Differences
++ Compiles directly to native instead of bytecode
++ No enums
++ Generics do not exist 
+  + Collections, lists & maps do not exist
++ Strings cannot be concat'd using the plus operator `+`
+  + *Instead, use StringBuilder*
 
 ## Notes
-+ *Note about Java 1.4-1.5 - Certain syntax of 1.5 is added but certain features are missing such as enums.
-+ Java source code is compiled to native, there is no bytecode step.
++ *Note about Java 1.4-1.5 - Certain features of 1.5 are added.
 + Cross-platform is still in it's very early stages.
 + Built on top of SJC.
