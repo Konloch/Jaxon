@@ -7,9 +7,11 @@ package java.lang;
  */
 public abstract class System
 {
-	public static Out out = new Out();
-
 	public static System _system;
+	
+	public static Out out = new Out();
+	
+	public static String platform;
 	
 	public abstract boolean isDirectory(String path);
 	

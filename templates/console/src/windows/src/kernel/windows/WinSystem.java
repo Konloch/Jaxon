@@ -6,6 +6,11 @@ package kernel.windows;
  */
 public class WinSystem extends System
 {
+	public WinSystem()
+	{
+		platform = "Windows";
+	}
+	
 	public boolean isDirectory(String path)
 	{
 		return false;

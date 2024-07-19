@@ -5,6 +5,11 @@ package kernel.linux;
  */
 public class LinSystem extends System
 {
+	public LinSystem()
+	{
+		platform = "Linux";
+	}
+	
 	public boolean isDirectory(String path)
 	{
 		return false;
