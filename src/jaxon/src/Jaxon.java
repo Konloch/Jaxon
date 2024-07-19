@@ -1,6 +1,5 @@
 import sjc.compbase.Context;
 import sjc.osio.sun.ReflectionSymbols;
-import sjc.osio.sun.SunOS;
 import sjc.symbols.SymbolFactory;
 
 /**
@@ -53,6 +52,6 @@ public class Jaxon
 	
 	private static void build(String[] args)
 	{
-		
+	
 	}
 }
