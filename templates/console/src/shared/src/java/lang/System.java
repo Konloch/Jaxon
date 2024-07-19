@@ -7,6 +7,8 @@ package java.lang;
  */
 public abstract class System
 {
+	public static Out out = new Out();
+
 	public static System _system;
 	
 	public abstract boolean isDirectory(String path);
@@ -29,88 +31,92 @@ public abstract class System
 	
 	public abstract void printCharacter(int c);
 	
-	public static void printChar(int c)
+	public static class Out
 	{
-		_system.printCharacter(c);
-	}
-	
-	public static void print(int i)
-	{
-		if (i < 0)
+		
+		public void printChar(int c)
 		{
-			printChar(45);
-			i = -i;
+			_system.printCharacter(c);
 		}
 		
-		if (i == 0)
-			printChar(48);
-		
-		else
+		public void print(int i)
 		{
-			if (i >= 10)
-				print(i / 10);
-			printChar(48 + i % 10);
-		}
-	}
-	
-	public static void printHex(int i)
-	{
-		int v, p;
-		
-		for (p = 0; p < 8; p++)
-		{
-			v = (i >>> ((7 - p) << 2)) & 0xF;
-			if (v < 10)
-				printChar(48 + v); //'0'..'9'
+			if (i < 0)
+			{
+				printChar(45);
+				i = -i;
+			}
+			
+			if (i == 0)
+				printChar(48);
+			
 			else
-				printChar(55 + v); //'A'..'Z'
+			{
+				if (i >= 10)
+					print(i / 10);
+				printChar(48 + i % 10);
+			}
 		}
-	}
-	
-	public static void printHexByte(int b)
-	{
-		int v, p;
 		
-		for (p = 0; p < 2; p++)
+		public void printHex(int i)
 		{
-			v = (b >>> ((1 - p) << 2)) & 0xF;
-			if (v < 10)
-				printChar(48 + v); //'0'..'9'
-			else
-				printChar(55 + v); //'A'..'Z'
+			int v, p;
+			
+			for (p = 0; p < 8; p++)
+			{
+				v = (i >>> ((7 - p) << 2)) & 0xF;
+				if (v < 10)
+					printChar(48 + v); //'0'..'9'
+				else
+					printChar(55 + v); //'A'..'Z'
+			}
 		}
-	}
-	
-	public static void printHexLong(long l)
-	{
-		printHex((int) (l >>> 32));
-		printHex((int) l);
-	}
-	
-	public static void printBZ(byte[] bzStr)
-	{
-		int i;
 		
-		for (i = 0; i < bzStr.length && bzStr[i] != 0; i++)
-			printChar((int) bzStr[i]);
-	}
-	
-	public static void print(String s)
-	{
-		int i;
+		public void printHexByte(int b)
+		{
+			int v, p;
+			
+			for (p = 0; p < 2; p++)
+			{
+				v = (b >>> ((1 - p) << 2)) & 0xF;
+				if (v < 10)
+					printChar(48 + v); //'0'..'9'
+				else
+					printChar(55 + v); //'A'..'Z'
+			}
+		}
 		
-		for (i = 0; i < s.count; i++)
-			printChar((int) s.value[i]);
-	}
-	
-	public static void println()
-	{
-		printChar(10);
-	}
-	
-	public static void println(String s)
-	{
-		print(s);
-		printChar(10);
+		public void printHexLong(long l)
+		{
+			printHex((int) (l >>> 32));
+			printHex((int) l);
+		}
+		
+		public void printBZ(byte[] bzStr)
+		{
+			int i;
+			
+			for (i = 0; i < bzStr.length && bzStr[i] != 0; i++)
+				printChar((int) bzStr[i]);
+		}
+		
+		public void print(String s)
+		{
+			int i;
+			
+			for (i = 0; i < s.count; i++)
+				printChar((int) s.value[i]);
+		}
+		
+		public void println()
+		{
+			printChar(10);
+		}
+		
+		public void println(String s)
+		{
+			print(s);
+			printChar(10);
+		}
 	}
 }

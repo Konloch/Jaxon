@@ -8,6 +8,6 @@ public class AppEntry
 {
 	public static void start()
 	{
-		System.print("Hello world");
+		System.out.print("Hello world");
 	}
 }

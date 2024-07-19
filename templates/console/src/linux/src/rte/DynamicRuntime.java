@@ -48,7 +48,7 @@ public class DynamicRuntime
 		result = brk(0);
 		if (result <= 0)
 		{
-			System.print("Error allocating memory");
+			System.out.print("Error allocating memory");
 			exit(-1);
 		}
 		size = (size + 0xFFF) & 0xFFFFF000;
@@ -207,7 +207,7 @@ public class DynamicRuntime
 	
 	public static void rtError()
 	{
-		System.println("Runtime error");
+		System.out.println("Runtime error");
 		exit(-1);
 	}
 	
