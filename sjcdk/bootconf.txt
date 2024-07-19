@@ -1,0 +1,100 @@
+# configuration file for BootOut
+
+#MS-Windows Win32 console application
+#compile to any address (page boundary)+512, lowest is 4198912
+section exe
+destfile OUT_WIN.EXE
+blocksize 512
+maximagesize 16775168
+readbuf file_win.bin
+offset 4.l2 value (imagesize+2047)/512
+offset 156.l4 value (imagesize+1023)&0xFFFFFE00
+offset 180.l4 value imageaddr-4608
+offset 208.l4 value 4096+(imagesize+4608)&0xFFFFF000
+offset 384.l4 value (imagesize+1023)&0xFFFFFFE00
+offset 392.l4 value (imagesize+1023)&0xFFFFFFE00
+offset 942.l4 value imageaddr-512+20
+offset 947.l4 value imageaddr-512
+offset 955.l4 value imageaddr-512+20
+offset 960.l4 value imageaddr-512+4
+offset 968.l4 value imageaddr-512+20
+offset 973.l4 value imageaddr-512+8
+offset 978.l4 value imageaddr-512+16
+offset 984.l4 value imageaddr-512+24
+offset 991.l4 value imageaddr-512+72
+offset 996.l4 value imageaddr-512+12
+offset 1002.l4 value imageaddr+8
+offset 1008.l4 value imageaddr+12
+writebuf
+appendimage
+endsection
+
+#MS-Windows Win32 GUI application
+#compile to any address (page boundary)+512, lowest is 4198912
+section win
+destfile OUT_WIN.EXE
+blocksize 512
+maximagesize 16775168
+readbuf file_win.bin
+offset 4.l2 value (imagesize+2047)/512
+offset 156.l4 value (imagesize+1023)&0xFFFFFE00
+offset 180.l4 value imageaddr-4608
+offset 208.l4 value 4096+(imagesize+4608)&0xFFFFF000
+offset 220.l2 value 2
+offset 384.l4 value (imagesize+1023)&0xFFFFFFE00
+offset 392.l4 value (imagesize+1023)&0xFFFFFFE00
+offset 942.l4 value imageaddr-512+20
+offset 947.l4 value imageaddr-512
+offset 955.l4 value imageaddr-512+20
+offset 960.l4 value imageaddr-512+4
+offset 968.l4 value imageaddr-512+20
+offset 973.l4 value imageaddr-512+8
+offset 978.l4 value imageaddr-512+16
+offset 984.l4 value imageaddr-512+24
+offset 991.l4 value imageaddr-512+72
+offset 996.l4 value imageaddr-512+12
+offset 1002.l4 value imageaddr+8
+offset 1008.l4 value imageaddr+12
+writebuf
+appendimage
+endsection
+
+#Linux 32 bit binary
+#compile to any address (page boundary)+160, lowest is 1048736
+section lin
+destfile OUT_LIN.O
+blocksize 2
+maximagesize 134217600
+readbuf file_lin.bin
+offset 24.l4 value imageaddr-32
+offset 60.l4 value imageaddr-32
+offset 68.l4 value imagesize+32
+offset 72.l4 value imagesize+32
+offset 129.l4 value imageaddr
+writebuf
+appendimage
+endsection
+
+#Linux 32 bit binary with library support
+#compile to any address (page boundary)+432, lowest is 1049008
+section llb
+destfile OUT_LIN.O
+blocksize 2
+maximagesize 134217600
+readbuf file_llb.bin
+offset 24.l4 value imageaddr-432+0x180
+offset 60.l4 value imageaddr-432+0x14C
+offset 92.l4 value imageaddr-432
+offset 100.l4 value imagesize+432
+offset 104.l4 value imagesize+432
+offset 124.l4 value imageaddr-432+0x0B4
+offset 192.l4 value imageaddr-432+0x15F
+offset 200.l4 value imageaddr-432+0x0FC
+offset 224.l4 value imageaddr-432+0x13C
+offset 272.l4 value imageaddr-432+0x0B4
+offset 316.l4 value imageaddr-432+0x1A4
+offset 324.l4 value imageaddr-432+0x1A8
+offset 385.l4 value imageaddr
+writebuf
+appendimage
+endsection
