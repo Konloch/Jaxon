@@ -2,10 +2,17 @@
 Jaxon is a Software Development Kit built on top of SJC.
 
 ## What Does Jaxon Do?
-+ Jaxon compiles Java 1.4-1.5* compliant syntax to native.
-  + x86 Executables for Windows & Linux
-  + x86 Bootloader for Custom Operating Systems
-  + ARM 7 for embedded devices
++ Jaxon compiles Java 1.4-1.5* compliant syntax to:
+  + Native IA32 & x86_64
+    + Executables for Windows & Linux
+      + Win32 console application
+      + Win32 GUI application
+      + Linux 32 bit binary with library support
+    + Bootloader for Custom Operating Systems
+      + Native IA32 image to boot
+      + Native AMD64 image to boot
+  + ARM 7
+    + Atmega Atmel Hexout (Controllers such as LPC2103)
 
 ## How Does Jaxon Work
 + In an effort to make SJC easier to learn and write, Jaxon acts as a wrapper for the compiler.
@@ -27,6 +34,15 @@ Jaxon is a Software Development Kit built on top of SJC.
   + You can find this class by going into Windows/kernel/Kernel.java & Linux/kernel/Kernel.java
 + The templates contain the entire standard library, edit these as much as you want
   + One benefit is you are not restricted by the concept of precompiled libraries, you are always provided the source unless you are invoking a DLL
+
+## Special Classes
++ Kernel: The main class for each platform
++ MAGIC: Code-generating access to the hardware
+  + For example access to the RAM using MAGIC.rMem8(addr) or MAGIC.wMem32(addr, value).
++ STRUCT: Parent class for custom classes that allow access to structured RAM areas without objects.
++ FLASH: Keep instances in flash (ie: do not copy to RAM).
++ @SJC: Instructions for the compiler to perform special treatment of the current method or the subsequent code.
+  + For example marking the current method as an interrupt handler using @SJC.Interrupt or marking static final arrays as immutable and thus to be kept in flash using @SJC.Flash.
 
 ## Jaxon vs Java Differences
 + Compiles directly to native instead of bytecode
