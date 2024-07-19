@@ -1,5 +1,8 @@
 package rte;
 
+/**
+ * @author S. Frenz
+ */
 public class DynamicRuntime
 {
 	public final static int _hndStdIn = MAGIC.imageBase - 512 + 0; //0x0401000;

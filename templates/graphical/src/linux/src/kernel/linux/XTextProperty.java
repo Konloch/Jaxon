@@ -1,5 +1,8 @@
 package kernel.linux;
 
+/**
+ * @author S. Frenz
+ */
 public class XTextProperty extends STRUCT
 {
 	int stringAddr;    /* same as Property routines */

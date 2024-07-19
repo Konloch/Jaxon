@@ -2,6 +2,8 @@ package app;
 
 /**
  * Triangle is an "Renderable" object.
+ *
+ * @author S. Frenz
  */
 public class Triangle extends Renderable
 {

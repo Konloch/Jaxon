@@ -1,7 +1,8 @@
 package rte;
 
-import kernel.linux.LinSystem;
-
+/**
+ * @author S. Frenz
+ */
 public class DynamicRuntime
 {
 	public static int objCnt;

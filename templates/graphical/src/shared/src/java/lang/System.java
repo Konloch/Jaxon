@@ -1,5 +1,10 @@
 package java.lang;
 
+/**
+ * @author Konloch
+ * @author S. Frenz
+ * @since 7/17/2024
+ */
 public abstract class System
 {
 	public static System _system;

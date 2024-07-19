@@ -1,5 +1,8 @@
 package kernel.windows;
 
+/**
+ * @author S. Frenz
+ */
 public class Win32Lib
 {
 	

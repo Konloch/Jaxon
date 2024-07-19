@@ -1,5 +1,8 @@
 package kernel.linux;
 
+/**
+ * @author S. Frenz
+ */
 public class LinSystem extends System
 {
 	@Override

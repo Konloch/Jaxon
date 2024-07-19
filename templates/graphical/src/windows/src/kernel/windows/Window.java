@@ -4,6 +4,9 @@ import app.CalcTAinfo;
 import app.RayTrace;
 import app.Scene;
 
+/**
+ * @author S. Frenz
+ */
 public class Window
 {
 	public final static int XRES = 800, YRES = 600;

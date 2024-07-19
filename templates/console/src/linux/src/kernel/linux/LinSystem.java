@@ -1,9 +1,57 @@
 package kernel.linux;
 
+/**
+ * @author S. Frenz
+ */
 public class LinSystem extends System
 {
+	public boolean isDirectory(String path)
+	{
+		return false;
+	}
+	
+	public boolean doesExist(String path)
+	{
+		return false;
+	}
+	
+	public boolean delete(String path)
+	{
+		return false;
+	}
+	
+	public boolean createDirectory(String path)
+	{
+		return false;
+	}
+	
+	public boolean rename(String oldPath, String newPath)
+	{
+		return false;
+	}
+	
+	public long getSize(String path)
+	{
+		return 0;
+	}
+	
+	public String[] listDirectory(String path)
+	{
+		return null;
+	}
+	
+	public byte[] read(String path)
+	{
+		return new byte[0];
+	}
+	
+	public void write(String path, int offset, byte[] bytes, int length, boolean append)
+	{
+	
+	}
+	
 	@Override
-	public void doPrintChar(int c)
+	public void printCharacter(int c)
 	{
 		MAGIC.inline(0xB8, 0x04, 0x00, 0x00, 0x00); //mov eax,4 (print string)
 		MAGIC.inline(0xBB, 0x01, 0x00, 0x00, 0x00); //mov ebx,1 (handle for std-out)

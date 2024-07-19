@@ -1,5 +1,8 @@
 package java.lang;
 
+/**
+ * @author S. Frenz
+ */
 public class Math
 {
 	public final static double PI = 3.141592653589793238;

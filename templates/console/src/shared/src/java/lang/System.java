@@ -1,14 +1,37 @@
 package java.lang;
 
+/**
+ * @author Konloch
+ * @author S. Frenz
+ * @since 7/17/2024
+ */
 public abstract class System
 {
 	public static System _system;
 	
-	public abstract void doPrintChar(int c);
+	public abstract boolean isDirectory(String path);
+	
+	public abstract boolean doesExist(String path);
+	
+	public abstract boolean delete(String path);
+	
+	public abstract boolean createDirectory(String path);
+	
+	public abstract boolean rename(String oldPath, String newPath);
+	
+	public abstract long getSize(String path);
+	
+	public abstract String[] listDirectory(String path);
+	
+	public abstract byte[] read(String path);
+	
+	public abstract void write(String path, int offset, byte[] bytes, int length, boolean append);
+	
+	public abstract void printCharacter(int c);
 	
 	public static void printChar(int c)
 	{
-		_system.doPrintChar(c);
+		_system.printCharacter(c);
 	}
 	
 	public static void print(int i)

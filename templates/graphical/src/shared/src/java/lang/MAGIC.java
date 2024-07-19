@@ -2,6 +2,9 @@ package java.lang;
 
 import rte.SClassDesc;
 
+/**
+ * @author S. Frenz
+ */
 @SJC.IgnoreUnit
 public class MAGIC
 {

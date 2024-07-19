@@ -1,5 +1,8 @@
 package kernel.linux;
 
+/**
+ * @author S. Frenz
+ */
 public class XButtonEvent extends STRUCT
 {
 	int type; /* has to be ButtonPress */

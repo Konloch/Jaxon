@@ -1,5 +1,8 @@
 package app;
 
+/**
+ * @author S. Frenz
+ */
 public class Vector3f
 {
 	public float x, y, z;
