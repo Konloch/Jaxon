@@ -22,7 +22,7 @@ public class Jaxon
 		if(command.equalsIgnoreCase("sc"))
 			sfc(args);
 		else if(command.equalsIgnoreCase("build"))
-			sfc(args);
+			build(args);
 		else if(command.equalsIgnoreCase("template"))
 			template(args);
 	}
@@ -49,5 +49,10 @@ public class Jaxon
 	private static void template(String[] args)
 	{
 		String command = args[0];
+	}
+	
+	private static void build(String[] args)
+	{
+		
 	}
 }
