@@ -20,6 +20,7 @@ package sjc.osio.sun;
 
 import sjc.osio.BinWriter;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -50,7 +51,7 @@ public class FileBinWriter extends BinWriter
 	{
 		try
 		{
-			file = new RandomAccessFile(fname, "rw");
+			file = new RandomAccessFile(new File(fname).getAbsolutePath(), "rw");
 			file.setLength(0);
 		}
 		catch (IOException e)

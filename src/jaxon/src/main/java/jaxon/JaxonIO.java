@@ -1,3 +1,5 @@
+package jaxon;
+
 import sjc.compbase.StringList;
 import sjc.osio.BinWriter;
 import sjc.osio.OsIO;
@@ -29,18 +31,18 @@ public class JaxonIO extends OsIO
 	
 	public TextPrinter getNewFilePrinter(String filename)
 	{
-		return new StreamTextPrinter(filename, stdOut);
+		return new StreamTextPrinter(filename == null ? filename : new File(filename).getAbsolutePath(), stdOut);
 	}
 	
 	public boolean isDir(String name)
 	{
-		return (new File(name)).isDirectory();
+		return (new File(name).getAbsoluteFile()).isDirectory();
 	}
 	
 	public StringList listDir(String name, boolean recurse)
 	{
 		result = null;
-		appendDir(new File(name), recurse);
+		appendDir(new File(name).getAbsoluteFile(), recurse);
 		return result;
 	}
 	
@@ -48,12 +50,11 @@ public class JaxonIO extends OsIO
 	{
 		InputStream is;
 		int cnt;
-		byte[] data = null;
+		byte[] data;
 		
-		is = null;
 		try
 		{
-			is = new FileInputStream(fname);
+			is = new FileInputStream(new File(fname).getAbsolutePath());
 			cnt = is.available();
 			data = new byte[cnt];
 			if (is.read(data, 0, cnt) != cnt)
@@ -61,12 +62,14 @@ public class JaxonIO extends OsIO
 				is.close();
 				return null;
 			}
+			
 			is.close();
 		}
 		catch (IOException e)
 		{
 			return null;
 		}
+		
 		return data;
 	}
 	
