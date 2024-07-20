@@ -27,7 +27,7 @@ Jaxon is a powerful SDK built on top of SJC, a beautiful compiler that compiles 
 + `build` - Build using a specific profile
   + Available Profiles: (`win-exe`, `win-app`, `lin`, `atmega`, `os-32`, `os-64`)
   + Example Command: `jaxon build win-exe src/shared/src src/windows/src`
-+ `sfc` - Access underlying SJC command-line
++ `sjc` - Access underlying SJC command-line
   + If you end up needing to use this, open an issue on Github letting us know what command you used (We'll add it in the next update)
 + `zip` - Zip util for packaging Jaxon templates
 
