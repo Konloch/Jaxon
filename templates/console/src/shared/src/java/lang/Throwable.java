@@ -6,4 +6,10 @@ package java.lang;
  */
 public class Throwable
 {
+	public final String detailMessage;
+	
+	public Throwable(String detailMessage)
+	{
+		this.detailMessage = detailMessage;
+	}
 }

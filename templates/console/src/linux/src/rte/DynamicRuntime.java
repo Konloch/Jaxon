@@ -10,6 +10,8 @@ public class DynamicRuntime
 	private final static int MEMBLOCK = 1024 * 1024; //1 MB per block
 	private final static int BLOCKMAX = 64 * 1024;   //allocate objects up to 64 KB in memblock
 	private static int nextFreeAddr, memFree;
+
+	public static int currentThrowFrame;
 	
 	public static Object newInstance(int scalarSize, int relocEntries, rte.SClassDesc type)
 	{
@@ -203,6 +205,12 @@ public class DynamicRuntime
 				isImplementation(newEntry, (rte.SIntfDesc) dest._r_unitType, true); //check implementation
 			}
 		}
+	}
+	
+	public static void doThrow(Throwable t)
+	{
+		System.out.print("Exception thrown-message: " + t.detailMessage);
+		System.out.print("Exception thrown-frame: " + currentThrowFrame);
 	}
 	
 	public static void rtError()
