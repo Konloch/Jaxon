@@ -1,5 +1,8 @@
 package kernel.windows;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * @author Konloch
  * @author S. Frenz
@@ -46,12 +49,12 @@ public class WinSystem extends System
 		return null;
 	}
 	
-	public byte[] read(String path)
+	public InputStream read(String path)
 	{
-		return new byte[0];
+		return null;
 	}
 	
-	public void write(String path, int offset, byte[] bytes, int length, boolean append)
+	public void write(String path, int offset, OutputStream stream, boolean append)
 	{
 	
 	}

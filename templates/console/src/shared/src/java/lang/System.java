@@ -1,5 +1,8 @@
 package java.lang;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * @author Konloch
  * @author S. Frenz
@@ -27,9 +30,9 @@ public abstract class System
 	
 	public abstract String[] listDirectory(String path);
 	
-	public abstract byte[] read(String path);
+	public abstract InputStream read(String path);
 	
-	public abstract void write(String path, int offset, byte[] bytes, int length, boolean append);
+	public abstract void write(String path, int offset, OutputStream stream, boolean append);
 	
 	public abstract void print(int c);
 	
