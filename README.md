@@ -1,36 +1,5 @@
 # Jaxon
-Jaxon is a Software Development Kit for SJC.
-
-## How Does Jaxon Work
-+ In an effort to make SJC easier to learn and write:
-  + Jaxon acts as a wrapper for the compiler.
-  + It also provides templates to aid creating new applications.
-+ Since SJC has no concept of a standard library:
-    + Jaxon is meant to fix that by providing standard templates that contain a maintained runtime.
-
-## Jaxon vs SJC Differences
-+ Jaxon is built on top of SJC
-+ Jaxon uses Maven to separate the modules
-    + Jaxon is fully Intellij compatible
-+ Jaxon is provided as an installer to make it easier for setup
-    + This also binds to your system path, allowing Jaxon from the command-line
-+ Jaxon provides built-in templates - allowing you to easily start new projects
-    + `jaxon template console`
-+ Jaxon provides a build wrapper on top of the SJC build system
-    + `jaxon build win-exe` is the equivalent of `sjc sc -s 1m -a 4198912 -l -o boot -O #win`
-
-## What Does SJC Do?
-+ SJC compiles Java 1.4-1.5* compliant syntax to:
-  + Native IA32 & x86_64
-    + Executables for Windows & Linux
-      + Win32 console application
-      + Win32 GUI application
-      + Linux 32 bit binary with library support
-    + Bootloader for Custom Operating Systems
-      + Native IA32 image to boot
-      + Native AMD64 image to boot
-  + ARM 7
-    + Atmega Atmel Hexout (Controllers such as LPC2103)
+Jaxon is a powerful SDK built on top of SJC, a beautiful compiler that compiles a tailored subset of Java directly to native code, eliminating the need for bytecode and virtual machines.
 
 ## Getting Started
 + First start by downloading and installing Jaxon.
@@ -64,11 +33,44 @@ Jaxon is a Software Development Kit for SJC.
 
 ## Java Differences
 + Source code only - compiles directly to native instead of bytecode
+  + No virtual machines either
+  + Libraries are only in the form of source code (Unless a DLL)
 + No enums
 + Generics do not exist 
   + Collections, lists & maps do not exist
 + Strings cannot be concat'd using the plus operator `+`
   + **Instead, use StringBuilder**
+
+## How Does Jaxon Work
++ In an effort to make SJC easier to learn and write:
+    + Jaxon acts as a wrapper for the compiler.
+    + It also provides templates to aid creating new applications.
++ Since SJC has no concept of a standard library:
+    + Jaxon is meant to fix that by providing standard templates that contain a maintained runtime.
+
+## Jaxon vs SJC Differences
++ Jaxon is built on top of SJC
++ Jaxon uses Maven to separate the modules
+    + Jaxon is fully Intellij compatible
++ Jaxon is provided as an installer to make it easier for setup
+    + This also binds to your system path, allowing Jaxon from the command-line
++ Jaxon provides built-in templates - allowing you to easily start new projects
+    + `jaxon template console`
++ Jaxon provides a build wrapper on top of the SJC build system
+    + `jaxon build win-exe` is the equivalent of `sjc sc -s 1m -a 4198912 -l -o boot -O #win`
+
+## What Does SJC Do?
++ SJC compiles Java 1.4-1.5* compliant syntax to:
+    + Native IA32 & x86_64
+        + Executables for Windows & Linux
+            + Win32 console application
+            + Win32 GUI application
+            + Linux 32 bit binary with library support
+        + Bootloader for Custom Operating Systems
+            + Native IA32 image to boot
+            + Native AMD64 image to boot
+    + ARM 7
+        + Atmega Atmel Hexout (Controllers such as LPC2103)
 
 ## Special Classes
 + Kernel: The main class for each platform
