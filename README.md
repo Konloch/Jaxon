@@ -73,8 +73,8 @@ Jaxon is a powerful SDK built on top of SJC, a beautiful compiler that compiles 
         + Atmega Atmel Hexout (Controllers such as LPC2103)
 
 ## Special Classes
-+ Kernel: The main class for each platform
-+ MAGIC: Code-generating access to the hardware
++ Kernel: The main class for each platform.
++ MAGIC: Code-generating access to the hardware.
     + For example access to the RAM using MAGIC.rMem8(addr) or MAGIC.wMem32(addr, value).
 + STRUCT: Parent class for custom classes that allow access to structured RAM areas without objects.
 + FLASH: Keep instances in flash (ie: do not copy to RAM).
@@ -83,7 +83,7 @@ Jaxon is a powerful SDK built on top of SJC, a beautiful compiler that compiles 
 
 ## Notes
 + *Note about Java 1.4-1.5 - Certain features of 1.5 are added.
-  + Enhanced for-loops is one example
+  + Enhanced for-loops is one example.
 + Built on top of SJC.
   + You can access SJC command-line by using `jaxon sjc [sjc commands goes here]`
 + **Fully compatible with Intellij, just select "NO SDK" and you'll have no errors with full modern tooling.**
