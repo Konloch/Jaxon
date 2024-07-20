@@ -1,5 +1,6 @@
 /.gradle
 /.idea
-/sjc
 /testing
 /build
+
+dependency-reduced-pom.xml
