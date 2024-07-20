@@ -70,10 +70,15 @@ public class Jaxon
 			createTemplate("console");
 		else if (template.equalsIgnoreCase("graphical"))
 			createTemplate("graphical");
-		else if (template.equalsIgnoreCase("atmega"))
-			createTemplate("atmega");
 		else if (template.equalsIgnoreCase("operating-system"))
 			createTemplate("operating-system");
+		else if (template.equalsIgnoreCase("atmega"))
+		{
+			createTemplate("atmega");
+			String warning = "ATmega currently fails to build - this will need to be resolved";
+			System.err.println(warning);
+			System.out.println(warning);
+		}
 	}
 	
 	private static void build(String[] args) throws IOException
@@ -83,7 +88,7 @@ public class Jaxon
 		String buildScript = args[1];
 		String[] dirs = new String[args.length - 2];
 		for (int i = 2; i < args.length; i++)
-			dirs[i - 2] = args[i];
+			dirs[i - 2] = new File(args[i]).getAbsolutePath();
 		
 		if (buildScript.equalsIgnoreCase("win-exe"))
 		{
@@ -116,14 +121,14 @@ public class Jaxon
 		else if (buildScript.equalsIgnoreCase("os-32"))
 		{
 			setupEnv("operating-system");
-			sfc(merge(new String[]{"-t", "ia32", "-o", "boot", "bootconf.txt#floppy32", "work"}, dirs));
+			sfc(merge(new String[]{"-t", "ia32", "-o", "boot", "-O", "#floppy32"}, dirs));
 			exportBuild("BOOT_FLP.IMG", "build/operating-system/" + buildName + ".img");
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
 		else if (buildScript.equalsIgnoreCase("os-64"))
 		{
 			setupEnv("operating-system");
-			sfc(merge(new String[]{"-t", "amd64", "-o", "boot", "bootconf.txt#floppy64", "work"}, dirs));
+			sfc(merge(new String[]{"-t", "amd64", "-o", "boot", "-O", "#floppy64"}, dirs));
 			exportBuild("BOOT_FLP.IMG", "build/operating-system/" + buildName + ".img");
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
@@ -156,14 +161,14 @@ public class Jaxon
 		}
 		else if (environment.equalsIgnoreCase("atmega"))
 		{
-			setupEnvFile("/environment/native/bootconf.txt", "bootconf.txt");
-			setupEnvFile("/environment/native/batmel32.bin", "batmel32.bin");
+			setupEnvFile("/environment/atmega/bootconf.txt", "bootconf.txt");
+			setupEnvFile("/environment/atmega/batmel32.bin", "batmel32.bin");
 		}
 		else if (environment.equalsIgnoreCase("operating-system"))
 		{
-			setupEnvFile("/environment/native/bootconf.txt", "bootconf.txt");
-			setupEnvFile("/environment/native/bts_dsk.bin", "bts_dsk.bin");
-			setupEnvFile("/environment/native/b64_dsk.bin", "b64_dsk.bin");
+			setupEnvFile("/environment/operating-system/bootconf.txt", "bootconf.txt");
+			setupEnvFile("/environment/operating-system/bts_dsk.bin", "bts_dsk.bin");
+			setupEnvFile("/environment/operating-system/b64_dsk.bin", "b64_dsk.bin");
 		}
 		
 		tempDir.deleteOnExit();
