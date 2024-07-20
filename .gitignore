@@ -2,5 +2,12 @@
 /.idea
 /testing
 /build
+/conf
 
+jaxon.jar
+jaxon.exe
 dependency-reduced-pom.xml
+*.build_artifacts.txt
+build.exe.bat
+build.exe.init.bat
+build.exe.post.bat
