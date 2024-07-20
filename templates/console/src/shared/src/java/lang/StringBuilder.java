@@ -16,6 +16,39 @@ public class StringBuilder
 		count = 0;
 	}
 	
+	public StringBuilder(Object a)
+	{
+		this();
+		append(a.toString());
+	}
+	
+	public StringBuilder(int a)
+	{
+		this();
+		append((char) a);
+	}
+	
+	public StringBuilder(Object a, Object b)
+	{
+		this();
+		append(a.toString());
+		append(b.toString());
+	}
+	
+	public StringBuilder(Object a, int b)
+	{
+		this();
+		append(a.toString());
+		append((char) b);
+	}
+	
+	public StringBuilder(int a, int b)
+	{
+		this();
+		append((char) a);
+		append((char) b);
+	}
+	
 	//append a string to the end of the builder
 	public StringBuilder append(String str)
 	{

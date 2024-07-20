@@ -113,6 +113,11 @@ public abstract class System
 				printChar((int) s.value[i]);
 		}
 		
+		public void print(StringBuilder s)
+		{
+			print(s.toString());
+		}
+		
 		public void println()
 		{
 			printChar(10);
