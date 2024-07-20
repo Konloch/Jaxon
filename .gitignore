@@ -4,6 +4,11 @@
 /build
 /conf
 
+/console
+/graphical
+/operating-system
+/atmega
+
 jaxon.jar
 jaxon.exe
 dependency-reduced-pom.xml
