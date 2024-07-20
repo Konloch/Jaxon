@@ -1,7 +1,8 @@
 package java.lang;
 
 /**
- * @author S. Frenz
+ * @author Konloch
+ * @since 7/17/2024
  */
 public class String
 {
