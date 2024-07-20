@@ -1,0 +1,2 @@
+cd src\jaxon\src\main\resources\templates
+jaxon zip ../../../../../../templates/console console ../../../../../../templates/graphical graphical ../../../../../../templates/atmega atmega ../../../../../../templates/operating-system operating-system
