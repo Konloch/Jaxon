@@ -426,4 +426,10 @@ public class DynamicAri
 		MAGIC.stopBlockCoding();
 		return a;
 	}
+	
+	public static byte binDouble(byte a, byte b, byte op)
+	{
+		//TODO implement
+		return 0;
+	}
 }

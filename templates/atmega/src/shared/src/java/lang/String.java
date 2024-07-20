@@ -1,13 +1,14 @@
 package java.lang;
 
 /**
+ * @author Konloch
  * @author S. Frenz
  */
 public class String
 {
-	@SJC.InlineArrayVar
-	public char[] value;
-	@SJC.InlineArrayCount
+	//@SJC.InlineArrayVar
+	public byte[] value;
+	//@SJC.InlineArrayCount
 	public int count;
 	
 	public String()
@@ -18,26 +19,16 @@ public class String
 	public String(byte[] value)
 	{
 		this.count = value.length;
-		this.value = new char[count];
-		
-		//convert byte to char assuming ASCII
-		for (int i = 0; i < count; i++)
-			this.value[i] = (char) (value[i] & 0xFF);
-	}
-	
-	public String(char[] value)
-	{
 		this.value = value;
-		count = value.length;
 	}
 	
-	public String(char[] value, int length)
+	public String(byte[] value, int length)
 	{
 		this.value = value;
 		count = length;
 	}
 	
-	public String(char[] value, int start, int length)
+	public String(byte[] value, int start, int length)
 	{
 		//TODO implement start
 		this.value = value;
@@ -75,7 +66,7 @@ public class String
 	
 	public String concat(String str)
 	{
-		char[] newValue = new char[this.count + str.count];
+		byte[] newValue = new byte[this.count + str.count];
 		for (int i = 0; i < this.count; i++)
 			newValue[i] = this.value[i];
 		
@@ -85,7 +76,7 @@ public class String
 		return new String(newValue);
 	}
 	
-	public char charAt(int index)
+	public byte charAt(int index)
 	{
 		if (index < 0 || index >= this.count)
 			return 0;
@@ -114,7 +105,7 @@ public class String
 		return -1;
 	}
 	
-	public int indexOf(char ch)
+	public int indexOf(byte ch)
 	{
 		for (int i = 0; i < this.count; i++)
 			if (this.value[i] == ch)
@@ -142,7 +133,7 @@ public class String
 		return -1;
 	}
 	
-	public int lastIndexOf(char ch)
+	public int lastIndexOf(byte ch)
 	{
 		for (int i = this.count - 1; i >= 0; i--)
 			if (this.value[i] == ch)
@@ -158,7 +149,7 @@ public class String
 		//TODO re-add when exceptions are implemented
 		//throw new IOException("Invalid start index: " + start);
 		
-		char[] subValue = new char[this.count - start];
+		byte[] subValue = new byte[this.count - start];
 		for (int i = start; i < this.count; i++)
 			subValue[i - start] = this.value[i];
 		return new String(subValue);
@@ -171,13 +162,13 @@ public class String
 		//TODO re-add when exceptions are implemented
 		//throw new IOException("Invalid indices: start=" + start + ", end=" + end);
 		
-		char[] subValue = new char[end - start];
+		byte[] subValue = new byte[end - start];
 		for (int i = start; i < end; i++)
 			subValue[i - start] = this.value[i];
 		return new String(subValue);
 	}
 	
-	public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)
+	public void getChars(int srcBegin, int srcEnd, byte[] dst, int dstBegin)
 	{
 		if (srcBegin < 0 || srcEnd > count || srcBegin > srcEnd)
 		{

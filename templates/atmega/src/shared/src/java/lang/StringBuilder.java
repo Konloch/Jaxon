@@ -6,15 +6,13 @@ package java.lang;
  */
 public class StringBuilder
 {
-	@SJC.InlineArrayVar
-	private char[] value;
-	@SJC.InlineArrayCount
+	private byte[] value;
 	private int count;
 	
 	//constructor initializes with a default capacity
 	public StringBuilder()
 	{
-		value = new char[16]; // Initial capacity
+		value = new byte[16]; // Initial capacity
 		count = 0;
 	}
 	
@@ -32,7 +30,7 @@ public class StringBuilder
 	}
 	
 	//append a single character to the end of the builder
-	public StringBuilder append(char c)
+	public StringBuilder append(byte c)
 	{
 		ensureCapacity(count + 1);
 		value[count++] = c;
@@ -66,7 +64,7 @@ public class StringBuilder
 				}
 			}
 			
-			char[] newValue = new char[newCapacity];
+			byte[] newValue = new byte[newCapacity];
 			for (int i = 0; i < count; i++)
 				newValue[i] = value[i];
 			
