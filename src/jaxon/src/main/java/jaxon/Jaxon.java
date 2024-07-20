@@ -22,7 +22,7 @@ public class Jaxon
 	{
 		if (args.length < 2)
 		{
-			System.out.println("Incorrect Usage: jaxon template console | jaxon build win-exe [input-files]");
+			System.out.println("Incorrect Usage: Read the documentation at https://konloch.com/Jaxon");
 			return;
 		}
 		
