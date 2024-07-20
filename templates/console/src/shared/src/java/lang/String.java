@@ -217,4 +217,9 @@ public class String
 			result = 31 * result + value[i];
 		return result;
 	}
+	
+	public String toString()
+	{
+		return this;
+	}
 }
