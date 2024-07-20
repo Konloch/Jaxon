@@ -6,5 +6,13 @@ package java.lang;
  */
 public class OutOfMemoryError extends Error
 {
-
+	public OutOfMemoryError(String detailMessage)
+	{
+		super(detailMessage);
+	}
+	
+	public OutOfMemoryError(StringBuilder detailMessage)
+	{
+		this(detailMessage.toString());
+	}
 }

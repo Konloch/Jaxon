@@ -153,9 +153,7 @@ public class String
 	public String substring(int start)
 	{
 		if (start < 0 || start > this.count)
-			return this;
-		//TODO re-add when exceptions are implemented
-		//throw new IOException("Invalid start index: " + start);
+			throw new IndexOutOfBoundsException(new StringBuilder("Invalid start index: ", start));
 		
 		char[] subValue = new char[this.count - start];
 		for (int i = start; i < this.count; i++)
@@ -166,29 +164,23 @@ public class String
 	public String substring(int start, int end)
 	{
 		if (start < 0 || start > this.count || end < start || end > this.count)
-			return this;
-		//TODO re-add when exceptions are implemented
-		//throw new IOException("Invalid indices: start=" + start + ", end=" + end);
+			throw new IndexOutOfBoundsException(new StringBuilder("Invalid indices: start=", start, "end=", end));
 		
 		char[] subValue = new char[end - start];
 		for (int i = start; i < end; i++)
 			subValue[i - start] = this.value[i];
+		
 		return new String(subValue);
 	}
 	
 	public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)
 	{
 		if (srcBegin < 0 || srcEnd > count || srcBegin > srcEnd)
-		{
-			return;
-			//TODO
-			//throw new IndexOutOfBoundsException();
-		}
+			throw new IndexOutOfBoundsException(new StringBuilder("Invalid indices: start=", srcEnd, "end=", srcEnd));
+		
 		int dstIndex = dstBegin;
 		for (int i = srcBegin; i < srcEnd; i++)
-		{
 			dst[dstIndex++] = value[i];
-		}
 	}
 	
 	public boolean equals(Object o)

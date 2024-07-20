@@ -10,4 +10,9 @@ public class IOException extends Exception
 	{
 		super(detailMessage);
 	}
+	
+	public IOException(StringBuilder detailMessage)
+	{
+		this(detailMessage.toString());
+	}
 }

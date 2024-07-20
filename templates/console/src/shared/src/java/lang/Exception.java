@@ -10,4 +10,9 @@ public class Exception extends Throwable
 	{
 		super(detailMessage);
 	}
+	
+	public Exception(StringBuilder detailMessage)
+	{
+		this(detailMessage.toString());
+	}
 }

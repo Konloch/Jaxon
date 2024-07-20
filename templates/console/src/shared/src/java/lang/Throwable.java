@@ -12,4 +12,9 @@ public class Throwable
 	{
 		this.detailMessage = detailMessage;
 	}
+	
+	public Throwable(StringBuilder detailMessage)
+	{
+		this.detailMessage = detailMessage.toString();
+	}
 }
