@@ -22,6 +22,8 @@ import sjc.compbase.*;
 import sjc.frontend.ExVal;
 import sjc.frontend.SScanner;
 
+import static sjc.frontend.SScanner.*;
+
 /**
  * JParser: parser for the SJava-language
  *
@@ -151,11 +153,11 @@ public class JParser
 			syp = s.nxtSym.sypos;
 			//package
 			pack = null;
-			if (accept(SScanner.S_OKE, SScanner.O_PACK))
+			if (accept(S_OKE, O_PACK))
 			{
 				if ((pack = qualIdent(QualID.Q_PACKAGE)) == null)
 					return false;
-				if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+				if (!accept(S_DEL, D_SEM))
 				{
 					parserError("missing \";\" after package");
 					return false;
@@ -172,7 +174,7 @@ public class JParser
 			}
 			//import
 			impt = null;
-			while (accept(SScanner.S_OKE, SScanner.O_IMPT))
+			while (accept(S_OKE, O_IMPT))
 			{
 				if (impt == null)
 					lastImpt = impt = new QualIDList();
@@ -183,7 +185,7 @@ public class JParser
 				}
 				if ((lastImpt.qid = qualIdent(QualID.Q_IMPORTPACK)) == null)
 					return false;
-				if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+				if (!accept(S_DEL, D_SEM))
 				{
 					parserError("missing \";\" after import");
 					return false;
@@ -207,7 +209,7 @@ public class JParser
 				return false;
 			}
 			//class or interface or annotation
-			if (accept(SScanner.S_OKE, SScanner.O_CLSS))
+			if (accept(S_OKE, O_CLSS))
 			{
 				if ((mod & ~(Modifier.M_PUB | Modifier.M_PROT | Modifier.M_ABSTR | Modifier.M_FIN)) != 0)
 				{
@@ -220,21 +222,21 @@ public class JParser
 				if ((c = clssDecl(pack, impt, mod, mark, syl, syc)) == null)
 					return false;
 			}
-			else if (accept(SScanner.S_OKE, SScanner.O_INTF))
+			else if (accept(S_OKE, O_INTF))
 			{
-				if ((mod & ~(SScanner.M_PUB | SScanner.M_PROT | SScanner.M_FIN)) != 0)
+				if ((mod & ~(M_PUB | M_PROT | M_FIN)) != 0)
 				{
 					parserError("invalid modifier for interface");
 					return false;
 				}
-				if ((mod & (SScanner.M_PUB | SScanner.M_PROT)) == 0)
+				if ((mod & (M_PUB | M_PROT)) == 0)
 					mod |= Modifier.M_PACP; //default: package private
 				if ((c = intfDecl(pack, impt, mod, syl, syc)) == null)
 					return false;
 			}
-			else if (accept(SScanner.S_OKE, SScanner.O_ANDC))
+			else if (accept(S_OKE, O_ANDC))
 			{
-				if ((mod & ~(SScanner.M_PUB | SScanner.M_PROT | SScanner.M_FIN)) != 0)
+				if ((mod & ~(M_PUB | M_PROT | M_FIN)) != 0)
 				{
 					parserError("invalid modifier for annotation");
 					return false;
@@ -248,7 +250,7 @@ public class JParser
 				return false;
 			}
 			//remove remaining semicolons
-			while (accept(SScanner.S_DEL, SScanner.D_SEM)) /*remove it*/
+			while (accept(S_DEL, D_SEM)) /*remove it*/
 				;
 			//handle srcStart and srcLength
 			c.srcStart = syp;
@@ -304,9 +306,9 @@ public class JParser
 		mod_marker = mod_modifier = 0;
 		mod_anno = null;
 		//get modifier
-		while (has(SScanner.S_MOD))
+		while (has(S_MOD))
 		{
-			if (accept(SScanner.S_MOD, SScanner.M_ANNO))
+			if (accept(S_MOD, M_ANNO))
 			{ //annotation modifier
 				TypeRef type;
 				if ((type = typeRef(false, false)) == null)
@@ -330,7 +332,7 @@ public class JParser
 						aName = type.qid.name.next.str;
 					}
 					boolean annoDone = false;
-					if (!has(SScanner.S_ENC, SScanner.E_RO))
+					if (!has(S_ENC, E_RO))
 					{ //trivial annotation to switch a flag
 						annoDone = true; //all if-statements result in annoDone=true (except else-case, where it is reset)
 						if (aName.equals("Interrupt"))
@@ -381,7 +383,7 @@ public class JParser
 						mod_anno = new FilledAnno(mod_anno, aName, curFID, s.nxtSym.syline, s.nxtSym.sycol);
 						StringList lastID = null;
 						FilledParam lastPar = null;
-						if (accept(SScanner.S_ENC, SScanner.E_RO))
+						if (accept(S_ENC, E_RO))
 						{
 							do
 							{ //collect multiple parameters
@@ -392,7 +394,7 @@ public class JParser
 									return false;
 								}
 								StringList nextID = new StringList(key);
-								if (!accept(SScanner.S_ASN, SScanner.RES))
+								if (!accept(S_ASN, RES))
 								{
 									parserError("expected \"=\" in annotation parameter");
 									return false;
@@ -415,8 +417,8 @@ public class JParser
 								}
 								lastID = nextID;
 								lastPar = nextPar;
-							} while (accept(SScanner.S_DEL, SScanner.D_COM));
-							if (!accept(SScanner.S_ENC, SScanner.E_RC))
+							} while (accept(S_DEL, D_COM));
+							if (!accept(S_ENC, E_RC))
 							{
 								parserError("expected \")\" after annotation parameters");
 								return false;
@@ -424,14 +426,14 @@ public class JParser
 						}
 					}
 				}
-				else if (accept(SScanner.S_ENC, SScanner.E_RO))
+				else if (accept(S_ENC, E_RO))
 				{ //skip over non-SJC-annotation
 					i = 1;
 					while (i > 0)
 					{
-						if (accept(SScanner.S_ENC, SScanner.E_RO))
+						if (accept(S_ENC, E_RO))
 							i++;
-						else if (accept(SScanner.S_ENC, SScanner.E_RC))
+						else if (accept(S_ENC, E_RC))
 							i--;
 						else
 							accept();
@@ -440,7 +442,7 @@ public class JParser
 			}
 			else
 			{ //normal modifier
-				if (allowAllModifiers || (allowFinalModifier && s.nxtSym.par == SScanner.M_FIN))
+				if (allowAllModifiers || (allowFinalModifier && s.nxtSym.par == M_FIN))
 				{
 					if ((mod_modifier & s.nxtSym.par) != 0)
 					{
@@ -459,11 +461,11 @@ public class JParser
 		}
 		//check modifier: only one of public/protected/private
 		i = 0;
-		if ((mod_modifier & SScanner.M_PUB) != 0)
+		if ((mod_modifier & M_PUB) != 0)
 			i++;
-		if ((mod_modifier & SScanner.M_PROT) != 0)
+		if ((mod_modifier & M_PROT) != 0)
 			i++;
-		if ((mod_modifier & SScanner.M_PRIV) != 0)
+		if ((mod_modifier & M_PRIV) != 0)
 			i++;
 		if (i > 1)
 		{
@@ -477,7 +479,7 @@ public class JParser
 	{ //doesn't print errors
 		String id;
 		
-		if (!has(SScanner.S_ID))
+		if (!has(S_ID))
 			return null;
 		id = s.nxtSym.strBuf;
 		accept();
@@ -490,7 +492,7 @@ public class JParser
 		boolean wildcard = false;
 		int syl, syc;
 		
-		if (!has(SScanner.S_ID))
+		if (!has(S_ID))
 		{
 			parserError("package-identifier expected");
 			return null;
@@ -499,14 +501,14 @@ public class JParser
 		syc = s.nxtSym.sycol;
 		last = list = new StringList(null, s.nxtSym.strBuf);
 		accept();
-		while (accept(SScanner.S_DEL, SScanner.D_DOT))
+		while (accept(S_DEL, D_DOT))
 		{
-			if (has(SScanner.S_ID))
+			if (has(S_ID))
 			{
 				last = new StringList(last, s.nxtSym.strBuf);
 				accept();
 			}
-			else if (has(SScanner.S_ARI, SScanner.A_MUL))
+			else if (has(S_ARI, A_MUL))
 			{
 				if (type != QualID.Q_IMPORTPACK)
 				{
@@ -546,7 +548,7 @@ public class JParser
 				parserError("identifier expected in identifier-list");
 				return null;
 			}
-		} while (accept(SScanner.S_DEL, SScanner.D_COM));
+		} while (accept(S_DEL, D_COM));
 		return list;
 	}
 	
@@ -554,7 +556,7 @@ public class JParser
 	{
 		int d = 0;
 		
-		while (accept(SScanner.S_ENC, SScanner.E_SOC))
+		while (accept(S_ENC, E_SOC))
 			d++;
 		return d;
 	}
@@ -563,7 +565,7 @@ public class JParser
 	{
 		TypeRef t = null;
 		
-		if (accept(SScanner.S_OKE, SScanner.O_VOID))
+		if (accept(S_OKE, O_VOID))
 		{
 			if (voidOK)
 				(t = new TypeRef(curFID, s.nxtSym.syline, s.nxtSym.sycol)).baseType = TypeRef.T_VOID;
@@ -573,7 +575,7 @@ public class JParser
 				return null;
 			}
 		}
-		else if (has(SScanner.S_TYP))
+		else if (has(S_TYP))
 		{
 			(t = new TypeRef(curFID, s.nxtSym.syline, s.nxtSym.sycol)).baseType = s.nxtSym.par;
 			accept();
@@ -596,14 +598,14 @@ public class JParser
 	{
 		Clss r;
 		
-		if (!has(SScanner.S_ID))
+		if (!has(S_ID))
 		{
 			parserError("missing identifier after \"class\"");
 			return null;
 		}
 		(r = new Clss(ip, ii, imod, imark, curFID, il, ic)).name = s.nxtSym.strBuf;
 		accept();
-		if (accept(SScanner.S_OKE, SScanner.O_EXTS))
+		if (accept(S_OKE, O_EXTS))
 		{
 			if ((r.extsID = qualIdent(QualID.Q_UNIT)) == null)
 			{
@@ -611,16 +613,16 @@ public class JParser
 				return null;
 			}
 		}
-		if (accept(SScanner.S_OKE, SScanner.O_IMPL) && (r.extsImplIDList = qualIDList()) == null)
+		if (accept(S_OKE, O_IMPL) && (r.extsImplIDList = qualIDList()) == null)
 			return null;
-		if (!accept(SScanner.S_ENC, SScanner.E_BO))
+		if (!accept(S_ENC, E_BO))
 		{
 			parserError("missing \"{\" after class-identifier");
 			return null;
 		}
 		if (!clssFields(r))
 			return null;
-		if (!accept(SScanner.S_ENC, SScanner.E_BC))
+		if (!accept(S_ENC, E_BC))
 		{
 			parserError("missing \"}\" after class-fields");
 			return null;
@@ -642,9 +644,9 @@ public class JParser
 		
 		oldCurClass = curClass;
 		curClass = c;
-		while (!has(SScanner.S_ENC, SScanner.E_BC))
+		while (!has(S_ENC, E_BC))
 		{
-			while (accept(SScanner.S_DEL, SScanner.D_SEM)) /* discard empty fields */
+			while (accept(S_DEL, D_SEM)) /* discard empty fields */
 				;
 			syl = s.nxtSym.syline;
 			syc = s.nxtSym.sycol;
@@ -653,7 +655,7 @@ public class JParser
 			mod = mod_modifier;
 			mark = mod_marker;
 			anno = mod_anno;
-			if (mod == SScanner.M_STAT && accept(SScanner.S_ENC, SScanner.E_BO))
+			if (mod == M_STAT && accept(S_ENC, E_BO))
 			{
 				tmp = ((JMthd) c.initStat);
 				tmp.name = Unit.STATICMTHDNAME;
@@ -678,7 +680,7 @@ public class JParser
 					ss.nextStmt = sb;
 				}
 				tmp.stmtCnt += mthdStmtCnt;
-				if (!accept(SScanner.S_ENC, SScanner.E_BC))
+				if (!accept(S_ENC, E_BC))
 				{
 					parserError("missing \"}\" after static-init-block");
 					return false;
@@ -687,18 +689,18 @@ public class JParser
 			}
 			else
 			{
-				if ((mod & (SScanner.M_PUB | SScanner.M_PROT | SScanner.M_PRIV)) == 0)
+				if ((mod & (M_PUB | M_PROT | M_PRIV)) == 0)
 					mod |= Modifier.M_PACP; //default: package private
-				if (has(SScanner.S_OKE, SScanner.O_CLSS) || has(SScanner.S_OKE, SScanner.O_INTF) || has(SScanner.S_OKE, SScanner.O_ANDC))
+				if (has(S_OKE, O_CLSS) || has(S_OKE, O_INTF) || has(S_OKE, O_ANDC))
 				{
 					type = s.nxtSym.par;
 					accept();
 					if (!innerUnit(c, mod, mark, type, syl, syc))
 						return false; //inner class or interface
 				}
-				else if (lookAhead(SScanner.S_ENC, SScanner.E_RO))
+				else if (lookAhead(S_ENC, E_RO))
 				{ //constructor
-					if ((mod & (SScanner.M_PUB | SScanner.M_PROT | Modifier.M_PACP | SScanner.M_PRIV)) != mod)
+					if ((mod & (M_PUB | M_PROT | Modifier.M_PACP | M_PRIV)) != mod)
 					{
 						parserError("missing return-type of method or invalid constructor");
 						return false;
@@ -716,14 +718,14 @@ public class JParser
 				{ //vardecl or methoddecl
 					if ((trf = typeRef(true, true)) == null)
 						return false;
-					if (lookAhead(SScanner.S_ENC, SScanner.E_RO))
+					if (lookAhead(S_ENC, E_RO))
 					{ //methoddecl
-						if ((mod & (SScanner.M_PUB | SScanner.M_PROT | Modifier.M_PACP | SScanner.M_PRIV | SScanner.M_FIN | SScanner.M_STAT | SScanner.M_ABSTR | SScanner.M_NAT | SScanner.M_SYNC | Modifier.M_NDCODE)) != mod)
+						if ((mod & (M_PUB | M_PROT | Modifier.M_PACP | M_PRIV | M_FIN | M_STAT | M_ABSTR | M_NAT | M_SYNC | Modifier.M_NDCODE)) != mod)
 						{
 							parserError("invalid modifier for method");
 							return false;
 						}
-						if ((mod & (SScanner.M_ABSTR | SScanner.M_NAT)) == (SScanner.M_ABSTR | SScanner.M_NAT))
+						if ((mod & (M_ABSTR | M_NAT)) == (M_ABSTR | M_NAT))
 						{
 							parserError("method can not be both abstract and native");
 							return false;
@@ -747,7 +749,7 @@ public class JParser
 						mod |= Modifier.MF_ISWRITTEN; //all global variables are treated as already written (special handling of final variables is done later)
 						if ((nv = varDecl(c, mod, mod_anno, trf)) == null)
 							return false;
-						if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+						if (!accept(S_DEL, D_SEM))
 						{
 							parserError(MISSING_SEM_AFTER_VRBL);
 							return false;
@@ -773,8 +775,8 @@ public class JParser
 		
 		switch (declSym)
 		{
-			case SScanner.O_CLSS: //inner class
-				if ((mod & (SScanner.M_PUB | SScanner.M_PROT | Modifier.M_PACP | SScanner.M_PRIV | SScanner.M_STAT | SScanner.M_ABSTR | SScanner.M_STAT | SScanner.M_FIN)) != mod)
+			case O_CLSS: //inner class
+				if ((mod & (M_PUB | M_PROT | Modifier.M_PACP | M_PRIV | M_STAT | M_ABSTR | M_STAT | M_FIN)) != mod)
 				{
 					parserError("invalid modifier for inner class");
 					return false;
@@ -782,18 +784,18 @@ public class JParser
 				if ((inner = clssDecl(outer.pack, outer.impt, mod, mark, syl, syc)) == null)
 					return false;
 				break;
-			case SScanner.O_INTF: //inner interface
-				if ((mod & (SScanner.M_PUB | SScanner.M_PROT | Modifier.M_PACP | SScanner.M_PRIV | SScanner.M_FIN | SScanner.M_STAT)) != mod)
+			case O_INTF: //inner interface
+				if ((mod & (M_PUB | M_PROT | Modifier.M_PACP | M_PRIV | M_FIN | M_STAT)) != mod)
 				{
 					parserError("invalid modifier for interface");
 					return false;
 				}
-				mod |= SScanner.M_STAT; //inner interfaces are implicitly static
+				mod |= M_STAT; //inner interfaces are implicitly static
 				if ((inner = intfDecl(outer.pack, outer.impt, mod, syl, syc)) == null)
 					return false;
 				break;
-			case SScanner.O_ANDC: //inner annotation
-				if ((mod & (SScanner.M_PUB | SScanner.M_PROT | Modifier.M_PACP | SScanner.M_PRIV | SScanner.M_FIN)) != mod)
+			case O_ANDC: //inner annotation
+				if ((mod & (M_PUB | M_PROT | Modifier.M_PACP | M_PRIV | M_FIN)) != mod)
 				{
 					parserError("invalid modifier for annotation");
 					return false;
@@ -843,7 +845,7 @@ public class JParser
 		}
 		if ((t = typeRef(false, true)) == null)
 			return null;
-		if (!has(SScanner.S_ID))
+		if (!has(S_ID))
 		{
 			parserError("missing identifier");
 			return null;
@@ -862,14 +864,14 @@ public class JParser
 		JMthd m;
 		Param p;
 		
-		if (!has(SScanner.S_ID))
+		if (!has(S_ID))
 		{
 			parserError("missing identifier of constructor or type of method");
 			return null;
 		}
 		id = s.nxtSym.strBuf;
 		accept();
-		if (!accept(SScanner.S_ENC, SScanner.E_RO))
+		if (!accept(S_ENC, E_RO))
 		{
 			parserError("internal: methodDecl called without \"(\"");
 			return null;
@@ -880,13 +882,13 @@ public class JParser
 			m.isConstructor = true;
 		else
 			m.retType = retType;
-		if (!has(SScanner.S_ENC, SScanner.E_RC))
+		if (!has(S_ENC, E_RC))
 		{ //there is at least one parameter
 			if ((p = getParam()) == null)
 				return null;
 			p.modifier |= Modifier.MF_ISWRITTEN; //all parameters are already written when the method is called
 			m.param = p;
-			while (accept(SScanner.S_DEL, SScanner.D_COM))
+			while (accept(S_DEL, D_COM))
 			{ //comma-separated list
 				p.nextParam = getParam();
 				if ((p = p.nextParam) == null)
@@ -894,22 +896,22 @@ public class JParser
 				p.modifier |= Modifier.MF_ISWRITTEN; //all parameters are already written when the method is called
 			}
 		}
-		if (!accept(SScanner.S_ENC, SScanner.E_RC))
+		if (!accept(S_ENC, E_RC))
 		{
 			parserError("missing \")\"");
 			return null;
 		}
 		if (retType != null)
 			retType.arrDim += getArrDim(); //alternative array dimension declaration
-		if (accept(SScanner.S_FLC, SScanner.F_THRWS))
+		if (accept(S_FLC, F_THRWS))
 		{
 			ctx.throwUsed = true;
 			if ((m.throwsList = qualIDList()) == null)
 				return null;
 		}
-		if (inIntf || (mod & (SScanner.M_ABSTR | SScanner.M_NAT)) != 0)
+		if (inIntf || (mod & (M_ABSTR | M_NAT)) != 0)
 		{
-			if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+			if (!accept(S_DEL, D_SEM))
 			{
 				parserError("missing \";\" after abstract or native method declaration");
 				return null;
@@ -924,7 +926,7 @@ public class JParser
 	{
 		Mthd oldCurMthd;
 		
-		if (!accept(SScanner.S_ENC, SScanner.E_BO))
+		if (!accept(S_ENC, E_BO))
 		{
 			parserError("missing \"{\" after non-abstract and non-native method declaration");
 			return false;
@@ -935,7 +937,7 @@ public class JParser
 		if ((m.block = stmtBlock(null, null, m.retType != null && m.retType.baseType != StdTypes.T_VOID)) == null)
 			return false;
 		m.stmtCnt = mthdStmtCnt;
-		if (!accept(SScanner.S_ENC, SScanner.E_BC))
+		if (!accept(S_ENC, E_BC))
 		{
 			parserError("missing \"}\" after method-block");
 			return false;
@@ -954,15 +956,15 @@ public class JParser
 		init = new ExArrayInit(curFID, s.nxtSym.syline, s.nxtSym.sycol);
 		do
 		{
-			if (has(SScanner.S_ENC, SScanner.E_BC))
+			if (has(S_ENC, E_BC))
 				break; //ignore comma if followed by a closing bracket, support empty array initialization
 			syl = s.nxtSym.syline;
 			syc = s.nxtSym.sycol;
-			if (accept(SScanner.S_ENC, SScanner.E_BO))
+			if (accept(S_ENC, E_BO))
 			{
 				if ((ex = arrayInit()) == null)
 					return null;
-				if (!accept(SScanner.S_ENC, SScanner.E_BC))
+				if (!accept(S_ENC, E_BC))
 				{
 					parserError(MISSING_BC_AFTER_ARRAY_INIT);
 					return null;
@@ -974,7 +976,7 @@ public class JParser
 				last = init.par = new FilledParam(ex, curFID, syl, syc);
 			else
 				last = last.nextParam = new FilledParam(ex, curFID, syl, syc);
-		} while (accept(SScanner.S_DEL, SScanner.D_COM));
+		} while (accept(S_DEL, D_COM));
 		return init;
 	}
 	
@@ -991,14 +993,14 @@ public class JParser
 			parserError("void not allowed for variables");
 			return null;
 		}
-		if ((mod & SScanner.M_ABSTR) != 0)
+		if ((mod & M_ABSTR) != 0)
 		{
 			parserError("variables must not be abstract");
 			return null;
 		}
 		do
 		{
-			if (!has(SScanner.S_ID))
+			if (!has(S_ID))
 			{
 				parserError("missing identifier");
 				return null;
@@ -1017,9 +1019,9 @@ public class JParser
 			now.owner = owner;
 			now.type = varType;
 			now.type.arrDim += getArrDim();
-			if (accept(SScanner.S_ASN, SScanner.RES))
+			if (accept(S_ASN, RES))
 			{
-				if (accept(SScanner.S_ENC, SScanner.E_BO))
+				if (accept(S_ENC, E_BO))
 				{ //array init
 					if ((ai = arrayInit()) == null)
 						return null;
@@ -1027,7 +1029,7 @@ public class JParser
 						now.init = new ExArrayCopy(ai, varType, true); //use copy of constant array
 					else
 						now.init = ai; //use constant array directly
-					if (!accept(SScanner.S_ENC, SScanner.E_BC))
+					if (!accept(S_ENC, E_BC))
 					{
 						parserError(MISSING_BC_AFTER_ARRAY_INIT);
 						return null;
@@ -1051,7 +1053,7 @@ public class JParser
 			if (lf != null)
 				lf.nextVrbl = now;
 			lf = now;
-		} while (accept(SScanner.S_DEL, SScanner.D_COM));
+		} while (accept(S_DEL, D_COM));
 		return first;
 	}
 	
@@ -1059,23 +1061,23 @@ public class JParser
 	{
 		Intf r;
 		
-		if (!has(SScanner.S_ID))
+		if (!has(S_ID))
 		{
 			parserError("identifier expected after \"interface\"");
 			return null;
 		}
 		(r = new Intf(ip, ii, ia, curFID, il, ic)).name = s.nxtSym.strBuf;
 		accept();
-		if (accept(SScanner.S_OKE, SScanner.O_EXTS) && (r.extsImplIDList = qualIDList()) == null)
+		if (accept(S_OKE, O_EXTS) && (r.extsImplIDList = qualIDList()) == null)
 			return null;
-		if (!accept(SScanner.S_ENC, SScanner.E_BO))
+		if (!accept(S_ENC, E_BO))
 		{
 			parserError("missing \"{\" after interface-identifier");
 			return null;
 		}
 		if (!intfFields(r))
 			return null;
-		if (!accept(SScanner.S_ENC, SScanner.E_BC))
+		if (!accept(S_ENC, E_BC))
 		{
 			parserError("missing \"}\" after interface-fields");
 			return null;
@@ -1088,14 +1090,14 @@ public class JParser
 		Anno a;
 		int i;
 		
-		if (!has(SScanner.S_ID))
+		if (!has(S_ID))
 		{
 			parserError("identifier expected after \"interface\"");
 			return null;
 		}
 		(a = new Anno(ip, ii, ia, curFID, il, ic)).name = s.nxtSym.strBuf;
 		accept();
-		if (!accept(SScanner.S_ENC, SScanner.E_BO))
+		if (!accept(S_ENC, E_BO))
 		{
 			parserError("missing \"{\" after annotation-identifier");
 			return null;
@@ -1104,9 +1106,9 @@ public class JParser
 		i = 1;
 		while (i > 0)
 		{
-			if (accept(SScanner.S_ENC, SScanner.E_BO))
+			if (accept(S_ENC, E_BO))
 				i++;
-			else if (accept(SScanner.S_ENC, SScanner.E_BC))
+			else if (accept(S_ENC, E_BC))
 				i--;
 			else
 				accept();
@@ -1121,29 +1123,29 @@ public class JParser
 		JMthd nm, lm = null;
 		Vrbl nv, lv = null;
 		
-		while (!has(SScanner.S_ENC, SScanner.E_BC))
+		while (!has(S_ENC, E_BC))
 		{
-			while (accept(SScanner.S_DEL, SScanner.D_SEM)) /* discard empty fields */
+			while (accept(S_DEL, D_SEM)) /* discard empty fields */
 				;
 			syl = s.nxtSym.syline;
 			syc = s.nxtSym.sycol;
 			if (!getModifier(true, true))
 				return false; //modifiers
-			mod = mod_modifier | SScanner.M_PUB; //all fields and methods are public
+			mod = mod_modifier | M_PUB; //all fields and methods are public
 			mark = mod_marker;
 			if (mod_anno != null)
 				parserWarning("ignoring SJC-annotation for interface-field");
-			if ((mod & SScanner.M_STAT) != 0 && has(SScanner.S_ENC, SScanner.E_BO))
+			if ((mod & M_STAT) != 0 && has(S_ENC, E_BO))
 			{
 				parserError("static initialisation not allowed in interface");
 				return false;
 			}
-			if ((mod & (SScanner.M_PUB | SScanner.M_STAT | SScanner.M_FIN)) != mod)
+			if ((mod & (M_PUB | M_STAT | M_FIN)) != mod)
 			{
 				parserError("invalid modifier for interface field");
 				return false;
 			}
-			if (lookAhead(SScanner.S_ENC, SScanner.E_RO))
+			if (lookAhead(S_ENC, E_RO))
 			{ //constructor, not allowed
 				parserError("missing return-type of method (constructor not not allowed in interface)");
 				return false;
@@ -1152,9 +1154,9 @@ public class JParser
 			{ //vardecl or methoddecl
 				if ((trf = typeRef(true, true)) == null)
 					return false;
-				if (lookAhead(SScanner.S_ENC, SScanner.E_RO))
+				if (lookAhead(S_ENC, E_RO))
 				{ //methoddecl
-					if ((mod & SScanner.M_ABSTR) != 0)
+					if ((mod & M_ABSTR) != 0)
 					{
 						parserError("methods can not be abstract in interface");
 						return false;
@@ -1170,10 +1172,10 @@ public class JParser
 				}
 				else
 				{ //vardecl
-					mod |= SScanner.M_PUB | SScanner.M_STAT | SScanner.M_FIN | Modifier.MF_ISWRITTEN; //variables are implicitly public final static and are initialized
+					mod |= M_PUB | M_STAT | M_FIN | Modifier.MF_ISWRITTEN; //variables are implicitly public final static and are initialized
 					if ((nv = varDecl(c, mod, mod_anno, trf)) == null)
 						return false;
-					if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+					if (!accept(S_DEL, D_SEM))
 					{
 						parserError(MISSING_SEM_AFTER_VRBL);
 						return false;
@@ -1197,7 +1199,7 @@ public class JParser
 		Stmt ns, ls = null;
 		
 		b = new StBlock(outer, labels, curFID, s.nxtSym.syline, s.nxtSym.sycol);
-		while (!has(SScanner.S_ENC, SScanner.E_BC))
+		while (!has(S_ENC, E_BC))
 		{
 			if ((ns = stmt(b, false)) == null)
 				return null;
@@ -1240,7 +1242,7 @@ public class JParser
 		String singleLabel = null;
 		StringList labels = null, tmpStrList;
 		
-		while (has(SScanner.S_ID) && lookAhead(SScanner.S_DEL, SScanner.D_COL))
+		while (has(S_ID) && lookAhead(S_DEL, D_COL))
 		{
 			tmpStrList = labels;
 			labels = new StringList(s.nxtSym.strBuf);
@@ -1252,7 +1254,7 @@ public class JParser
 		syc = s.nxtSym.sycol;
 		syp = s.nxtSym.sypos;
 		//empty statement
-		if (accept(SScanner.S_DEL, SScanner.D_SEM))
+		if (accept(S_DEL, D_SEM))
 		{
 			if (labels != null)
 				parserWarning(UNREACHABLE_LABEL);
@@ -1261,10 +1263,10 @@ public class JParser
 		//update method statement statistic
 		mthdStmtCnt++; //do not count empty statement
 		//block
-		if (accept(SScanner.S_ENC, SScanner.E_BO))
+		if (accept(S_ENC, E_BO))
 		{
 			sb = stmtBlock(outer, labels, false);
-			if (!accept(SScanner.S_ENC, SScanner.E_BC))
+			if (!accept(S_ENC, E_BC))
 			{
 				parserError("missing \"}\" after block");
 				return null;
@@ -1272,46 +1274,46 @@ public class JParser
 			return sb;
 		}
 		//check for flow control
-		if (has(SScanner.S_FLC))
+		if (has(S_FLC))
 			switch (s.nxtSym.par)
 			{
-				case SScanner.F_IF: //if-else
+				case F_IF: //if-else
 					accept();
 					if (labels != null)
 						parserWarning(UNREACHABLE_LABEL);
 					si = new StIf(curFID, syl, syc);
 					si.srcStart = syp;
-					if (!accept(SScanner.S_ENC, SScanner.E_RO))
+					if (!accept(S_ENC, E_RO))
 					{
 						parserError("missing \"(\" in if-statement");
 						return null;
 					}
 					if ((si.cond = expr()) == null)
 						return null;
-					if (!accept(SScanner.S_ENC, SScanner.E_RC))
+					if (!accept(S_ENC, E_RC))
 					{
 						parserError("missing \")\" in if-statement");
 						return null;
 					}
 					if ((si.trStmt = stmt(outer, true)) == null)
 						return null;
-					if (accept(SScanner.S_FLC, SScanner.F_ELSE))
+					if (accept(S_FLC, F_ELSE))
 					{
 						if ((si.faStmt = stmt(outer, true)) == null)
 							return null;
 					}
 					si.srcLength = s.endOfLastSymbol - syp;
 					return si;
-				case SScanner.F_FOR: //for
+				case F_FOR: //for
 					accept();
-					if (!accept(SScanner.S_ENC, SScanner.E_RO))
+					if (!accept(S_ENC, E_RO))
 					{
 						parserError("missing \"(\" in for-statement");
 						return null;
 					}
-					if (!accept(SScanner.S_DEL, SScanner.D_SEM) && (init = exprVarDecl(true)) == null)
+					if (!accept(S_DEL, D_SEM) && (init = exprVarDecl(true)) == null)
 						return null;
-					if (init != null && accept(SScanner.S_DEL, SScanner.D_COL))
+					if (init != null && accept(S_DEL, D_COL))
 					{ //enhanced for of jdk 1.5, declaration is checked in exprVarDecl already
 						sl = sfe = new StForEnh(outer, labels, curFID, syl, syc);
 						sfe.srcStart = syp;
@@ -1324,17 +1326,17 @@ public class JParser
 						sl = sf = new StFor(outer, labels, curFID, syl, syc);
 						sf.srcStart = syp;
 						sf.init = init;
-						if (!has(SScanner.S_DEL, SScanner.D_SEM) && (sf.cond = expr()) == null)
+						if (!has(S_DEL, D_SEM) && (sf.cond = expr()) == null)
 							return null;
-						if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+						if (!accept(S_DEL, D_SEM))
 						{
 							parserError("missing \";\" after condition in for-statement");
 							return null;
 						}
-						if (!has(SScanner.S_ENC, SScanner.E_RC) && (sf.lupd = exprList()) == null)
+						if (!has(S_ENC, E_RC) && (sf.lupd = exprList()) == null)
 							return null;
 					}
-					if (!accept(SScanner.S_ENC, SScanner.E_RC))
+					if (!accept(S_ENC, E_RC))
 					{
 						parserError("missing \")\" in for-statement");
 						return null;
@@ -1345,18 +1347,18 @@ public class JParser
 					loopLevel--;
 					sl.srcLength = s.endOfLastSymbol - syp;
 					return sl;
-				case SScanner.F_WHILE: //while
+				case F_WHILE: //while
 					accept();
 					sw = new StWhile(outer, labels, curFID, syl, syc); //default is exclusive while
 					sw.srcStart = syp;
-					if (!accept(SScanner.S_ENC, SScanner.E_RO))
+					if (!accept(S_ENC, E_RO))
 					{
 						parserError("missing \"(\" in while-statement");
 						return null;
 					}
 					if ((sw.cond = expr()) == null)
 						return null;
-					if (!accept(SScanner.S_ENC, SScanner.E_RC))
+					if (!accept(S_ENC, E_RC))
 					{
 						parserError("missing \")\" in while-statement");
 						return null;
@@ -1367,34 +1369,34 @@ public class JParser
 					loopLevel--;
 					sw.srcLength = s.endOfLastSymbol - syp;
 					return sw;
-				case SScanner.F_RET: //return
+				case F_RET: //return
 					accept();
 					if (labels != null)
 						parserWarning(UNREACHABLE_LABEL);
 					sr = new StReturn(outer, curFID, syl, syc);
 					sr.srcStart = syp;
-					if (!has(SScanner.S_DEL, SScanner.D_SEM))
+					if (!has(S_DEL, D_SEM))
 					{
 						if ((sr.retVal = expr()) == null)
 							return null;
 					}
-					if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+					if (!accept(S_DEL, D_SEM))
 					{
 						parserError("missing \";\" after return");
 						return null;
 					}
 					sr.srcLength = s.endOfLastSymbol - syp;
 					return sr;
-				case SScanner.F_BRK: //break
+				case F_BRK: //break
 					accept();
 					if (labels != null)
 						parserWarning(UNREACHABLE_LABEL);
-					if (has(SScanner.S_ID))
+					if (has(S_ID))
 					{
 						singleLabel = s.nxtSym.strBuf;
 						accept();
 					}
-					if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+					if (!accept(S_DEL, D_SEM))
 					{
 						parserError("missing \";\" after break");
 						return null;
@@ -1403,16 +1405,16 @@ public class JParser
 					sel.srcStart = syp;
 					sel.srcLength = s.endOfLastSymbol - syp;
 					return sel;
-				case SScanner.F_CNT: //continue
+				case F_CNT: //continue
 					accept();
 					if (labels != null)
 						parserWarning(UNREACHABLE_LABEL);
-					if (has(SScanner.S_ID))
+					if (has(S_ID))
 					{
 						singleLabel = s.nxtSym.strBuf;
 						accept();
 					}
-					if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+					if (!accept(S_DEL, D_SEM))
 					{
 						parserError("missing \";\" after continue");
 						return null;
@@ -1421,7 +1423,7 @@ public class JParser
 					sel.srcStart = syp;
 					sel.srcLength = s.endOfLastSymbol - syp;
 					return sel;
-				case SScanner.F_DO: //do-while
+				case F_DO: //do-while
 					accept();
 					(sw = new StWhile(outer, labels, curFID, syl, syc)).inclusiveWhile = true;
 					sw.srcStart = syp;
@@ -1429,63 +1431,63 @@ public class JParser
 					if ((sw.loStmt = stmt(sw, true)) == null)
 						return null;
 					loopLevel--;
-					if (!accept(SScanner.S_FLC, SScanner.F_WHILE))
+					if (!accept(S_FLC, F_WHILE))
 					{
 						parserError("missing \"while\" after do-statement");
 					}
-					if (!accept(SScanner.S_ENC, SScanner.E_RO))
+					if (!accept(S_ENC, E_RO))
 					{
 						parserError("missing \"(\" in do-while-statement");
 						return null;
 					}
 					if ((sw.cond = expr()) == null)
 						return null;
-					if (!accept(SScanner.S_ENC, SScanner.E_RC))
+					if (!accept(S_ENC, E_RC))
 					{
 						parserError("missing \")\" in do-while-statement");
 						return null;
 					}
-					if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+					if (!accept(S_DEL, D_SEM))
 					{
 						parserError("missing \";\" after do-while-statement");
 						return null;
 					}
 					sw.srcLength = s.nxtSym.sypos - sw.srcStart;
 					return sw;
-				case SScanner.F_SWTCH: //switch
+				case F_SWTCH: //switch
 					accept();
 					ss = new StSwitch(outer, labels, curFID, syl, syc);
 					ss.srcStart = syp;
-					if (!accept(SScanner.S_ENC, SScanner.E_RO))
+					if (!accept(S_ENC, E_RO))
 					{
 						parserError("missing \"(\" in switch-statement");
 						return null;
 					}
 					if ((ss.cond = expr()) == null)
 						return null;
-					if (!accept(SScanner.S_ENC, SScanner.E_RC))
+					if (!accept(S_ENC, E_RC))
 					{
 						parserError("missing \")\" in switch-statement");
 						return null;
 					}
-					if (!accept(SScanner.S_ENC, SScanner.E_BO))
+					if (!accept(S_ENC, E_BO))
 					{
 						parserError("missing \"{\" in switch-statement");
 						return null;
 					}
 					if (!switchList(ss))
 						return null;
-					if (!accept(SScanner.S_ENC, SScanner.E_BC))
+					if (!accept(S_ENC, E_BC))
 					{
 						parserError("missing \"}\" in switch-statement");
 						return null;
 					}
 					ss.srcLength = s.endOfLastSymbol - syp;
 					return ss;
-				case SScanner.F_TRY: //try-catch-finally
+				case F_TRY: //try-catch-finally
 					accept();
 					ctx.throwUsed = true;
-					if (!accept(SScanner.S_ENC, SScanner.E_BO))
+					if (!accept(S_ENC, E_BO))
 					{
 						parserError("missing \"{\" in try-statement");
 						return null;
@@ -1494,16 +1496,16 @@ public class JParser
 					st.srcStart = syp;
 					if ((st.tryBlock = stmtBlock(st, null, false)) == null)
 						return null;
-					if (!accept(SScanner.S_ENC, SScanner.E_BC))
+					if (!accept(S_ENC, E_BC))
 					{
 						parserError("missing \"}\" in try-statement");
 						return null;
 					}
 					syl = s.nxtSym.syline;
 					syc = s.nxtSym.sycol;
-					while (accept(SScanner.S_FLC, SScanner.F_CATCH))
+					while (accept(S_FLC, F_CATCH))
 					{
-						if (!accept(SScanner.S_ENC, SScanner.E_RO))
+						if (!accept(S_ENC, E_RO))
 						{
 							parserError("missing \"(\" in catch-statement");
 							return null;
@@ -1511,7 +1513,7 @@ public class JParser
 						thisCatch = new CatchBlock(curFID, syl, syc);
 						if ((type = typeRef(false, false)) == null)
 							return null;
-						if (!has(SScanner.S_ID))
+						if (!has(S_ID))
 						{
 							parserError("missing identifier for exception in catch-block");
 							return null;
@@ -1519,19 +1521,19 @@ public class JParser
 						thisCatch.catchVar = new Vrbl(s.nxtSym.strBuf, 0, curFID, s.nxtSym.syline, s.nxtSym.sycol);
 						accept();
 						thisCatch.catchVar.type = type;
-						if (!accept(SScanner.S_ENC, SScanner.E_RC))
+						if (!accept(S_ENC, E_RC))
 						{
 							parserError("missing \")\" in catch-statement");
 							return null;
 						}
-						if (!accept(SScanner.S_ENC, SScanner.E_BO))
+						if (!accept(S_ENC, E_BO))
 						{
 							parserError("missing \"{\" in catch-block");
 							return null;
 						}
 						if ((thisCatch.stmts = stmtBlock(st, null, false)) == null)
 							return null;
-						if (!accept(SScanner.S_ENC, SScanner.E_BC))
+						if (!accept(S_ENC, E_BC))
 						{
 							parserError("missing \"}\" in catch-block");
 							return null;
@@ -1544,16 +1546,16 @@ public class JParser
 						syl = s.nxtSym.syline;
 						syc = s.nxtSym.sycol;
 					}
-					if (accept(SScanner.S_FLC, SScanner.F_FIN))
+					if (accept(S_FLC, F_FIN))
 					{
-						if (!accept(SScanner.S_ENC, SScanner.E_BO))
+						if (!accept(S_ENC, E_BO))
 						{
 							parserError("missing \"{\" in finally-block");
 							return null;
 						}
 						if ((st.finallyBlock = stmtBlock(outer, labels, false)) == null)
 							return null;
-						if (!accept(SScanner.S_ENC, SScanner.E_BC))
+						if (!accept(S_ENC, E_BC))
 						{
 							parserError("missing \"}\" in finally-block");
 							return null;
@@ -1561,7 +1563,7 @@ public class JParser
 					}
 					st.srcLength = s.endOfLastSymbol - syp;
 					return st;
-				case SScanner.F_THROW: //throw
+				case F_THROW: //throw
 					accept();
 					ctx.throwUsed = true;
 					if (labels != null)
@@ -1570,14 +1572,14 @@ public class JParser
 					sh.srcStart = syp;
 					if ((sh.throwVal = expr()) == null)
 						return null;
-					if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+					if (!accept(S_DEL, D_SEM))
 					{
 						parserError("missing \";\" after throw");
 						return null;
 					}
 					sh.srcLength = s.endOfLastSymbol - syp;
 					return sh;
-				case SScanner.F_ASSRT:
+				case F_ASSRT:
 					accept();
 					if (labels != null)
 						parserWarning(UNREACHABLE_LABEL);
@@ -1585,9 +1587,9 @@ public class JParser
 					sa.srcStart = syp;
 					if ((sa.cond = expr()) == null)
 						return null;
-					if (accept(SScanner.S_DEL, SScanner.D_COL) && (sa.msg = expr()) == null)
+					if (accept(S_DEL, D_COL) && (sa.msg = expr()) == null)
 						return null;
-					if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+					if (!accept(S_DEL, D_SEM))
 					{
 						parserError("missing \";\" after assert");
 						return null;
@@ -1596,31 +1598,31 @@ public class JParser
 					return sa;
 			}
 		//synchronized
-		if (accept(SScanner.S_MOD, SScanner.M_SYNC))
+		if (accept(S_MOD, M_SYNC))
 		{
 			ctx.syncUsed = true;
 			sy = new StSync(outer, StSync.SYNC_NORM, curFID, syl, syc);
 			sy.srcStart = syp;
-			if (!accept(SScanner.S_ENC, SScanner.E_RO))
+			if (!accept(S_ENC, E_RO))
 			{
 				parserError("missing \"(\" in synchronized-block");
 				return null;
 			}
 			if ((sy.syncObj = expr()) == null)
 				return null;
-			if (!accept(SScanner.S_ENC, SScanner.E_RC))
+			if (!accept(S_ENC, E_RC))
 			{
 				parserError("missing \")\" in synchronized-block");
 				return null;
 			}
-			if (!accept(SScanner.S_ENC, SScanner.E_BO))
+			if (!accept(S_ENC, E_BO))
 			{
 				parserError("missing \"{\" in synchronized-block");
 				return null;
 			}
 			if ((sy.syncBlock = stmtBlock(sy, labels, false)) == null)
 				return null;
-			if (!accept(SScanner.S_ENC, SScanner.E_BC))
+			if (!accept(S_ENC, E_BC))
 			{
 				parserError("missing \"}\" after synchronized-block");
 				return null;
@@ -1648,11 +1650,11 @@ public class JParser
 		syc = s.nxtSym.sycol;
 		syp = s.nxtSym.sypos;
 		//do some trivial checks to see if variable is declared
-		if (has(SScanner.S_MOD, SScanner.M_ANNO) || has(SScanner.S_MOD, SScanner.M_FIN) || (has(SScanner.S_ID) || has(SScanner.S_TYP)) && (lookAhead(SScanner.S_ENC, SScanner.E_SOC) || lookAhead(SScanner.S_ID)))
+		if (has(S_MOD, M_ANNO) || has(S_MOD, M_FIN) || (has(S_ID) || has(S_TYP)) && (lookAhead(S_ENC, E_SOC) || lookAhead(S_ID)))
 		{
 			//declaration of variable
 			mod = 0;
-			while (accept(SScanner.S_MOD, SScanner.M_ANNO))
+			while (accept(S_MOD, M_ANNO))
 			{ //read in annotation of local variables
 				if ((type = typeRef(false, false)) == null)
 				{
@@ -1675,22 +1677,22 @@ public class JParser
 						return null;
 					}
 				}
-				else if (accept(SScanner.S_ENC, SScanner.E_RO))
+				else if (accept(S_ENC, E_RO))
 				{ //skip over non-SJC-annotation
 					i = 1;
 					while (i > 0)
 					{
-						if (accept(SScanner.S_ENC, SScanner.E_RO))
+						if (accept(S_ENC, E_RO))
 							i++;
-						else if (accept(SScanner.S_ENC, SScanner.E_RC))
+						else if (accept(S_ENC, E_RC))
 							i--;
 						else
 							accept();
 					}
 				}
 			}
-			if (accept(SScanner.S_MOD, SScanner.M_FIN))
-				mod |= SScanner.M_FIN;
+			if (accept(S_MOD, M_FIN))
+				mod |= M_FIN;
 			if ((vt = typeRef(false, true)) == null)
 				return null;
 			if ((nv = varDecl(null, mod, null, vt)) == null)
@@ -1698,7 +1700,7 @@ public class JParser
 			sv = new StVrbl(nv, loopLevel != 0);
 			sv.srcStart = syp;
 			sv.srcLength = s.endOfLastSymbol - syp;
-			if (allowSpecialsOfForLoop && has(SScanner.S_DEL, SScanner.D_COL))
+			if (allowSpecialsOfForLoop && has(S_DEL, D_COL))
 			{ //enhanced for loop
 				if (nv.nextVrbl != null || nv.init != null)
 				{
@@ -1706,7 +1708,7 @@ public class JParser
 					return null;
 				}
 			}
-			else if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+			else if (!accept(S_DEL, D_SEM))
 			{ //normal variable declaration
 				parserError(MISSING_SEM_AFTER_VRBL);
 				return null;
@@ -1716,7 +1718,7 @@ public class JParser
 		//no variable, normal expression
 		if ((ex = expr()) == null)
 			return null;
-		if (!has(SScanner.S_DEL, SScanner.D_SEM) && (!allowSpecialsOfForLoop || !has(SScanner.S_DEL, SScanner.D_COM)))
+		if (!has(S_DEL, D_SEM) && (!allowSpecialsOfForLoop || !has(S_DEL, D_COM)))
 		{ //varDecl not detected by variable-check above
 			if ((vt = getTypeRefOfStEx(ex)) == null)
 				return null;
@@ -1724,7 +1726,7 @@ public class JParser
 				return null;
 			sv = new StVrbl(nv, loopLevel != 0);
 			sv.srcStart = syp;
-			if (!accept(SScanner.S_DEL, SScanner.D_SEM) && !(allowSpecialsOfForLoop && has(SScanner.S_DEL, SScanner.D_COL)))
+			if (!accept(S_DEL, D_SEM) && !(allowSpecialsOfForLoop && has(S_DEL, D_COL)))
 			{
 				parserError(MISSING_SEM_AFTER_VRBL);
 				return null;
@@ -1735,9 +1737,9 @@ public class JParser
 		sse = new StExpr(curFID, syl, syc);
 		sse.ex = ex;
 		sse.srcStart = syp;
-		if (allowSpecialsOfForLoop && accept(SScanner.S_DEL, SScanner.D_COM) && (sse.nextStmt = exprList()) == null)
+		if (allowSpecialsOfForLoop && accept(S_DEL, D_COM) && (sse.nextStmt = exprList()) == null)
 			return null;
-		if (!accept(SScanner.S_DEL, SScanner.D_SEM))
+		if (!accept(S_DEL, D_SEM))
 		{
 			parserError("missing \";\" after expression-statement");
 			return null;
@@ -1821,16 +1823,16 @@ public class JParser
 		boolean defDone = false;
 		int syl, syc;
 		
-		while (!has(SScanner.S_ENC, SScanner.E_BC))
+		while (!has(S_ENC, E_BC))
 		{
 			syl = s.nxtSym.syline;
 			syc = s.nxtSym.sycol;
-			if (accept(SScanner.S_FLC, SScanner.F_CASE))
+			if (accept(S_FLC, F_CASE))
 			{
 				ncs = new CondStmt(curFID, syl, syc);
 				if ((ncs.cond = expr()) == null)
 					return false;
-				if (!accept(SScanner.S_DEL, SScanner.D_COL))
+				if (!accept(S_DEL, D_COL))
 				{
 					parserError("missing \":\" after case");
 					return false;
@@ -1849,14 +1851,14 @@ public class JParser
 					ss.stmts = lcs.stmt; //store first statement
 				ls = lcs.stmt;
 			}
-			else if (accept(SScanner.S_FLC, SScanner.F_DFLT))
+			else if (accept(S_FLC, F_DFLT))
 			{
 				if (defDone)
 				{
 					parserError("more than one default-block");
 					return false;
 				}
-				if (!accept(SScanner.S_DEL, SScanner.D_COL))
+				if (!accept(S_DEL, D_COL))
 				{
 					parserError("missing \":\" after default");
 					return false;
@@ -1900,7 +1902,7 @@ public class JParser
 			return null;
 		se.srcStart = se.ex.srcStart;
 		se.srcLength = se.ex.srcLength;
-		while (accept(SScanner.S_DEL, SScanner.D_COM))
+		while (accept(S_DEL, D_COM))
 		{
 			se.nextStmt = se = new StExpr(curFID, s.nxtSym.syline, s.nxtSym.sycol);
 			if ((se.ex = expr()) == null)
@@ -1978,7 +1980,7 @@ public class JParser
 			return null;
 		}
 		last = ret = new FilledParam(tmpEx, curFID, syl, syc);
-		while (has(SScanner.S_DEL, SScanner.D_COM))
+		while (has(S_DEL, D_COM))
 		{
 			accept();
 			syl = s.nxtSym.syline;
@@ -2001,7 +2003,7 @@ public class JParser
 		Expr tmpEx;
 		FilledParam fields, last;
 		
-		if (!accept(SScanner.S_ENC, SScanner.E_SO))
+		if (!accept(S_ENC, E_SO))
 		{
 			parserError("expected \"[\" in array-expression");
 			return false;
@@ -2015,7 +2017,7 @@ public class JParser
 			parserError("invalid expression in array-expression");
 			return false;
 		}
-		if (!accept(SScanner.S_ENC, SScanner.E_SC))
+		if (!accept(S_ENC, E_SC))
 		{
 			parserError("expected \"]\" in array-expression");
 			return false;
@@ -2023,7 +2025,7 @@ public class JParser
 		last = fields = new FilledParam(tmpEx, curFID, syl, syc);
 		last.srcStart = syp;
 		last.srcLength = s.endOfLastSymbol - syp;
-		while (has(SScanner.S_ENC, SScanner.E_SO))
+		while (has(S_ENC, E_SO))
 		{
 			accept();
 			cnt++;
@@ -2050,7 +2052,7 @@ public class JParser
 			}
 			if (tmpEx == null)
 				noExprAllowed = true;
-			if (!accept(SScanner.S_ENC, SScanner.E_SC))
+			if (!accept(S_ENC, E_SC))
 			{
 				parserError("expected \"]\" in array-expression");
 				return false;
@@ -2097,7 +2099,7 @@ public class JParser
 		
 		syl = s.nxtSym.syline;
 		syc = s.nxtSym.sycol;
-		if (accept(SScanner.S_OKE, SScanner.O_NEW))
+		if (accept(S_OKE, O_NEW))
 		{
 			if ((nobType = typeRef(false, true)) == null)
 			{
@@ -2106,14 +2108,14 @@ public class JParser
 			}
 			if (nobType.arrDim > 0)
 			{ //explicitly initialized array => no "classic" new, instead use array-copy
-				if (!accept(SScanner.S_ENC, SScanner.E_BO))
+				if (!accept(S_ENC, E_BO))
 				{
 					parserError("expected \"{\" before array init in new-expression");
 					return null;
 				}
 				if ((ai = arrayInit()) == null)
 					return null;
-				if (!accept(SScanner.S_ENC, SScanner.E_BC))
+				if (!accept(S_ENC, E_BC))
 				{
 					parserError("expected \"}\" after array init in new-expression");
 					return null;
@@ -2124,7 +2126,7 @@ public class JParser
 			{ //not explicitly initialized array
 				nob = new ExNew(curFID, syl, syc);
 				nob.obj = nobType;
-				if (has(SScanner.S_ENC, SScanner.E_SO))
+				if (has(S_ENC, E_SO))
 				{ //opening array-declaration
 					nob.asArray = true;
 					if (!getNewArrayParam(nob))
@@ -2138,27 +2140,27 @@ public class JParser
 						parserError("object of basis-type not allowed");
 						return null;
 					}
-					if (!accept(SScanner.S_ENC, SScanner.E_RO))
+					if (!accept(S_ENC, E_RO))
 					{
 						parserError("expected \"(\" in new-expression");
 						return null;
 					}
-					if (!has(SScanner.S_ENC, SScanner.E_RC) && (nob.par = getCallParam()) == null)
+					if (!has(S_ENC, E_RC) && (nob.par = getCallParam()) == null)
 						return null; //get parameter
-					if (!accept(SScanner.S_ENC, SScanner.E_RC))
+					if (!accept(S_ENC, E_RC))
 					{
 						parserError("missing closing \")\" in new-expresseion");
 						return null;
 					}
-					if (accept(SScanner.S_ENC, SScanner.E_BO))
+					if (accept(S_ENC, E_BO))
 					{ //anonymous inner class
-						mod = SScanner.M_FIN | SScanner.M_PRIV;
+						mod = M_FIN | M_PRIV;
 						if ((curMthd.modifier & Modifier.M_STAT) != 0)
-							mod |= SScanner.M_STAT;
+							mod |= M_STAT;
 						anonymousInner = new Clss(curClass.pack, curClass.impt, mod, curClass.marker, curFID, syl, syc);
 						if (!clssFields(anonymousInner))
 							return null;
-						if (!accept(SScanner.S_ENC, SScanner.E_BC))
+						if (!accept(S_ENC, E_BC))
 						{
 							parserError("missing \"}\" after anonymous inner class");
 							return null;
@@ -2183,18 +2185,18 @@ public class JParser
 			parserError("identifier expected in expression (getIDFragement)");
 			return null;
 		}
-		if (has(SScanner.S_ENC, SScanner.E_RO))
+		if (has(S_ENC, E_RO))
 		{ //method-call
 			accept();
 			call = new ExCall(curFID, syl, syc);
 			call.id = id;
-			if (!has(SScanner.S_ENC, SScanner.E_RC))
+			if (!has(S_ENC, E_RC))
 			{
 				call.par = getCallParam();
 				if (call.par == null)
 					return null;
 			}
-			if (!accept(SScanner.S_ENC, SScanner.E_RC))
+			if (!accept(S_ENC, E_RC))
 			{
 				parserError("expected \")\" after method-call");
 				return null;
@@ -2262,7 +2264,7 @@ public class JParser
 		ExVal num;
 		Expr tmpEx;
 		
-		if (has(SScanner.S_OKE, SScanner.O_CLSS) || has(SScanner.S_OKE, SScanner.O_INTF) || has(SScanner.S_OKE, SScanner.O_ANDC))
+		if (has(S_OKE, O_CLSS) || has(S_OKE, O_INTF) || has(S_OKE, O_ANDC))
 		{
 			parserError("named local units inside methods not supported");
 			return null;
@@ -2270,10 +2272,10 @@ public class JParser
 		
 		syl = s.nxtSym.syline;
 		syc = s.nxtSym.sycol;
-		if (accept(SScanner.S_ENC, SScanner.E_RO))
+		if (accept(S_ENC, E_RO))
 		{
 			enc = new ExEnc(curFID, syl, syc);
-			if (has(SScanner.S_TYP))
+			if (has(S_TYP))
 			{ //check if next token is standard-type
 				if (!acceptFurtherFragments)
 				{
@@ -2284,7 +2286,7 @@ public class JParser
 				enc.convertTo.baseType = s.nxtSym.par;
 				accept();
 				enc.convertTo.arrDim = getArrDim();
-				if (!accept(SScanner.S_ENC, SScanner.E_RC))
+				if (!accept(S_ENC, E_RC))
 				{
 					parserError("missing \")\" in conversion");
 					return null;
@@ -2298,13 +2300,13 @@ public class JParser
 			}
 			if ((enc.ex = expr()) == null)
 				return null;
-			if (has(SScanner.S_ENC, SScanner.E_SOC))
+			if (has(S_ENC, E_SOC))
 			{
 				//check if enclosed expression is realy just a type and an expr follows
 				if ((enc.convertTo = getTypeRefOfExpr(enc.ex)) == null)
 					return null;
 				enc.convertTo.arrDim = getArrDim();
-				if (!accept(SScanner.S_ENC, SScanner.E_RC))
+				if (!accept(S_ENC, E_RC))
 				{
 					parserError("missing \")\" after conversion to array");
 					return null;
@@ -2317,12 +2319,12 @@ public class JParser
 			}
 			else
 			{
-				if (!accept(SScanner.S_ENC, SScanner.E_RC))
+				if (!accept(S_ENC, E_RC))
 				{
 					parserError("missing \")\" in enclosed expression");
 					return null;
 				}
-				if (has(SScanner.S_DEL, SScanner.D_DOT) || has(SScanner.S_ENC, SScanner.E_SO)) //not a conversion but encapsulated dereferenzation
+				if (has(S_DEL, D_DOT) || has(S_ENC, E_SO)) //not a conversion but encapsulated dereferenzation
 					return appendDeRefArray(enc);
 				if (acceptFurtherFragments && (tmpEx = getOperandFragment(false)) != null)
 				{ //conversion
@@ -2335,24 +2337,24 @@ public class JParser
 			}
 			return enc;
 		}
-		if (has(SScanner.S_NUM))
+		if (has(S_NUM))
 		{
 			num = new ExVal(curFID, syl, syc);
 			switch (num.baseType = s.nxtSym.par)
 			{
-				case SScanner.T_BYTE:
-				case SScanner.T_SHRT:
-				case SScanner.T_INT:
-				case SScanner.T_CHAR:
-				case SScanner.T_BOOL:
-				case SScanner.T_FLT:
+				case T_BYTE:
+				case T_SHRT:
+				case T_INT:
+				case T_CHAR:
+				case T_BOOL:
+				case T_FLT:
 					num.intValue = s.nxtSym.intBuf;
 					break;
-				case SScanner.T_LONG:
-				case SScanner.T_DBL:
+				case T_LONG:
+				case T_DBL:
 					num.longValue = s.nxtSym.longBuf;
 					break;
-				case SScanner.T_NULL:
+				case T_NULL:
 					break; //nothing to copy
 				default:
 					parserError("### internal error in Parser.getOperandFragment: unknown S_NUM-type ###");
@@ -2361,18 +2363,20 @@ public class JParser
 			accept();
 			return num;
 		}
-		if (has(SScanner.S_SCT))
+		
+		//string
+		if (has(S_SCT))
 		{
 			tmpEx = new ExStr(s.nxtSym.strBuf, curFID, syl, syc);
 			accept();
-			if (has(SScanner.S_DEL, SScanner.D_DOT)) //constant string may be dereferenced directly
+			if (has(S_DEL, D_DOT)) //constant string may be dereferenced directly
 				return appendDeRefArray(tmpEx);
 			return tmpEx;
 		}
-		if (has(SScanner.S_ID) || has(SScanner.S_OKE, SScanner.O_NEW))
+		if (has(S_ID) || has(S_OKE, O_NEW))
 		{
 			tmpEx = getIDFragment();
-			if (has(SScanner.S_DEL, SScanner.D_DOT) || has(SScanner.S_ENC, SScanner.E_SO))
+			if (has(S_DEL, D_DOT) || has(S_ENC, E_SO))
 				return appendDeRefArray(tmpEx);
 			return tmpEx;
 		}
@@ -2387,7 +2391,7 @@ public class JParser
 		ExDeArray array;
 		boolean ref;
 		
-		while ((ref = has(SScanner.S_DEL, SScanner.D_DOT)) || has(SScanner.S_ENC, SScanner.E_SO))
+		while ((ref = has(S_DEL, D_DOT)) || has(S_ENC, E_SO))
 		{
 			if (ref)
 			{ //DeRef
@@ -2408,7 +2412,7 @@ public class JParser
 				array.le = res;
 				if ((array.ind = expr()) == null)
 					return null;
-				if (!accept(SScanner.S_ENC, SScanner.E_SC))
+				if (!accept(S_ENC, E_SC))
 				{
 					parserError("missing \"]\" in array expression");
 					return null;
@@ -2478,7 +2482,7 @@ public class JParser
 	{
 		int i;
 		
-		if (has(SScanner.S_ASN) || has(SScanner.S_ASK) || has(SScanner.S_CMP) || has(SScanner.S_BSH) || has(SScanner.S_ASNARI) || has(SScanner.S_ASNBSH) || (has(SScanner.S_LOG) && !has(SScanner.S_LOG, SScanner.L_NOT)) || (has(SScanner.S_ARI) && !has(SScanner.S_ARI, SScanner.A_CPL)))
+		if (has(S_ASN) || has(S_ASK) || has(S_CMP) || has(S_BSH) || has(S_ASNARI) || has(S_ASNBSH) || (has(S_LOG) && !has(S_LOG, L_NOT)) || (has(S_ARI) && !has(S_ARI, A_CPL)))
 		{
 			i = (s.nxtSym.type << 16) | (s.nxtSym.par);
 			accept();
@@ -2491,7 +2495,7 @@ public class JParser
 	{
 		int i;
 		
-		if (has(SScanner.S_LOG, SScanner.L_NOT) || has(SScanner.S_ARI, SScanner.A_CPL) || has(SScanner.S_ARI, SScanner.A_PLUS) || has(SScanner.S_ARI, SScanner.A_MINUS))
+		if (has(S_LOG, L_NOT) || has(S_ARI, A_CPL) || has(S_ARI, A_PLUS) || has(S_ARI, A_MINUS))
 		{
 			i = (s.nxtSym.type << 16) | (s.nxtSym.par);
 			accept();
@@ -2504,7 +2508,7 @@ public class JParser
 	{
 		int i;
 		
-		if (has(SScanner.S_PFX))
+		if (has(S_PFX))
 		{
 			i = (s.nxtSym.type << 16) | (s.nxtSym.par);
 			accept();
@@ -2517,55 +2521,55 @@ public class JParser
 	{
 		switch (type)
 		{
-			case SScanner.S_ASN:
-			case SScanner.S_ASNARI:
-			case SScanner.S_ASNBSH:
+			case S_ASN:
+			case S_ASNARI:
+			case S_ASNBSH:
 				return 1;
-			case SScanner.S_ASK:
+			case S_ASK:
 				return 2;
-			case SScanner.S_ARI:
+			case S_ARI:
 				switch (par)
 				{
-					case SScanner.A_OR:
+					case A_OR:
 						return 5;
-					case SScanner.A_XOR:
+					case A_XOR:
 						return 6;
-					case SScanner.A_AND:
+					case A_AND:
 						return 7;
-					case SScanner.A_PLUS:
-					case SScanner.A_MINUS:
+					case A_PLUS:
+					case A_MINUS:
 						return 11;
-					case SScanner.A_MUL:
-					case SScanner.A_DIV:
-					case SScanner.A_MOD:
+					case A_MUL:
+					case A_DIV:
+					case A_MOD:
 						return 12;
 				}
 				return 0;
-			case SScanner.S_CMP:
+			case S_CMP:
 				switch (par)
 				{
-					case SScanner.C_EQ:
-					case SScanner.C_NE:
+					case C_EQ:
+					case C_NE:
 						return 8;
-					case SScanner.C_LW:
-					case SScanner.C_LE:
-					case SScanner.C_GE:
-					case SScanner.C_GT:
+					case C_LW:
+					case C_LE:
+					case C_GE:
+					case C_GT:
 						return 9;
-					case SScanner.C_INOF:
+					case C_INOF:
 						return 10;
 				}
 				return 0;
-			case SScanner.S_LOG:
+			case S_LOG:
 				switch (par)
 				{
-					case SScanner.L_OR:
+					case L_OR:
 						return 3;
-					case SScanner.L_AND:
+					case L_AND:
 						return 4;
 				}
 				return 0;
-			case SScanner.S_BSH:
+			case S_BSH:
 				return 10;
 		}
 		//invalid operator
@@ -2598,12 +2602,12 @@ public class JParser
 				opType = op >>> 16;
 				opPar = op & 0xFFFF;
 				rank = getRank(opType, opPar);
-				if (opType == SScanner.S_ASK)
+				if (opType == S_ASK)
 				{
 					chs = new ExChoose(op, rank, curFID, s.nxtSym.syline, s.nxtSym.sycol);
 					if ((chs.ce = expr()) == null)
 						return null;
-					if (!accept(SScanner.S_DEL, SScanner.D_COL))
+					if (!accept(S_DEL, D_COL))
 					{
 						parserError("missing colon in choose expression");
 						return null;
@@ -2612,7 +2616,7 @@ public class JParser
 				}
 				else
 					bin = new ExBin(op, rank, curFID, s.nxtSym.syline, s.nxtSym.sycol);
-				if (opType == SScanner.S_CMP && opPar == SScanner.C_INOF)
+				if (opType == S_CMP && opPar == C_INOF)
 					bin.ri = getOperandClass();
 				else
 					bin.ri = getOperand();

@@ -122,7 +122,9 @@ public class ExBin extends ExCheckType
 		opPar = op & 0xFFFF;
 		//check normal expressions
 		resolveFlags |= RF_CHECKREAD;
-		if (!le.resolve(unitContext, mthdContext, ((opType != Ops.S_ASN || opPar != 0) ? resolveFlags : (resolveFlags & ~RF_CHECKREAD)), null, ctx) || !ri.resolve(unitContext, mthdContext, resolveFlags, (opType == Ops.S_ASN || opType == Ops.S_CMP) ? le : null, ctx))
+		if (!le.resolve(unitContext, mthdContext, ((opType != Ops.S_ASN || opPar != 0) ? resolveFlags : (resolveFlags & ~RF_CHECKREAD)), null, ctx)
+				|| !ri.resolve(unitContext, mthdContext, resolveFlags, (opType == Ops.S_ASN
+				|| opType == Ops.S_CMP) ? le : null, ctx))
 			return false;
 		//try to get resulting type
 		switch (opType)
