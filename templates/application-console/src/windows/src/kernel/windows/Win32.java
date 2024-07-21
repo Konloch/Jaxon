@@ -170,4 +170,18 @@ public class Win32
 		
 		return true;
 	}
+	
+	public static void print(int c)
+	{
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                            //push byte 0 (no overlap)
+		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0xFC);     //lea eax,[ebp-4] (address of result)
+		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x01);                            //push byte 1 (single character)
+		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0x08);     //lea eax,[ebp+8] (address of string)
+		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
+		MAGIC.inline(x86.CALL_NEAR, 0x35);
+		MAGIC.inline32(rte.DynamicRuntime._hndStdOut);                          //push handle
+		MAGIC.inline(x86.CALL_NEAR, 0x15);
+		MAGIC.inline32(rte.DynamicRuntime._Kernel_WriteFile);                   //call
+	}
 }
