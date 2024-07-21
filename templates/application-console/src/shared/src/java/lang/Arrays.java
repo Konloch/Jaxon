@@ -6,101 +6,111 @@ package java.lang;
  */
 public class Arrays
 {
-	public static boolean[] clone(boolean[] array)
+	public static boolean[] clone(boolean[] src)
 	{
-		return clone(array.length, array);
+		return clone(src, 0, 0, src.length);
 	}
 	
-	public static boolean[] clone(int newCapacity, boolean[] array)
+	public static boolean[] clone(boolean[] src, int srcPos, int destPos, int length)
 	{
-		boolean[] newValue = new boolean[newCapacity];
-		for (int i = 0; i < array.length; i++)
-			newValue[i] = array[i];
-		
+		boolean[] newValue = new boolean[length];
+		copy(src, srcPos, newValue, destPos, length);
 		return newValue;
 	}
 	
-	public static byte[] clone(byte[] array)
+	public static byte[] clone(byte[] src)
 	{
-		return clone(array.length, array);
+		return clone(src, 0, 0, src.length);
 	}
 	
-	public static byte[] clone(int newCapacity, byte[] array)
+	public static byte[] clone(byte[] src, int srcPos, int destPos, int length)
 	{
-		byte[] newValue = new byte[newCapacity];
-		for (int i = 0; i < array.length; i++)
-			newValue[i] = array[i];
-		
+		byte[] newValue = new byte[length];
+		copy(src, srcPos, newValue, destPos, length);
 		return newValue;
 	}
 	
-	public static short[] clone(short[] array)
+	public static short[] clone(short[] src)
 	{
-		return clone(array.length, array);
+		return clone(src, 0, 0, src.length);
 	}
 	
-	public static short[] clone(int newCapacity, short[] array)
+	public static short[] clone(short[] src, int srcPos, int destPos, int length)
 	{
-		short[] newValue = new short[newCapacity];
-		for (int i = 0; i < array.length; i++)
-			newValue[i] = array[i];
-		
+		short[] newValue = new short[length];
+		copy(src, srcPos, newValue, destPos, length);
 		return newValue;
 	}
 	
-	public static char[] clone(char[] array)
+	public static char[] clone(char[] src)
 	{
-		return clone(array.length, array);
+		return clone(src, 0, 0, src.length);
 	}
 	
-	public static char[] clone(int newCapacity, char[] array)
+	public static char[] clone(char[] src, int srcPos, int destPos, int length)
 	{
-		char[] newValue = new char[newCapacity];
-		for (int i = 0; i < array.length; i++)
-			newValue[i] = array[i];
-		
+		char[] newValue = new char[length];
+		copy(src, srcPos, newValue, destPos, length);
 		return newValue;
 	}
 	
-	public static int[] clone(int[] array)
+	public static int[] clone(int[] src)
 	{
-		return clone(array.length, array);
+		return clone(src, 0, 0, src.length);
 	}
 	
-	public static int[] clone(int newCapacity, int[] array)
+	public static int[] clone(int[] src, int srcPos, int destPos, int length)
 	{
-		int[] newValue = new int[newCapacity];
-		for (int i = 0; i < array.length; i++)
-			newValue[i] = array[i];
-		
+		int[] newValue = new int[length];
+		copy(src, srcPos, newValue, destPos, length);
 		return newValue;
 	}
 	
-	public static long[] clone(long[] array)
+	public static long[] clone(long[] src)
 	{
-		return clone(array.length, array);
+		return clone(src, 0, 0, src.length);
 	}
 	
-	public static long[] clone(int newCapacity, long[] array)
+	public static long[] clone(long[] src, int srcPos, int destPos, int length)
 	{
-		long[] newValue = new long[newCapacity];
-		for (int i = 0; i < array.length; i++)
-			newValue[i] = array[i];
-		
+		long[] newValue = new long[length];
+		copy(src, srcPos, newValue, destPos, length);
 		return newValue;
 	}
 	
-	public static Object[] clone(Object[] array)
+	public static double[] clone(double[] src)
 	{
-		return clone(array.length, array);
+		return clone(src, 0, 0, src.length);
 	}
 	
-	public static Object[] clone(int newCapacity, Object[] array)
+	public static double[] clone(double[] src, int srcPos, int destPos, int length)
 	{
-		Object[] newValue = new Object[newCapacity];
-		for (int i = 0; i < array.length; i++)
-			newValue[i] = array[i];
-		
+		double[] newValue = new double[length];
+		copy(src, srcPos, newValue, destPos, length);
+		return newValue;
+	}
+	
+	public static float[] clone(float[] src)
+	{
+		return clone(src, 0, 0, src.length);
+	}
+	
+	public static float[] clone(float[] src, int srcPos, int destPos, int length)
+	{
+		float[] newValue = new float[length];
+		copy(src, srcPos, newValue, destPos, length);
+		return newValue;
+	}
+	
+	public static Object[] clone(Object[] src)
+	{
+		return clone(src, 0, 0, src.length);
+	}
+	
+	public static Object[] clone(Object[] src, int srcPos, int destPos, int length)
+	{
+		Object[] newValue = new Object[length];
+		copy(src, srcPos, newValue, destPos, length);
 		return newValue;
 	}
 	
@@ -188,6 +198,34 @@ public class Arrays
 		return array;
 	}
 	
+	public static double[] merge(double[] partA, double[] partB)
+	{
+		double[] array = new double[partA.length + partB.length];
+		
+		int index = 0;
+		for (double arg : partA)
+			array[index++] = arg;
+		
+		for (double dir : partB)
+			array[index++] = dir;
+		
+		return array;
+	}
+	
+	public static float[] merge(float[] partA, float[] partB)
+	{
+		float[] array = new float[partA.length + partB.length];
+		
+		int index = 0;
+		for (float arg : partA)
+			array[index++] = arg;
+		
+		for (float dir : partB)
+			array[index++] = dir;
+		
+		return array;
+	}
+	
 	public static Object[] merge(Object[] partA, Object[] partB)
 	{
 		Object[] array = new Object[partA.length + partB.length];
@@ -263,6 +301,30 @@ public class Arrays
 	}
 	
 	public static void copy(long[] src, int srcPos, long[] dest, int destPos, int length)
+	{
+		if (src == null || dest == null)
+			throw new NullPointerException("Source or destination array is null");
+		
+		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
+			throw new IndexOutOfBoundsException("Invalid array index or length");
+		
+		for (int i = 0; i < length; i++)
+			dest[destPos + i] = src[srcPos + i];
+	}
+	
+	public static void copy(double[] src, int srcPos, double[] dest, int destPos, int length)
+	{
+		if (src == null || dest == null)
+			throw new NullPointerException("Source or destination array is null");
+		
+		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
+			throw new IndexOutOfBoundsException("Invalid array index or length");
+		
+		for (int i = 0; i < length; i++)
+			dest[destPos + i] = src[srcPos + i];
+	}
+	
+	public static void copy(float[] src, int srcPos, float[] dest, int destPos, int length)
 	{
 		if (src == null || dest == null)
 			throw new NullPointerException("Source or destination array is null");
