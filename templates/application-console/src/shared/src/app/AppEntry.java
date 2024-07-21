@@ -9,5 +9,6 @@ public class AppEntry
 	public static void start()
 	{
 		System.out.print("Hello world");
+		TestSystemAPI.testFileSystem();
 	}
 }

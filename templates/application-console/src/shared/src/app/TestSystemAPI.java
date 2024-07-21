@@ -1,6 +1,6 @@
 package app;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 
 /**
  * @author Konloch
@@ -10,7 +10,15 @@ public class TestSystemAPI
 {
 	public static void testFileSystem()
 	{
-		ByteArrayOutputStream output = new ByteArrayOutputStream("Hello World\n".toByteArray());
-		System._system.write("test.txt", 0, output, true);
+		try
+		{
+			ByteArrayInputStream output = new ByteArrayInputStream("Hello World\n".toByteArray());
+			System._system.createDirectory("test");
+			System._system.write("test.txt", 0, output, true);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Error Caught");
+		}
 	}
 }
