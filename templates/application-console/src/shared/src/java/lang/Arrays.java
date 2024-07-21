@@ -201,4 +201,88 @@ public class Arrays
 		
 		return array;
 	}
+	
+	public static void copy(boolean[] src, int srcPos, boolean[] dest, int destPos, int length)
+	{
+		if (src == null || dest == null)
+			throw new NullPointerException("Source or destination array is null");
+		
+		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
+			throw new IndexOutOfBoundsException("Invalid array index or length");
+		
+		for (int i = 0; i < length; i++)
+			dest[destPos + i] = src[srcPos + i];
+	}
+	
+	public static void copy(byte[] src, int srcPos, byte[] dest, int destPos, int length)
+	{
+		if (src == null || dest == null)
+			throw new NullPointerException("Source or destination array is null");
+		
+		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
+			throw new IndexOutOfBoundsException("Invalid array index or length");
+		
+		for (int i = 0; i < length; i++)
+			dest[destPos + i] = src[srcPos + i];
+	}
+	
+	public static void copy(short[] src, int srcPos, short[] dest, int destPos, int length)
+	{
+		if (src == null || dest == null)
+			throw new NullPointerException("Source or destination array is null");
+		
+		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
+			throw new IndexOutOfBoundsException("Invalid array index or length");
+		
+		for (int i = 0; i < length; i++)
+			dest[destPos + i] = src[srcPos + i];
+	}
+	
+	public static void copy(char[] src, int srcPos, char[] dest, int destPos, int length)
+	{
+		if (src == null || dest == null)
+			throw new NullPointerException("Source or destination array is null");
+		
+		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
+			throw new IndexOutOfBoundsException("Invalid array index or length");
+		
+		for (int i = 0; i < length; i++)
+			dest[destPos + i] = src[srcPos + i];
+	}
+	
+	public static void copy(int[] src, int srcPos, int[] dest, int destPos, int length)
+	{
+		if (src == null || dest == null)
+			throw new NullPointerException("Source or destination array is null");
+		
+		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
+			throw new IndexOutOfBoundsException("Invalid array index or length");
+		
+		for (int i = 0; i < length; i++)
+			dest[destPos + i] = src[srcPos + i];
+	}
+	
+	public static void copy(long[] src, int srcPos, long[] dest, int destPos, int length)
+	{
+		if (src == null || dest == null)
+			throw new NullPointerException("Source or destination array is null");
+		
+		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
+			throw new IndexOutOfBoundsException("Invalid array index or length");
+		
+		for (int i = 0; i < length; i++)
+			dest[destPos + i] = src[srcPos + i];
+	}
+	
+	public static void copy(Object[] src, int srcPos, Object[] dest, int destPos, int length)
+	{
+		if (src == null || dest == null)
+			throw new NullPointerException("Source or destination array is null");
+		
+		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
+			throw new IndexOutOfBoundsException("Invalid array index or length");
+		
+		for (int i = 0; i < length; i++)
+			dest[destPos + i] = src[srcPos + i];
+	}
 }
