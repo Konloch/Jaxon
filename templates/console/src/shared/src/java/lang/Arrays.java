@@ -90,6 +90,20 @@ public class Arrays
 		return newValue;
 	}
 	
+	public static Object[] clone(Object[] array)
+	{
+		return clone(array.length, array);
+	}
+	
+	public static Object[] clone(int newCapacity, Object[] array)
+	{
+		Object[] newValue = new Object[newCapacity];
+		for (int i = 0; i < array.length; i++)
+			newValue[i] = array[i];
+		
+		return newValue;
+	}
+	
 	public static Object[] merge(Object[] partA, Object[] partB)
 	{
 		Object[] array = new Object[partA.length + partB.length];
