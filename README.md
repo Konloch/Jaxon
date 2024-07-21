@@ -22,13 +22,16 @@ Jaxon is a powerful SDK built on top of SJC, a beautiful compiler that compiles 
   + One benefit is you are not restricted by the concept of precompiled libraries, you are always provided the source unless you are invoking a DLL
 
 ## Jaxon Templates
-   + `Console` - Cross-platform minified template for printing to console.
-        + **Note** This template contains the in-development runtime library.
-        + This version is considered the most 'cutting edge' and will contain the most complete runtime API.
+   + `Console` - Cross-platform template for printing to console.
+        + **Note** This template contains the latest in-development runtime library.
+        + This version is considered the most 'cutting edge' and will contain the most complete runtime library.
         + The graphical template is currently paused until the runtime has been ironed out more.
    + `Graphical` - Cross-platform template for windowed graphical applications.
         + This contains an early proof of concept for shared windowing between Linux and Windows.
         + The runtime is outdated and won't be updated until we support windowing on the runtime officially.
+   + `Barebones` - Cross-platform minified template for printing to console.
+     + This is added if you want to roll your own runtime library.
+     + This lacks the entire Runtime and only contains the bare template to compile.
    + `ATmega` - ARM7 ATmega embedded controller template.
         + **Note** This template is currently having build issues.
    + `Operating-System` - 32bit / 64bit template for operating system.

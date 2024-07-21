@@ -75,7 +75,14 @@ public class Jaxon
 		else if (template.equalsIgnoreCase("atmega"))
 		{
 			createTemplate("atmega");
-			String warning = "ATmega currently fails to build - this will need to be resolved";
+			String warning = "WARNING: ATmega currently fails to build - this will need to be resolved";
+			System.err.println(warning);
+			System.out.println(warning);
+		}
+		else if (template.equalsIgnoreCase("barebones"))
+		{
+			createTemplate("barebones");
+			String warning = "WARNING: You should instead use the template 'console' unless you know what you're doing";
 			System.err.println(warning);
 			System.out.println(warning);
 		}
