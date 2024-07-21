@@ -13,6 +13,7 @@ public class TestSystemAPI
 		try
 		{
 			ByteArrayInputStream output = new ByteArrayInputStream("Hello World\n".toByteArray());
+			System._system.delete("new_name");
 			System._system.createDirectory("test");
 			System._system.rename("test", "new_name");
 			System._system.write("test.txt", 0, output, true);
