@@ -1,5 +1,6 @@
 package kernel.windows;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -49,28 +50,30 @@ public class WinSystem extends System
 		return null;
 	}
 	
-	public InputStream read(String path)
+	public OutputStream read(String path)
 	{
 		return null;
 	}
 	
-	public void write(String path, int offset, OutputStream stream, boolean append)
+	public void write(String path, int offset, InputStream stream, boolean append) throws IOException
 	{
-	
+		Win32.showMessageBox("Hello", "Waddap");
+		//Win32.write(path, offset, stream, append);
 	}
+	
 	
 	@Override
 	public void print(int c)
 	{
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                      //push byte 0 (no overlap)
-		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0xFC);         //lea eax,[ebp-4] (address of result)
-		MAGIC.inline(x86.PUSH_REGISTER_EAX);                             //push eax
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x01);                      //push byte 1 (single character)
-		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0x08);         //lea eax,[ebp+8] (address of string)
-		MAGIC.inline(x86.PUSH_REGISTER_EAX);                             //push eax
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                            //push byte 0 (no overlap)
+		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0xFC);     //lea eax,[ebp-4] (address of result)
+		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x01);                            //push byte 1 (single character)
+		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0x08);     //lea eax,[ebp+8] (address of string)
+		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
 		MAGIC.inline(x86.CALL_NEAR, 0x35);
-		MAGIC.inline32(rte.DynamicRuntime._hndStdOut);          //push handle
+		MAGIC.inline32(rte.DynamicRuntime._hndStdOut);                          //push handle
 		MAGIC.inline(x86.CALL_NEAR, 0x15);
-		MAGIC.inline32(rte.DynamicRuntime._Kernel_WriteFile);   //call
+		MAGIC.inline32(rte.DynamicRuntime._Kernel_WriteFile);                   //call
 	}
 }

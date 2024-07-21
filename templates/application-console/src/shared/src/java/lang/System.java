@@ -1,5 +1,6 @@
 package java.lang;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -32,9 +33,9 @@ public abstract class System
 	
 	public abstract String[] listDirectory(String path);
 	
-	public abstract InputStream read(String path);
+	public abstract OutputStream read(String path) throws IOException;
 	
-	public abstract void write(String path, int offset, OutputStream stream, boolean append);
+	public abstract void write(String path, int offset, InputStream stream, boolean append) throws IOException;
 	
 	public abstract void print(int c);
 	

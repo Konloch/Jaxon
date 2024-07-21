@@ -49,12 +49,12 @@ public class LinSystem extends System
 		return null;
 	}
 	
-	public InputStream read(String path)
+	public OutputStream read(String path)
 	{
 		return null;
 	}
 	
-	public void write(String path, int offset, OutputStream stream, boolean append)
+	public void write(String path, int offset, InputStream stream, boolean append)
 	{
 	
 	}
