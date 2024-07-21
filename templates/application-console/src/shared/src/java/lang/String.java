@@ -75,11 +75,11 @@ public class String
 	public String concat(String str)
 	{
 		char[] newValue = new char[this.count + str.count];
-		for (int i = 0; i < this.count; i++)
-			newValue[i] = this.value[i];
+		if (this.count >= 0)
+			Arrays.copy(this.value, 0, newValue, 0, this.count);
 		
-		for (int i = 0; i < str.count; i++)
-			newValue[this.count + i] = str.value[i];
+		if (str.count >= 0)
+			Arrays.copy(str.value, 0, newValue, this.count, str.count);
 		
 		return new String(newValue);
 	}
@@ -194,6 +194,7 @@ public class String
 			return true;
 		if (!(o instanceof String))
 			return false;
+		
 		String s = (String) o;
 		
 		if (count != s.count)
@@ -218,5 +219,38 @@ public class String
 	public String toString()
 	{
 		return this;
+	}
+	
+	/**
+	 * Default as UTF-8
+	 *
+	 * @return The String represented as a UTF-8 byte array
+	 */
+	public byte[] toByteArray()
+	{
+		byte[] byteArray = new byte[count * 3];
+		int index = 0;
+		
+		for (int i = 0; i < count; i++)
+		{
+			char c = value[i];
+			if (c <= 0x7F)
+				byteArray[index++] = (byte) c;
+			else if (c <= 0x7FF)
+			{
+				byteArray[index++] = (byte) (0xC0 | (c >> 6));
+				byteArray[index++] = (byte) (0x80 | (c & 0x3F));
+			}
+			else
+			{
+				byteArray[index++] = (byte) (0xE0 | (c >> 12));
+				byteArray[index++] = (byte) (0x80 | ((c >> 6) & 0x3F));
+				byteArray[index++] = (byte) (0x80 | (c & 0x3F));
+			}
+		}
+		
+		byte[] result = new byte[index];
+		Arrays.copy(byteArray, 0, result, 0, index);
+		return result;
 	}
 }
