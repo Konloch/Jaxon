@@ -13,7 +13,7 @@ import java.io.OutputStream;
  */
 public abstract class System
 {
-	public static System _system;
+	public static System _system; //avoid using _system directly, rather use the runtime APIs that call on it
 	
 	public static Out out = new Out();
 	
