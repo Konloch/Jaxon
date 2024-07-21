@@ -153,7 +153,8 @@ public class String
 	public String substring(int start)
 	{
 		if (start < 0 || start > this.count)
-			throw new IndexOutOfBoundsException(new StringBuilder("Invalid start index: ", start));
+			throw new IndexOutOfBoundsException(new StringBuilder("Invalid start index: ")
+					.append(start));
 		
 		char[] subValue = new char[this.count - start];
 		for (int i = start; i < this.count; i++)
@@ -164,7 +165,10 @@ public class String
 	public String substring(int start, int end)
 	{
 		if (start < 0 || start > this.count || end < start || end > this.count)
-			throw new IndexOutOfBoundsException(new StringBuilder("Invalid indices: start=", start, "end=", end));
+			throw new IndexOutOfBoundsException(new StringBuilder("Invalid indices: start=")
+					.append(start)
+					.append("end=")
+					.append(end));
 		
 		char[] subValue = new char[end - start];
 		for (int i = start; i < end; i++)
@@ -176,7 +180,10 @@ public class String
 	public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)
 	{
 		if (srcBegin < 0 || srcEnd > count || srcBegin > srcEnd)
-			throw new IndexOutOfBoundsException(new StringBuilder("Invalid indices: start=", srcEnd, "end=", srcEnd));
+			throw new IndexOutOfBoundsException(new StringBuilder("Invalid indices: start=")
+					.append(srcEnd)
+					.append("end=")
+					.append(srcEnd));
 		
 		int dstIndex = dstBegin;
 		for (int i = srcBegin; i < srcEnd; i++)

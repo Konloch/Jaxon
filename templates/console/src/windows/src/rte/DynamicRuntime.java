@@ -219,8 +219,8 @@ public class DynamicRuntime
 	
 	public static void doThrow(Throwable t)
 	{
-		System.out.print(new StringBuilder("Exception thrown-message: ", t.detailMessage));
-		System.out.print(new StringBuilder("Exception thrown-frame: ", currentThrowFrame));
+		System.out.print(new StringBuilder("Exception thrown-message: ").append(t.detailMessage));
+		System.out.print(new StringBuilder("Exception thrown-frame: ").append(currentThrowFrame));
 	}
 	
 	public static void rtError()

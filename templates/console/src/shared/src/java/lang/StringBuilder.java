@@ -22,106 +22,24 @@ public class StringBuilder
 		append(a.toString());
 	}
 	
-	public StringBuilder(Object a, Object b)
-	{
-		this();
-		append(a.toString());
-		append(b.toString());
-	}
-	
-	public StringBuilder(Object a, Object b, Object c)
-	{
-		this();
-		append(a.toString());
-		append(b.toString());
-		append(c.toString());
-	}
-	
-	public StringBuilder(Object a, Object b, Object c, Object d)
-	{
-		this();
-		append(a.toString());
-		append(b.toString());
-		append(c.toString());
-		append(d.toString());
-	}
-	
 	public StringBuilder(int a)
 	{
 		this();
 		append((char) a);
 	}
 	
-	public StringBuilder(int a, int b)
+	//append an int to the end of the builder
+	public StringBuilder append(int i)
 	{
-		this();
-		append((char) a);
-		append((char) b);
+		append((char) i);
+		return this;
 	}
 	
-	public StringBuilder(int a, int b, int c)
+	//append an int to the end of the builder
+	public StringBuilder append(Object o)
 	{
-		this();
-		append((char) a);
-		append((char) b);
-		append((char) c);
-	}
-	
-	public StringBuilder(Object a, int b)
-	{
-		this();
-		append(a.toString());
-		append((char) b);
-	}
-	
-	public StringBuilder(Object a, int b, int c)
-	{
-		this();
-		append(a.toString());
-		append((char) b);
-		append((char) c);
-	}
-	
-	public StringBuilder(Object a, Object b, int c)
-	{
-		this();
-		append(a.toString());
-		append(b.toString());
-		append((char) c);
-	}
-	
-	public StringBuilder(int a, Object b, Object c)
-	{
-		this();
-		append((char) a);
-		append(b.toString());
-		append(c.toString());
-	}
-	
-	public StringBuilder(int a, int b, Object c)
-	{
-		this();
-		append((char) a);
-		append((char) b);
-		append(c.toString());
-	}
-	
-	public StringBuilder(Object a, int b, Object c, Object d)
-	{
-		this();
-		append(a.toString());
-		append((char) b);
-		append(c.toString());
-		append(d.toString());
-	}
-	
-	public StringBuilder(Object a, int b, Object c, int d)
-	{
-		this();
-		append(a.toString());
-		append((char) b);
-		append(c.toString());
-		append((char) d);
+		append(o.toString());
+		return this;
 	}
 	
 	//append a string to the end of the builder
@@ -154,7 +72,7 @@ public class StringBuilder
 			
 			//overflow check
 			if (newCapacity < 0)
-				throw new OutOfMemoryError(new StringBuilder("Out of memory: ", newCapacity));
+				throw new OutOfMemoryError(new StringBuilder("Out of memory: ").append(newCapacity));
 			
 			while (newCapacity < minCapacity)
 			{
@@ -162,7 +80,7 @@ public class StringBuilder
 				
 				//overflow check
 				if (newCapacity < 0)
-					throw new OutOfMemoryError(new StringBuilder("Out of memory: ", newCapacity));
+					throw new OutOfMemoryError("Out of memory: " + "test");
 			}
 			
 			char[] newValue = new char[newCapacity];
