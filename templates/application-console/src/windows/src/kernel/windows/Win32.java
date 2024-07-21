@@ -104,7 +104,7 @@ public class Win32
 			buffer[srcPos + i] = (byte) src.charAt(i);
 		
 		//null terminator
-		buffer[src.length()] = 0;
+		buffer[srcPos + src.length()] = 0;
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class Win32
 			throw new NullPointerException("Caption or text object is null");
 		
 		if (title.length() + message.length() + 2 > BUFFER_LENGTH)
-			throw new BufferOverflowException("Title combined with message is greater than buffer maximum length");
+			throw new BufferOverflowException("Title combined with message exceeds buffer maximum length");
 		
 		prepareBuffer(title);
 		prepareBuffer(message, title.length() + 2);
@@ -142,6 +142,20 @@ public class Win32
 		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-12] => address of text
 		MAGIC.inline(0x6A, 0x00);  // push byte 0 => parent==null
 		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+	}
+	
+	public static void print(int c)
+	{
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                            //push byte 0 (no overlap)
+		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0xFC);     //lea eax,[ebp-4] (address of result)
+		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x01);                            //push byte 1 (single character)
+		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0x08);     //lea eax,[ebp+8] (address of string)
+		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
+		MAGIC.inline(x86.CALL_NEAR, 0x35);
+		MAGIC.inline32(rte.DynamicRuntime._hndStdOut);                          //push handle
+		MAGIC.inline(x86.CALL_NEAR, 0x15);
+		MAGIC.inline32(rte.DynamicRuntime._Kernel_WriteFile);                   //call
 	}
 	
 	public static boolean createDirectory(String path)
@@ -223,17 +237,39 @@ public class Win32
 		return true;
 	}
 	
-	public static void print(int c)
+	public static boolean rename(String oldPath, String newPath)
 	{
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                            //push byte 0 (no overlap)
-		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0xFC);     //lea eax,[ebp-4] (address of result)
-		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x01);                            //push byte 1 (single character)
-		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0x08);     //lea eax,[ebp+8] (address of string)
-		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
-		MAGIC.inline(x86.CALL_NEAR, 0x35);
-		MAGIC.inline32(rte.DynamicRuntime._hndStdOut);                          //push handle
-		MAGIC.inline(x86.CALL_NEAR, 0x15);
-		MAGIC.inline32(rte.DynamicRuntime._Kernel_WriteFile);                   //call
+		int handleDLL = loadLibrary("kernel32.dll"); /*-4*/
+		int fctAddress = loadFunction(handleDLL, "MoveFileA"); /*ebp-8*/
+		int addrOldPath; /*ebp-12*/
+		int addrNewPath; /*ebp-16*/
+		
+		if (fctAddress == 0)
+			throw new RuntimeException("Failed to load MoveFileA function.");
+		
+		if (oldPath == null || newPath == null)
+			throw new NullPointerException("Old or new path is null");
+		
+		if (oldPath.length() + newPath.length() + 2 > BUFFER_LENGTH)
+			throw new BufferOverflowException("Old path combined with new path exceeds buffer maximum length");
+		
+		// load the params onto the buffer
+		prepareBuffer(oldPath);
+		prepareBuffer(newPath, oldPath.length() + 2);
+		
+		// set addresses of strings
+		addrOldPath = MAGIC.addr(buffer[oldPath.length() + 2]);
+		addrNewPath = MAGIC.addr(buffer[0]);
+		
+		// call MoveFileA
+		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-16 => address of new path
+		MAGIC.inline(0xFF, 0x75, 0xF0); // push dword [ebp-12] => address of old path
+		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+		
+		// save results to handleDLL
+		MAGIC.inline(0x89, 0x45, 0xF0);  // mov [ebp-4],eax
+		
+		// assuming that if EAX is 0, the function failed
+		return addrNewPath != 0;
 	}
 }

@@ -39,7 +39,7 @@ public class WinSystem extends System
 	
 	public boolean rename(String oldPath, String newPath)
 	{
-		return false;
+		return Win32.rename(oldPath, newPath);
 	}
 	
 	public long getSize(String path)
