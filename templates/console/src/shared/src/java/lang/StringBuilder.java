@@ -76,18 +76,16 @@ public class StringBuilder
 			
 			while (newCapacity < minCapacity)
 			{
-				newCapacity = (newCapacity + 1) * 2; //double the capacity
+				//double the capacity
+				newCapacity = (newCapacity + 1) * 2;
 				
 				//overflow check
 				if (newCapacity < 0)
-					throw new OutOfMemoryError("Out of memory: " + "test");
+					throw new OutOfMemoryError(new StringBuilder("Out of memory: ").append(newCapacity));
 			}
 			
-			char[] newValue = new char[newCapacity];
-			for (int i = 0; i < count; i++)
-				newValue[i] = value[i];
-			
-			value = newValue;
+			//expand the array and clone it
+			value = Arrays.clone(newCapacity, value);
 		}
 	}
 	
