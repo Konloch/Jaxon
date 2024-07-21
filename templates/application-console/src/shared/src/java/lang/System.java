@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
+ * Acts as the System implementation API to support cross-platform actions.
+ *  + To help keep
+ *
  * @author Konloch
  * @author S. Frenz
  * @since 7/17/2024
