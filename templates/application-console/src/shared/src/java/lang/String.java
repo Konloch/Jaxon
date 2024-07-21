@@ -43,8 +43,7 @@ public class String
 		else
 		{
 			this.value = new char[length];
-			for (int i = 0; i < value.length; i++)
-				value[i] = src[srcPos + i];
+			Arrays.copy(src, srcPos, value, 0, value.length);
 		}
 		this.length = length;
 	}
@@ -164,8 +163,7 @@ public class String
 					.append(start));
 		
 		char[] subValue = new char[this.length - start];
-		for (int i = start; i < this.length; i++)
-			subValue[i - start] = this.value[i];
+		Arrays.copy(this.value, start, subValue, 0, this.length - start);
 		return new String(subValue);
 	}
 	
@@ -177,9 +175,7 @@ public class String
 					.append(end));
 		
 		char[] subValue = new char[end - start];
-		for (int i = start; i < end; i++)
-			subValue[i - start] = this.value[i];
-		
+		Arrays.copy(this.value, start, subValue, 0, end - start);
 		return new String(subValue);
 	}
 	
