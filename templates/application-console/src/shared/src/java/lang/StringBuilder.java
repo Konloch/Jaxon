@@ -85,7 +85,7 @@ public class StringBuilder
 			}
 			
 			//expand the array and clone it
-			value = Arrays.clone(newCapacity, value);
+			value = Arrays.clone(value, 0, 0, newCapacity);
 		}
 	}
 	
