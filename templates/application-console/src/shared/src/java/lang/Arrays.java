@@ -246,7 +246,9 @@ public class Arrays
 			throw new NullPointerException("Source or destination array is null");
 		
 		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
-			throw new IndexOutOfBoundsException("Invalid array index or length");
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcPos).append(", end=")
+					.append(destPos));
 		
 		for (int i = 0; i < length; i++)
 			dest[destPos + i] = src[srcPos + i];
@@ -258,7 +260,9 @@ public class Arrays
 			throw new NullPointerException("Source or destination array is null");
 		
 		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
-			throw new IndexOutOfBoundsException("Invalid array index or length");
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcPos).append(", end=")
+					.append(destPos));
 		
 		for (int i = 0; i < length; i++)
 			dest[destPos + i] = src[srcPos + i];
@@ -270,7 +274,9 @@ public class Arrays
 			throw new NullPointerException("Source or destination array is null");
 		
 		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
-			throw new IndexOutOfBoundsException("Invalid array index or length");
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcPos).append(", end=")
+					.append(destPos));
 		
 		for (int i = 0; i < length; i++)
 			dest[destPos + i] = src[srcPos + i];
@@ -282,7 +288,9 @@ public class Arrays
 			throw new NullPointerException("Source or destination array is null");
 		
 		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
-			throw new IndexOutOfBoundsException("Invalid array index or length");
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcPos).append(", end=")
+					.append(destPos));
 		
 		for (int i = 0; i < length; i++)
 			dest[destPos + i] = src[srcPos + i];
@@ -294,7 +302,9 @@ public class Arrays
 			throw new NullPointerException("Source or destination array is null");
 		
 		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
-			throw new IndexOutOfBoundsException("Invalid array index or length");
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcPos).append(", end=")
+					.append(destPos));
 		
 		for (int i = 0; i < length; i++)
 			dest[destPos + i] = src[srcPos + i];
@@ -306,7 +316,9 @@ public class Arrays
 			throw new NullPointerException("Source or destination array is null");
 		
 		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
-			throw new IndexOutOfBoundsException("Invalid array index or length");
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcPos).append(", end=")
+					.append(destPos));
 		
 		for (int i = 0; i < length; i++)
 			dest[destPos + i] = src[srcPos + i];
@@ -318,7 +330,9 @@ public class Arrays
 			throw new NullPointerException("Source or destination array is null");
 		
 		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
-			throw new IndexOutOfBoundsException("Invalid array index or length");
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcPos).append(", end=")
+					.append(destPos));
 		
 		for (int i = 0; i < length; i++)
 			dest[destPos + i] = src[srcPos + i];
@@ -330,7 +344,9 @@ public class Arrays
 			throw new NullPointerException("Source or destination array is null");
 		
 		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
-			throw new IndexOutOfBoundsException("Invalid array index or length");
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcPos).append(", end=")
+					.append(destPos));
 		
 		for (int i = 0; i < length; i++)
 			dest[destPos + i] = src[srcPos + i];
@@ -342,7 +358,9 @@ public class Arrays
 			throw new NullPointerException("Source or destination array is null");
 		
 		if (srcPos < 0 || destPos < 0 || length < 0 || srcPos + length > src.length || destPos + length > dest.length)
-			throw new IndexOutOfBoundsException("Invalid array index or length");
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcPos).append(", end=")
+					.append(destPos));
 		
 		for (int i = 0; i < length; i++)
 			dest[destPos + i] = src[srcPos + i];

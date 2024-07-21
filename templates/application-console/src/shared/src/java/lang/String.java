@@ -165,9 +165,8 @@ public class String
 	public String substring(int start, int end)
 	{
 		if (start < 0 || start > this.count || end < start || end > this.count)
-			throw new IndexOutOfBoundsException(new StringBuilder("Invalid indices: start=")
-					.append(start)
-					.append("end=")
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(start).append(", end=")
 					.append(end));
 		
 		char[] subValue = new char[end - start];
@@ -180,9 +179,8 @@ public class String
 	public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)
 	{
 		if (srcBegin < 0 || srcEnd > count || srcBegin > srcEnd)
-			throw new IndexOutOfBoundsException(new StringBuilder("Invalid indices: start=")
-					.append(srcEnd)
-					.append("end=")
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
+					.append(srcBegin).append(", end=")
 					.append(srcEnd));
 		
 		int dstIndex = dstBegin;
