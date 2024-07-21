@@ -8,6 +8,6 @@ public class TestSystemAPI
 {
 	public static void testFileSystem()
 	{
-		System._system.write("test.txt", 0, );
+		//System._system.write("test.txt", 0, );
 	}
 }
