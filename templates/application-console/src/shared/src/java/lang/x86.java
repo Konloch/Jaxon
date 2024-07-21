@@ -27,7 +27,7 @@ public class x86
 	public static final int IMMEDIATE_BYTE = 0x6A;
 	public static final int IMMEDIATE_WORD = 0x68;
 	public static final int IMMEDIATE_DWORD = 0xB8;
-
+	
 	//Register instructions
 	public static final int PUSH_REGISTER = 0x57;
 	public static final int POP_REGISTER = 0x5F;

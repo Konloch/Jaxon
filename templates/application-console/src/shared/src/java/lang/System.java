@@ -5,7 +5,6 @@ import java.io.OutputStream;
 
 /**
  * Acts as the System implementation API to support cross-platform actions.
- *  + To help keep
  *
  * @author Konloch
  * @author S. Frenz
@@ -105,7 +104,7 @@ public abstract class System
 			int i;
 			
 			for (i = 0; i < bzStr.length && bzStr[i] != 0; i++)
-				printChar((int) bzStr[i]);
+				printChar(bzStr[i]);
 		}
 		
 		public void print(String s)
@@ -113,7 +112,7 @@ public abstract class System
 			int i;
 			
 			for (i = 0; i < s.count; i++)
-				printChar((int) s.value[i]);
+				printChar(s.value[i]);
 		}
 		
 		public void print(StringBuilder s)
