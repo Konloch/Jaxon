@@ -17,14 +17,6 @@ public class Win32
 	 */
 	private static final int BUFFER_LENGTH = 128;
 	
-	
-	// Constants for file access, creation disposition, and attributes
-	private static final int GENERIC_WRITE = 0x40000000;
-	private static final int OPEN_EXISTING = 3;
-	private static final int CREATE_ALWAYS = 2;
-	private static final int FILE_ATTRIBUTE_NORMAL = 0x80;
-	private static final int INVALID_HANDLE_VALUE = -1;
-	
 	/**
 	 * Method to load a given DLL
 	 *
@@ -100,7 +92,7 @@ public class Win32
 	/**
 	 * Prepares the buffer for a string by copying it and adding a null terminator.
 	 *
-	 * @param src the string to prepare
+	 * @param src    the string to prepare
 	 * @param srcPos the source position offset
 	 */
 	private static void prepareBuffer(String src, int srcPos)
@@ -118,7 +110,7 @@ public class Win32
 	/**
 	 * Method to show a message box with the given caption and text
 	 *
-	 * @param title the caption of the window
+	 * @param title   the caption of the window
 	 * @param message the text in the window
 	 */
 	public static void showMessageBox(String title, String message)
@@ -128,12 +120,12 @@ public class Win32
 		int addrMessage; /*ebp-12*/
 		int addrTitle; /*ebp-16*/
 		
-		if(fctAddress == 0)
+		if (fctAddress == 0)
 			return;
 		
 		if (title == null || message == null)
 			throw new NullPointerException("Caption or text object is null");
-			
+		
 		if (title.length() + message.length() + 2 > BUFFER_LENGTH)
 			throw new BufferOverflowException("Title combined with message is greater than buffer maximum length");
 		
@@ -150,5 +142,32 @@ public class Win32
 		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-12] => address of text
 		MAGIC.inline(0x6A, 0x00);  // push byte 0 => parent==null
 		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+	}
+	
+	public static boolean createDirectory(String path)
+	{
+		int kernel32Handle = loadLibrary("kernel32.dll"); /*-4*/
+		int createDirectoryAddress = loadFunction(kernel32Handle, "CreateDirectoryA"); /*ebp-8*/
+		int addrPath; /*ebp-12*/
+		
+		if (createDirectoryAddress == 0)
+			throw new RuntimeException("Failed to load CreateDirectoryA function.");
+		
+		if (path == null)
+			throw new NullPointerException("Path is null.");
+		
+		if (path.length() + 1 > BUFFER_LENGTH)
+			throw new BufferOverflowException("eek");
+		
+		//prepare the buffer with the path
+		prepareBuffer(path);
+		
+		addrPath = MAGIC.addr(buffer[0]);
+		
+		MAGIC.inline(0x6A, 0x00); //PUSH lpSecurityAttributes (NULL)
+		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+		
+		return true;
 	}
 }

@@ -1,8 +1,6 @@
 package kernel.windows;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * @author Konloch
@@ -32,6 +30,7 @@ public class WinSystem extends System
 	
 	public boolean createDirectory(String path)
 	{
+		Win32.createDirectory(path);
 		return false;
 	}
 	
@@ -52,15 +51,16 @@ public class WinSystem extends System
 	
 	public OutputStream read(String path)
 	{
-		return null;
+		//TODO temporarily just read into a ByteArrayInputStream
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(128);
+		
+		return outputStream;
 	}
 	
 	public void write(String path, int offset, InputStream stream, boolean append) throws IOException
 	{
-		Win32.showMessageBox("Hello", "Waddap");
 		//Win32.write(path, offset, stream, append);
 	}
-	
 	
 	@Override
 	public void print(int c)
