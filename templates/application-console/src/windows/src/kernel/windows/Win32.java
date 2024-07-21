@@ -171,6 +171,58 @@ public class Win32
 		return true;
 	}
 	
+	public static boolean deleteFile(String path)
+	{
+		int kernel32Handle = loadLibrary("kernel32.dll"); /*-4*/
+		int createDirectoryAddress = loadFunction(kernel32Handle, "DeleteFileA"); /*ebp-8*/
+		int addrPath; /*ebp-12*/
+		
+		if (createDirectoryAddress == 0)
+			throw new RuntimeException("Failed to load CreateDirectoryA function.");
+		
+		if (path == null)
+			throw new NullPointerException("Path is null.");
+		
+		if (path.length() + 1 > BUFFER_LENGTH)
+			throw new BufferOverflowException("eek");
+		
+		//prepare the buffer with the path
+		prepareBuffer(path);
+		
+		addrPath = MAGIC.addr(buffer[0]);
+		
+		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+		
+		return true;
+	}
+	
+	public static boolean deleteDirectory(String path)
+	{
+		int kernel32Handle = loadLibrary("kernel32.dll"); /*-4*/
+		int createDirectoryAddress = loadFunction(kernel32Handle, "RemoveDirectoryA"); /*ebp-8*/
+		int addrPath; /*ebp-12*/
+		
+		if (createDirectoryAddress == 0)
+			throw new RuntimeException("Failed to load CreateDirectoryA function.");
+		
+		if (path == null)
+			throw new NullPointerException("Path is null.");
+		
+		if (path.length() + 1 > BUFFER_LENGTH)
+			throw new BufferOverflowException("eek");
+		
+		//prepare the buffer with the path
+		prepareBuffer(path);
+		
+		addrPath = MAGIC.addr(buffer[0]);
+		
+		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+		
+		return true;
+	}
+	
 	public static void print(int c)
 	{
 		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                            //push byte 0 (no overlap)

@@ -25,7 +25,10 @@ public class WinSystem extends System
 	
 	public boolean delete(String path)
 	{
-		return false;
+		if(isDirectory(path))
+			Win32.deleteDirectory(path);
+		else
+			Win32.deleteFile(path);
 	}
 	
 	public boolean createDirectory(String path)
