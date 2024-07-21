@@ -8,7 +8,12 @@ public abstract class InputStream
 {
 	public abstract int read() throws IOException;
 	
-	public abstract int read(byte[] b, int off, int len) throws IOException;
+	public abstract int read(byte[] dest, int destPos, int length) throws IOException;
+	
+	public int read(byte[] dest) throws IOException
+	{
+		return read(dest, 0, dest.length);
+	}
 	
 	public abstract long skip(long n) throws IOException;
 	
