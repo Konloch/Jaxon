@@ -121,7 +121,7 @@ public class Win32
 		int addrTitle; /*ebp-16*/
 		
 		if (fctAddress == 0)
-			return;
+			throw new RuntimeException("Failed to load MessageBoxA function.");
 		
 		if (title == null || message == null)
 			throw new NullPointerException("Caption or text object is null");
