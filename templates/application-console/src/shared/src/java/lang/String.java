@@ -87,9 +87,10 @@ public class String
 	public char charAt(int index)
 	{
 		if (index < 0 || index >= this.count)
-			return 0;
-		//TODO re-add when exceptions are implemented
-		//throw new IOException("Index: " + index + ", Length: " + this.count);
+			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: ")
+					.append(index)
+					.append(", Length: ")
+					.append(this.count));
 		
 		return this.value[index];
 	}
