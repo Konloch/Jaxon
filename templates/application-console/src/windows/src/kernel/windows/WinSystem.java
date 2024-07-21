@@ -4,7 +4,7 @@ import java.io.*;
 
 /**
  * @author Konloch
- * @author S. Frenz
+ * @since 7/17/2024
  */
 public class WinSystem extends System
 {

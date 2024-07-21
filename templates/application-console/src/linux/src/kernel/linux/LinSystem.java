@@ -5,7 +5,7 @@ import java.io.OutputStream;
 
 /**
  * @author Konloch
- * @author S. Frenz
+ * @since 7/17/2024
  */
 public class LinSystem extends System
 {
