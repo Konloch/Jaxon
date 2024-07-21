@@ -111,7 +111,7 @@ public abstract class System
 		{
 			int i;
 			
-			for (i = 0; i < s.length; i++)
+			for (i = 0; i < s.count; i++)
 				printChar(s.value[i]);
 		}
 		
