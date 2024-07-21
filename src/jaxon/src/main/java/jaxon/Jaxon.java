@@ -1,6 +1,6 @@
 package jaxon;
 
-import jaxon.build.Build;
+import jaxon.build.BuildUtil;
 import jaxon.jdk.JDKUtil;
 import jaxon.sjc.SJCUtil;
 import jaxon.templates.TemplateUtil;
@@ -38,7 +38,7 @@ public class Jaxon
 			SJCUtil.sjcCLI(trimmedArgs);
 		}
 		else if (command.equalsIgnoreCase("build"))
-			Build.buildCLI(args);
+			BuildUtil.buildCLI(args);
 		else if (command.equalsIgnoreCase("template"))
 			TemplateUtil.templateCLI(args);
 		else if (command.equalsIgnoreCase("zip"))

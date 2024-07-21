@@ -10,7 +10,7 @@ import java.nio.file.Files;
  * @author Konloch
  * @since 7/21/2024
  */
-public class Build
+public class BuildUtil
 {
 	public static String buildName = "build";
 	
@@ -33,7 +33,7 @@ public class Build
 		else if (buildScript.equalsIgnoreCase("win-app"))
 		{
 			setupEnv("native");
-			sjc(merge(new String[]{"-s", "512k", "-a", "4198912", "-l", "-o", "boot", "-O", "#win"}, dirs));
+			SJCUtil.sjcCLI(merge(new String[]{"-s", "512k", "-a", "4198912", "-l", "-o", "boot", "-O", "#win"}, dirs));
 			exportBuild("OUT_WIN.EXE", "build/windows/" + buildName + ".exe");
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
