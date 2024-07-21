@@ -131,5 +131,11 @@ public abstract class System
 			print(s);
 			printChar(10);
 		}
+		
+		public void println(StringBuilder sb)
+		{
+			print(sb);
+			printChar(10);
+		}
 	}
 }
