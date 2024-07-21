@@ -1,11 +1,48 @@
 package java.lang;
 
 /**
+ * @author Konloch
  * @author S. Frenz
+ * @since 7/21/2024
  */
 public class Math
 {
 	public final static double PI = 3.141592653589793238;
+	
+	public static byte min(byte a, byte b)
+	{
+		return (a <= b) ? a : b;
+	}
+	
+	public static short min(short a, short b)
+	{
+		return (a <= b) ? a : b;
+	}
+	
+	public static char min(char a, char b)
+	{
+		return (a <= b) ? a : b;
+	}
+	
+	public static int min(int a, int b)
+	{
+		return (a <= b) ? a : b;
+	}
+	
+	public static long min(long a, long b)
+	{
+		return (a <= b) ? a : b;
+	}
+	
+	public static double min(double a, double b)
+	{
+		return (a <= b) ? a : b;
+	}
+	
+	public static float min(float a, float b)
+	{
+		return (a <= b) ? a : b;
+	}
 	
 	public static byte max(byte a, byte b)
 	{
