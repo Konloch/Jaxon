@@ -104,6 +104,90 @@ public class Arrays
 		return newValue;
 	}
 	
+	public static boolean[] merge(boolean[] partA, boolean[] partB)
+	{
+		boolean[] array = new boolean[partA.length + partB.length];
+		
+		int index = 0;
+		for (boolean arg : partA)
+			array[index++] = arg;
+		
+		for (boolean dir : partB)
+			array[index++] = dir;
+		
+		return array;
+	}
+	
+	public static byte[] merge(byte[] partA, byte[] partB)
+	{
+		byte[] array = new byte[partA.length + partB.length];
+		
+		int index = 0;
+		for (byte arg : partA)
+			array[index++] = arg;
+		
+		for (byte dir : partB)
+			array[index++] = dir;
+		
+		return array;
+	}
+	
+	public static short[] merge(short[] partA, short[] partB)
+	{
+		short[] array = new short[partA.length + partB.length];
+		
+		int index = 0;
+		for (short arg : partA)
+			array[index++] = arg;
+		
+		for (short dir : partB)
+			array[index++] = dir;
+		
+		return array;
+	}
+	
+	public static char[] merge(char[] partA, char[] partB)
+	{
+		char[] array = new char[partA.length + partB.length];
+		
+		int index = 0;
+		for (char arg : partA)
+			array[index++] = arg;
+		
+		for (char dir : partB)
+			array[index++] = dir;
+		
+		return array;
+	}
+	
+	public static int[] merge(int[] partA, int[] partB)
+	{
+		int[] array = new int[partA.length + partB.length];
+		
+		int index = 0;
+		for (int arg : partA)
+			array[index++] = arg;
+		
+		for (int dir : partB)
+			array[index++] = dir;
+		
+		return array;
+	}
+	
+	public static long[] merge(long[] partA, long[] partB)
+	{
+		long[] array = new long[partA.length + partB.length];
+		
+		int index = 0;
+		for (long arg : partA)
+			array[index++] = arg;
+		
+		for (long dir : partB)
+			array[index++] = dir;
+		
+		return array;
+	}
+	
 	public static Object[] merge(Object[] partA, Object[] partB)
 	{
 		Object[] array = new Object[partA.length + partB.length];
