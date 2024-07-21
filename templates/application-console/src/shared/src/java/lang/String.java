@@ -7,53 +7,59 @@ package java.lang;
 public class String
 {
 	public char[] value;
-	public int count;
+	public int length;
 	
 	public String()
 	{
 	
 	}
 	
-	public String(byte[] value)
+	public String(byte[] src)
 	{
-		this.count = value.length;
-		this.value = new char[count];
+		this.length = src.length;
+		this.value = new char[length];
 		
 		//convert byte to char assuming ASCII
-		for (int i = 0; i < count; i++)
-			this.value[i] = (char) (value[i] & 0xFF);
+		for (int i = 0; i < length; i++)
+			this.value[i] = (char) (src[i] & 0xFF);
 	}
 	
-	public String(char[] value)
+	public String(char[] src)
 	{
-		this.value = value;
-		count = value.length;
+		this.value = src;
+		length = src.length;
 	}
 	
-	public String(char[] value, int length)
+	public String(char[] src, int length)
 	{
-		this.value = value;
-		count = length;
+		this.value = src;
+		this.length = length;
 	}
 	
-	public String(char[] value, int start, int length)
+	public String(char[] src, int srcPos, int length)
 	{
-		//TODO implement start
-		this.value = value;
-		count = length;
+		if(srcPos == 0)
+			this.value = src;
+		else
+		{
+			this.value = new char[length];
+			for (int i = 0; i < value.length; i++)
+				value[i] = src[srcPos + i];
+		}
+		this.length = length;
 	}
 	
 	public int length()
 	{
-		return count;
+		return length;
 	}
 	
 	public boolean startsWith(String prefix)
 	{
-		if (prefix.count > this.count)
+		if (prefix.length > this.length)
 			return false;
 		
-		for (int i = 0; i < prefix.count; i++)
+		for (int i = 0; i < prefix.length; i++)
 			if (this.value[i] != prefix.value[i])
 				return false;
 		
@@ -62,11 +68,11 @@ public class String
 	
 	public boolean endsWith(String suffix)
 	{
-		if (suffix.count > this.count)
+		if (suffix.length > this.length)
 			return false;
 		
-		for (int i = 0; i < suffix.count; i++)
-			if (this.value[this.count - suffix.count + i] != suffix.value[i])
+		for (int i = 0; i < suffix.length; i++)
+			if (this.value[this.length - suffix.length + i] != suffix.value[i])
 				return false;
 		
 		return true;
@@ -74,40 +80,40 @@ public class String
 	
 	public String concat(String str)
 	{
-		char[] newValue = new char[this.count + str.count];
-		if (this.count >= 0)
-			Arrays.copy(this.value, 0, newValue, 0, this.count);
+		char[] newValue = new char[this.length + str.length];
+		if (this.length >= 0)
+			Arrays.copy(this.value, 0, newValue, 0, this.length);
 		
-		if (str.count >= 0)
-			Arrays.copy(str.value, 0, newValue, this.count, str.count);
+		if (str.length >= 0)
+			Arrays.copy(str.value, 0, newValue, this.length, str.length);
 		
 		return new String(newValue);
 	}
 	
 	public char charAt(int index)
 	{
-		if (index < 0 || index >= this.count)
+		if (index < 0 || index >= this.length)
 			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: ")
 					.append(index)
 					.append(", Length: ")
-					.append(this.count));
+					.append(this.length));
 		
 		return this.value[index];
 	}
 	
 	public int indexOf(String str)
 	{
-		if (str.count > this.count)
+		if (str.length > this.length)
 			return -1;
 		
-		for (int i = 0; i <= this.count - str.count; i++)
+		for (int i = 0; i <= this.length - str.length; i++)
 		{
 			int j;
-			for (j = 0; j < str.count; j++)
+			for (j = 0; j < str.length; j++)
 				if (this.value[i + j] != str.value[j])
 					break;
 			
-			if (j == str.count)
+			if (j == str.length)
 				return i;
 		}
 		
@@ -116,7 +122,7 @@ public class String
 	
 	public int indexOf(char ch)
 	{
-		for (int i = 0; i < this.count; i++)
+		for (int i = 0; i < this.length; i++)
 			if (this.value[i] == ch)
 				return i;
 		
@@ -125,17 +131,17 @@ public class String
 	
 	public int lastIndexOf(String str)
 	{
-		if (str.count > this.count)
+		if (str.length > this.length)
 			return -1;
 		
-		for (int i = this.count - str.count; i >= 0; i--)
+		for (int i = this.length - str.length; i >= 0; i--)
 		{
 			int j;
-			for (j = 0; j < str.count; j++)
+			for (j = 0; j < str.length; j++)
 				if (this.value[i + j] != str.value[j])
 					break;
 			
-			if (j == str.count)
+			if (j == str.length)
 				return i;
 		}
 		
@@ -144,7 +150,7 @@ public class String
 	
 	public int lastIndexOf(char ch)
 	{
-		for (int i = this.count - 1; i >= 0; i--)
+		for (int i = this.length - 1; i >= 0; i--)
 			if (this.value[i] == ch)
 				return i;
 		
@@ -153,19 +159,19 @@ public class String
 	
 	public String substring(int start)
 	{
-		if (start < 0 || start > this.count)
+		if (start < 0 || start > this.length)
 			throw new IndexOutOfBoundsException(new StringBuilder("Invalid start index: ")
 					.append(start));
 		
-		char[] subValue = new char[this.count - start];
-		for (int i = start; i < this.count; i++)
+		char[] subValue = new char[this.length - start];
+		for (int i = start; i < this.length; i++)
 			subValue[i - start] = this.value[i];
 		return new String(subValue);
 	}
 	
 	public String substring(int start, int end)
 	{
-		if (start < 0 || start > this.count || end < start || end > this.count)
+		if (start < 0 || start > this.length || end < start || end > this.length)
 			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
 					.append(start).append(", end=")
 					.append(end));
@@ -179,7 +185,7 @@ public class String
 	
 	public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin)
 	{
-		if (srcBegin < 0 || srcEnd > count || srcBegin > srcEnd)
+		if (srcBegin < 0 || srcEnd > length || srcBegin > srcEnd)
 			throw new IndexOutOfBoundsException(new StringBuilder("Index Out Of Bounds: start=")
 					.append(srcBegin).append(", end=")
 					.append(srcEnd));
@@ -198,10 +204,10 @@ public class String
 		
 		String s = (String) o;
 		
-		if (count != s.count)
+		if (length != s.length)
 			return false;
 		
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < length; i++)
 			if (value[i] != s.value[i])
 				return false;
 		
@@ -211,8 +217,8 @@ public class String
 	public int hashCode()
 	{
 		int result = 17;
-		result = 31 * result + count;
-		for (int i = 0; i < count; i++)
+		result = 31 * result + length;
+		for (int i = 0; i < length; i++)
 			result = 31 * result + value[i];
 		return result;
 	}
@@ -229,10 +235,10 @@ public class String
 	 */
 	public byte[] toByteArray()
 	{
-		byte[] byteArray = new byte[count * 3];
+		byte[] byteArray = new byte[length * 3];
 		int index = 0;
 		
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < length; i++)
 		{
 			char c = value[i];
 			if (c <= 0x7F)
