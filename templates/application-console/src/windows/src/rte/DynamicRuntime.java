@@ -26,12 +26,13 @@ public class DynamicRuntime
 	
 	public final static int _Shell_CommandLineToArgvW = MAGIC.imageBase - 512 + 72; //0x0401048;
 	
-	public static int objCnt;
-	
 	private final static int MEMBLOCK = 1024 * 1024; //1 MB per block
 	private final static int BLOCKMAX = 64 * 1024;   //allocate objects up to 64 KB in memblock
-	private static int nextFreeAddr, memFree;
 	
+	private static int nextFreeAddr;
+	private static int memFree;
+	
+	public static int objCnt;
 	public static int currentThrowFrame;
 	
 	public static Object newInstance(int scalarSize, int relocEntries, SClassDesc type)
@@ -39,14 +40,14 @@ public class DynamicRuntime
 		int addr, rs, size;
 		Object me;
 		
-		//get informations
+		//get information
 		rs = relocEntries * MAGIC.ptrSize;
 		scalarSize = (scalarSize + MAGIC.ptrSize - 1) & ~(MAGIC.ptrSize - 1);
 		size = rs + scalarSize;
 		if (size > BLOCKMAX)
 			addr = allocMem(size); //allocate special block
-		else
-		{ //allocate inside the pool
+		else //allocate inside the pool
+		{
 			if (size > memFree)
 			{
 				nextFreeAddr = allocMem(MEMBLOCK);
@@ -56,6 +57,7 @@ public class DynamicRuntime
 			memFree -= size;
 			nextFreeAddr += size;
 		}
+		
 		//prepare object
 		me = MAGIC.cast2Obj(addr + rs); //place object
 		me._r_type = type; //set type
@@ -88,10 +90,12 @@ public class DynamicRuntime
 		
 		scS = MAGIC.getInstScalarSize("SArray");
 		rlE = MAGIC.getInstRelocEntries("SArray");
+		
 		if (arrDim > 1 || entrySize < 0)
 			rlE += length; //objects => rlE will become bigger
 		else
 			scS += length * entrySize; //entrySize>0 => scS will become bigger
+		
 		me = (SArray) newInstance(scS, rlE, MAGIC.clssDesc("SArray"));
 		me.length = length;
 		me._r_dim = arrDim;
@@ -104,16 +108,16 @@ public class DynamicRuntime
 	{
 		int i;
 		
-		if (curLevel + 1 < destLevel)
-		{ //step down one level
+		if (curLevel + 1 < destLevel) //step down one level
+		{
 			curLevel++;
 			for (i = 0; i < parent.length; i++)
 			{
 				newMultArray((SArray[]) ((Object) parent[i]), curLevel, destLevel, length, arrDim, entrySize, stdType, unitType);
 			}
 		}
-		else
-		{ //create the new entries
+		else //create the new entries
+		{
 			destLevel = arrDim - curLevel;
 			for (i = 0; i < parent.length; i++)
 			{
@@ -131,6 +135,7 @@ public class DynamicRuntime
 			return asCast; //null matches all
 			//null is not an instance
 		}
+		
 		check = o._r_type;
 		while (check != null)
 		{
@@ -140,6 +145,7 @@ public class DynamicRuntime
 		}
 		if (asCast)
 			rtError();
+		
 		return false;
 	}
 	
@@ -159,12 +165,14 @@ public class DynamicRuntime
 			return asCast; //null matches all
 			//null is not an instance
 		}
+		
 		if (o._r_type != MAGIC.clssDesc("SArray"))
 		{ //will never match independently of arrDim
 			if (asCast)
 				rtError();
 			return false;
 		}
+		
 		if (unitType == MAGIC.clssDesc("SArray"))
 		{ //special test for arrays
 			if (o._r_unitType == MAGIC.clssDesc("SArray"))
@@ -175,6 +183,7 @@ public class DynamicRuntime
 				rtError();
 			return false;
 		}
+		
 		//no specials, check arrDim and check for standard type
 		if (o._r_stdType != stdType || o._r_dim < arrDim)
 		{ //check standard types and array dimension
@@ -184,6 +193,7 @@ public class DynamicRuntime
 		}
 		if (stdType != 0)
 			return true; //array of standard-type
+		
 		//array of objects, make deep-check for class type
 		clss = (SClassDesc) o._r_unitType;
 		while (clss != null)
@@ -207,13 +217,9 @@ public class DynamicRuntime
 		else
 		{
 			if (dest._r_unitType._r_type == MAGIC.clssDesc("SClassDesc"))
-			{
-				isInstance(newEntry, (SClassDesc) dest._r_unitType, true); //check instance
-			}
+				isInstance(newEntry, (SClassDesc) dest._r_unitType, true);      //check instance
 			else
-			{
 				isImplementation(newEntry, (SIntfDesc) dest._r_unitType, true); //check implementation
-			}
 		}
 	}
 	
@@ -225,7 +231,7 @@ public class DynamicRuntime
 	
 	public static void rtError()
 	{
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0xFF);                  //push byte -1 (error code)
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0xFF);         //push byte -1 (error code)
 		MAGIC.inline(x86.CALL_NEAR, 0x15);
 		MAGIC.inline32(_Kernel_ExitProcess);                //call
 	}
