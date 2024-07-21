@@ -1,6 +1,7 @@
 package app;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 
 /**
  * @author Konloch
@@ -13,9 +14,14 @@ public class TestSystemAPI
 		try
 		{
 			ByteArrayInputStream output = new ByteArrayInputStream("Hello World\n".toByteArray());
-			System._system.delete("new_name");
-			System._system.createDirectory("test");
-			System._system.rename("test", "new_name");
+			
+			File newNameFolder = new File("new_name");
+			newNameFolder.delete();
+			
+			File testFolder = new File("test");
+			testFolder.mkdir();
+			testFolder.rename("new_name");
+			
 			System._system.write("test.txt", 0, output, true);
 		}
 		catch (Exception e)
