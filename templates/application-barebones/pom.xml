@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.konloch</groupId>
-	<artifactId>jaxon-console-application</artifactId>
+	<artifactId>jaxon-barebones-application</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
