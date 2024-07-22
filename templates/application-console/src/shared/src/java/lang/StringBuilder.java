@@ -25,13 +25,13 @@ public class StringBuilder
 	public StringBuilder(int a)
 	{
 		this();
-		append((char) a);
+		append(a);
 	}
 	
 	//append an int to the end of the builder
 	public StringBuilder append(int i)
 	{
-		append((char) i);
+		append(String.valueOf(i));
 		return this;
 	}
 	
