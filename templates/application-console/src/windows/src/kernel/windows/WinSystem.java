@@ -13,16 +13,19 @@ public class WinSystem extends System
 		platform = "Windows";
 	}
 	
+	@Override
 	public boolean isDirectory(String path)
 	{
 		return false;
 	}
 	
+	@Override
 	public boolean doesExist(String path)
 	{
 		return false;
 	}
 	
+	@Override
 	public boolean delete(String path)
 	{
 		/*if(isDirectory(path))
@@ -36,27 +39,32 @@ public class WinSystem extends System
 		return deleteDirectory || deleteFile;
 	}
 	
+	@Override
 	public boolean createDirectory(String path)
 	{
 		Win32.createDirectory(path);
 		return false;
 	}
 	
+	@Override
 	public boolean rename(String oldPath, String newPath)
 	{
 		return Win32.rename(oldPath, newPath);
 	}
 	
+	@Override
 	public long getSize(String path)
 	{
 		return 0;
 	}
 	
+	@Override
 	public String[] listDirectory(String path)
 	{
 		return null;
 	}
 	
+	@Override
 	public OutputStream read(String path)
 	{
 		//TODO temporarily just read into a ByteArrayInputStream
@@ -65,6 +73,7 @@ public class WinSystem extends System
 		return outputStream;
 	}
 	
+	@Override
 	public void write(String path, int offset, InputStream stream, boolean append) throws IOException
 	{
 		//Win32.write(path, offset, stream, append);
