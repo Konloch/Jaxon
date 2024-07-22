@@ -191,6 +191,54 @@ public class String
 			dst[dstIndex++] = value[i];
 	}
 	
+	public static String valueOf(boolean value)
+	{
+		return value ? "true" : "false";
+	}
+	
+	public static String valueOf(byte value)
+	{
+		return valueOf((long) value);
+	}
+	
+	public static String valueOf(short value)
+	{
+		return valueOf((long) value);
+	}
+	
+	public static String valueOf(int value)
+	{
+		return valueOf((long) value);
+	}
+	
+	public static String valueOf(long value)
+	{
+		boolean isNegative = value < 0;
+		
+		if (isNegative)
+			value = -value;
+		
+		if (value == 0)
+			return "0";
+		
+		StringBuilder temp = new StringBuilder();
+		while (value > 0)
+		{
+			temp.append((char) ('0' + (value % 10)));
+			value /= 10;
+		}
+		
+		if (isNegative)
+			temp.append('-');
+		
+		return temp.toString();
+	}
+	
+	public static String valueOf(Object value)
+	{
+		return value.toString();
+	}
+	
 	public boolean equals(Object o)
 	{
 		if (this == o)
