@@ -33,7 +33,6 @@ public class JDKUtil
 			File newJava = new File(newJDK, "bin/java");
 			File newRTJar = new File(newJDK, "jre/lib/rt.jar");
 			
-			
 			//Notes on why we use javac and don't make java:
 			//intellij lets "javaC" version response format work even though it uses "java" for it, looks like it just searches for "major.minor version so "1.8"
 			//when this breaks, just clone the tools/fake-javac and add java.exe with the expected format
