@@ -116,6 +116,9 @@ public class BuildUtil
 	
 	public static void export(String localPath, File exportPath)
 	{
+		File parent = exportPath.getParentFile();
+		if(!parent.exists())
+			parent.mkdirs();
 		try (InputStream in = Jaxon.class.getResourceAsStream(localPath); OutputStream out = new FileOutputStream(exportPath))
 		{
 			byte[] buffer = new byte[1024];
