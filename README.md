@@ -1,5 +1,5 @@
 # Jaxon
-Jaxon is a powerful SDK built on top of SJC, a beautiful compiler that compiles a tailored subset of Java directly to native code, eliminating the need for bytecode and virtual machines.
+Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compiles a tailored subset of Java directly to native code, eliminating the need for bytecode and virtual machines.
 
 ## Getting Started
 + [First start by downloading Jaxon]()
@@ -12,6 +12,13 @@ Jaxon is a powerful SDK built on top of SJC, a beautiful compiler that compiles 
 + Once you've decided, create a new template by running `jaxon template console` such as `jaxon template console`
   + This for example will create the cross-platform template for a console program.
   + Use the build scripts to build binaries & read them to write your own.
+  + At some point you're going to want to get Intellij working, to do that just run the following command
+    + `jaxon jdk jdk-1.8`
+    + Then set it as the SDK loaded from folder 'jdk-1.8' in Intellij.
+      + F4 for Module Settings
+      + Project > SDK > Edit
+      + Click the Plus > Add JDK...
+      + Paste in the path sent from the Jaxon CLI
 
 ## Using Jaxon Templates
 + The templates all contain the basics to get you running (`Console` shows hello world, `Graphical` shows windowing & image drawing)
@@ -45,6 +52,13 @@ Jaxon is a powerful SDK built on top of SJC, a beautiful compiler that compiles 
 + `build` - Build using a specific profile
   + Available Profiles: (`win-exe`, `win-app`, `lin`, `atmega`, `os-32`, `os-64`)
   + Example Command: `jaxon build win-exe src/shared/src src/windows/src`
++ `jdk` - Create a Jaxon-Blank-SDK that will resolve all issues with Jaxon template projects.
+  + Example Command: `jaxon jdk jdk-1.8`
+  + Example Usage: **Load the SDK Into Intellij:**
+      + F4 for Module Settings
+      + Project > SDK > Edit
+      + Click the Plus > Add JDK...
+      + Paste in the path sent from the Jaxon CLI
 + `sjc` - Access underlying SJC command-line
   + If you end up needing to use this, open an issue on Github letting us know what command you used (We'll add it in the next update)
 + `zip` - Zip util for packaging Jaxon templates
@@ -67,18 +81,16 @@ Jaxon is a powerful SDK built on top of SJC, a beautiful compiler that compiles 
     + Jaxon is meant to fix that by providing standard templates that contain a maintained runtime.
 
 ## Jaxon vs SJC Differences
-+ Jaxon is built on top of SJC
-+ Jaxon uses Maven to separate the modules
-    + Jaxon is fully Intellij compatible
-+ Jaxon is provided as an installer to make it easier for setup
-    + This also binds to your system path, allowing Jaxon from the command-line
++ Jaxon is built on top of SJC and requires it to do anything
 + Jaxon provides built-in templates - allowing you to easily start new projects
     + `jaxon template console`
++ Jaxon templates use Maven to separate the modules
++ Jaxon provides a tool to create a Jaxon-Blank-SDK to make all Jaxon templates fully Intellij compatible
 + Jaxon provides a build wrapper on top of the SJC build system
     + `jaxon build win-exe` is the equivalent of `sjc sc -s 1m -a 4198912 -l -o boot -O #win`
 
 ## What Does SJC Do?
-+ SJC compiles Java 1.4-1.5* compliant syntax to:
++ SJC compiles a subset of Java 1.4-1.5* compliant syntax to:
     + Native IA32 & x86_64
         + Executables for Windows & Linux
             + Win32 console application
