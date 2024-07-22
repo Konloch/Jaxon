@@ -2,7 +2,7 @@
 Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compiles a tailored subset of Java directly to native code, eliminating the need for bytecode and virtual machines.
 
 ## Getting Started
-+ [First start by downloading Jaxon]()
++ [First start by downloading Jaxon](https://github.com/Konloch/Jaxon/releases/latest)
   + Add Jaxon to your System-Path
 + Then start by creating a new project, this is done through code templates. (such as `jaxon template console`)
   + `Console` - Cross-platform minified template for printing to console.
@@ -117,3 +117,14 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + Built on top of SJC.
   + You can access SJC command-line by using `jaxon sjc [sjc commands goes here]`
 + **Fully compatible with Intellij, just select "NO SDK" and you'll have no errors with full modern tooling.**
+
+## Links
++ [SJC Home Page](https://www.fam-frenz.de/stefan/compiler.html)
++ [SJC Manual English](https://www.fam-frenz.de/stefan/man042_0182eng.pdf)
++ [SJC Manual German](https://www.fam-frenz.de/stefan/man046_0190.pdf)
+
+## SJC Operating-Systems (Operating systems written in Java)
++ [PicOS](https://www.fam-frenz.de/stefan/picos.html) - The original OS written with SJC (Demo)
++ [Bearded-Robot](https://github.com/lenidh/bearded-robot) - OS witten in SJC (Demo)
++ [Winlux](https://github.com/jassler/Winux) - OS witten in SJC (Demo)
++ [SelfMade-OS](https://github.com/niklasstich/selfmade-os) - OS Written in OS (Demo)
