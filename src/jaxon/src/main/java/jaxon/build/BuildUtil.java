@@ -109,9 +109,14 @@ public class BuildUtil
 	
 	public static void setupEnvFile(String localPath, String envPath)
 	{
-		File envFile = new File(envPath).getAbsoluteFile();
-		
-		try (InputStream in = Jaxon.class.getResourceAsStream(localPath); OutputStream out = new FileOutputStream(envFile))
+		File exportPath = new File(envPath).getAbsoluteFile();
+		export(localPath, exportPath);
+		exportPath.deleteOnExit();
+	}
+	
+	public static void export(String localPath, File exportPath)
+	{
+		try (InputStream in = Jaxon.class.getResourceAsStream(localPath); OutputStream out = new FileOutputStream(exportPath))
 		{
 			byte[] buffer = new byte[1024];
 			int bytesRead;
@@ -124,8 +129,6 @@ public class BuildUtil
 		{
 			throw new RuntimeException("Failed to setup env file", e);
 		}
-		
-		envFile.deleteOnExit();
 	}
 	
 	public static void exportBuild(String currentOutputBinary, String newOutputBinary) throws IOException
