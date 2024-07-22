@@ -14,6 +14,12 @@ public class WinSystem extends System
 	}
 	
 	@Override
+	public String[] getCommandLineArgs()
+	{
+		return Win32.getCommandLineArgs();
+	}
+	
+	@Override
 	public boolean isDirectory(String path)
 	{
 		return false;

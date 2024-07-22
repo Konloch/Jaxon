@@ -15,6 +15,36 @@ public class LinSystem extends System
 	}
 	
 	@Override
+	public String[] getCommandLineArgs()
+	{
+		int argc = 0;
+		int argv = 0;
+		
+		// Get the address of the argv array
+		MAGIC.inline(0x8B, 0x45, 0x08); // mov eax, [ebp+8]
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		
+		// Get the value of argc
+		MAGIC.inline(0x8B, 0x45, 0x0C); // mov eax, [ebp+12]
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		
+		String[] args = new String[argc];
+		
+		for (int i = 0; i < argc; i++) {
+			int addr = MAGIC.rMem32(argv + i * 4);
+			StringBuilder sb = new StringBuilder();
+			int c;
+			while ((c = MAGIC.rMem8(addr)) != 0) {
+				sb.append((char) c);
+				addr++;
+			}
+			args[i] = sb.toString();
+		}
+		
+		return args;
+	}
+	
+	@Override
 	public boolean isDirectory(String path)
 	{
 		return false;

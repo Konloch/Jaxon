@@ -19,6 +19,8 @@ public abstract class System
 	
 	public static String platform;
 	
+	public abstract String[] getCommandLineArgs();
+	
 	public abstract boolean isDirectory(String path);
 	
 	public abstract boolean doesExist(String path);

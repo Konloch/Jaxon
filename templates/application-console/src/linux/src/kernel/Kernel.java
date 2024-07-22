@@ -11,6 +11,6 @@ public class Kernel
 	public static void main()
 	{
 		System._system = new LinSystem();
-		AppEntry.start();
+		AppEntry.start(System._system.getCommandLineArgs());
 	}
 }

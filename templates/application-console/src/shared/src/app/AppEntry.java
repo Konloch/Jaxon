@@ -6,9 +6,12 @@ package app;
  */
 public class AppEntry
 {
-	public static void start()
+	public static void start(String[] args)
 	{
-		System.out.print("Hello world");
+		for(String s : args)
+			System.out.println(new StringBuilder("Arg: ").append(s));
+		
+		System.out.print(new StringBuilder("Hello world: ").append(args.length));
 		TestSystemAPI.testFileSystem();
 	}
 }

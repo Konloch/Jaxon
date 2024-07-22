@@ -11,6 +11,6 @@ public class Kernel
 	public static void main()
 	{
 		System._system = new WinSystem();
-		AppEntry.start();
+		AppEntry.start(System._system.getCommandLineArgs());
 	}
 }
