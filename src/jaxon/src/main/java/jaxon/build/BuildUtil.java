@@ -74,6 +74,7 @@ public class BuildUtil
 	public static void setupEnv(String environment)
 	{
 		File tempDir = new File("");
+		File localBootConf = new File("bootconf.txt");
 		
 		try
 		{
@@ -87,19 +88,28 @@ public class BuildUtil
 		
 		if (environment.equalsIgnoreCase("native"))
 		{
-			setupEnvFile("/environment/native/bootconf.txt", "bootconf.txt");
+			if(localBootConf.exists())
+				copy(localBootConf, "bootconf.txt");
+			else
+				setupEnvFile("/environment/native/bootconf.txt", "bootconf.txt");
 			setupEnvFile("/environment/native/file_lin.bin", "file_lin.bin");
 			setupEnvFile("/environment/native/file_llb.bin", "file_llb.bin");
 			setupEnvFile("/environment/native/file_win.bin", "file_win.bin");
 		}
 		else if (environment.equalsIgnoreCase("atmega"))
 		{
-			setupEnvFile("/environment/atmega/bootconf.txt", "bootconf.txt");
+			if(localBootConf.exists())
+				copy(localBootConf, "bootconf.txt");
+			else
+				setupEnvFile("/environment/atmega/bootconf.txt", "bootconf.txt");
 			setupEnvFile("/environment/atmega/batmel32.bin", "batmel32.bin");
 		}
 		else if (environment.equalsIgnoreCase("operating-system"))
 		{
-			setupEnvFile("/environment/operating-system/bootconf.txt", "bootconf.txt");
+			if(localBootConf.exists())
+				copy(localBootConf, "bootconf.txt");
+			else
+				setupEnvFile("/environment/operating-system/bootconf.txt", "bootconf.txt");
 			setupEnvFile("/environment/operating-system/bts_dsk.bin", "bts_dsk.bin");
 			setupEnvFile("/environment/operating-system/b64_dsk.bin", "b64_dsk.bin");
 		}
@@ -131,6 +141,20 @@ public class BuildUtil
 		catch (IOException e)
 		{
 			throw new RuntimeException("Failed to setup env file", e);
+		}
+	}
+	
+	public static void copy(File originalFile, String newFileName)
+	{
+		File newFile = new File(newFileName).getAbsoluteFile();
+		
+		try
+		{
+			Files.copy(originalFile.toPath(), newFile.toPath());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
