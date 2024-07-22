@@ -1,0 +1,200 @@
+INITSTACK EQU 00009BFFCh ;Stack in protected mode starts here
+CRCPOLY EQU 082608EDBh ;CRC-polynom
+ORG 07C00h
+BITS 16
+begin:
+ jmp start ;jump over header
+ times 003h-($-$$) db 0 ;first byte of header is at pos 3
+ times 01Eh-($-$$) db 0 ;fill up header(27) with zero
+; *** variables for primary image
+PIdest: dd 0 ;destination for image
+PICDAddr: dd 0 ;class-descriptor for pi
+PIExAddr: dd 0 ;method-offset for pi
+; *** variables for bootloader
+CRC32: dd 0 ;CRC over image
+RDsectors: dw 0 ;sectors to read
+ScCnt: db 18 ;sectors to read per head, init: floppy
+HdMax: db 1 ;highest usable headnumber, init: floppy
+InitCX: dw 2 ;start read with this cx, init: floppy
+InitDX: dw 0 ;start read with this dx, init: floppy
+MxReadErr: db 5 ;maximum read errors
+; *** prepared gdt
+ALIGN 4, db 000h ;align gdt to 4-byte-address
+mygdt:
+ dw 00000h, 00000h, 00000h, 00000h ;null descriptor
+ dw 0FFFFh, 00000h, 09A00h, 000CFh ;4GB 32-bit code at 0x0
+ dw 0FFFFh, 00000h, 09200h, 000CFh ;4GB 32-bit R/W at 0x0 (cf)
+ dw 0FFFFh, 00000h, 09A06h, 0008Fh ;4GB 16-bit code at 0x60000
+endgdt:
+ptrgdt: ;use this offset for lgdt
+ dw endgdt-mygdt ;length
+ dd mygdt ;linear physical address (segment is 0)
+PrintChar: ;print character in al, destroys es
+ push si ;save si (destroyed by BIOS)
+ push di ;save di (destroyed by BIOS)
+ push bx ;save bx (destroyed for color)
+ mov bl,007h ;color 007h: gray on black
+ mov ah,00Eh ;function 00Eh: print character
+ int 10h ;BIOS-call: graphics adapter
+ pop bx ;restore bx
+ pop di ;restore di
+ pop si ;restore si
+ ret ;return to caller
+updCRC32: ;update value in ebp, update from dword in eax
+ push cx ;save cx
+ xor ebp,eax ;xor new dword
+ mov cx,32 ;32 bits
+uC3NextBit:
+ test ebp,000000001h ;lowest bit set?
+ pushf ;save result
+ shr ebp,1 ;shift value
+ popf ;restore result
+ jz uC3NoPOLY ;lowest bit was clear -> jump
+ xor ebp,CRCPOLY ;xor with CRCPOLY
+uC3NoPOLY:
+ loop uC3NextBit ;handle next bit if existing
+ pop cx ;restore cx
+ ret
+waitKeyboard: ;wait until inputbuffer empty
+ in al,064h ;read status register
+ test al,002h ;inputbuffer empty?
+ jnz waitKeyboard ; no->retry
+ ret
+start:
+;________________ Initialize stack and ds ___________________________
+ cli ;disble interrupts while setting ss:sp
+ xor ax,ax ;helper for ss, ds, es
+ mov ss,ax ;initialize stack
+ mov sp,07BFCh ;highest unused byte
+ mov ds,ax ;our address segment
+;________________ Enable A20 gate ___________________________________
+ mov al,'A' ;character to print
+ call PrintChar ;say "A20"
+ call waitKeyboard
+ mov al,0D1h ;command: write output
+ out 064h,al ;write command to command register
+ call waitKeyboard
+ mov al,0DFh ;everything to normal (A20 then enabled)
+ out 060h,al ;write new value
+ call waitKeyboard
+;________________ Switch to protected and back to real mode _________
+;now to protected mode (interrupts still cleared!)
+ lgdt [ptrgdt] ;load gdt (pointer to six-byte-mem-loc)
+ mov eax,cr0 ;read machine-status
+ or al,1 ;set bit: protected mode enabled
+ mov cr0,eax ;write machine-status
+ mov dx,010h ;helper for segment registers
+ mov fs,dx ;prepare fs for big flat segment model
+ dec ax ;clear lowest bit: protected mode disabled
+ mov cr0,eax ;write machine-status
+;now back with large segment-limits
+ sti
+;________________ Load block from Disk ______________________________
+ xor ebp,ebp ;helper for ds/fs
+ mov ds,bp ;our address segment
+ mov fs,bp ;destination with flat segment
+ mov al,'L' ;character to print
+ call PrintChar ;say "loading"
+ mov cx,[InitCX] ;first sector / first cylinder
+ mov dx,[InitDX] ;drive / first head
+ mov edi,[PIdest] ;linear destiniation address
+ dec ebp ;initialize internal CRC to 0FFFFFFFFh
+ mov si,[RDsectors] ;get sectors to read
+Readloop:
+ mov bx,01000h ;helper for es
+ mov es,bx ;destination segment
+ xor bx,bx ;destination is 1000:0000
+ mov ax,00201h ;function 002h par 001h: read 1 sector
+ push dx ;some BIOS-versions destroy dx
+ stc ;some BIOS-versions don't set CF correctly
+ int 013h ;BIOS-call: DISK
+ sti ;some BIOS-version don't restore IF
+ pop dx ;restore dx
+ jc ReadError ;CF set on error
+ push cx ;save cx (cyl/sec)
+ mov cx,128 ;each sector has 128 dwords
+Copyloop:
+ mov eax,[es:bx] ;load byte
+ mov [fs:edi],eax ;store byte
+ call updCRC32 ;update CRC for this dword
+ add bx,4 ;increase source address
+ add edi,byte 4 ;increase destination address
+ loop Copyloop ;decrease cx and jump if some bytes left
+ pop cx ;restore cx (cyl/sec)
+ dec si ;decrease sectors to read
+ jz ReadComplete ;nothing left -> continue
+ test si,0001Fh ;at least one bit in 4..0 set?
+ jnz NoDots ; yes -> don't print dot
+ mov al,'.' ;character to print
+ReadCont:
+ call PrintChar ;say "read OK"
+NoDots:
+ mov al,cl ;save sector + highest cylinder for calc
+ and al,03Fh ;extract sector
+ cmp al,[ScCnt] ;maximum reached?
+ je NextHead ; yes -> increase head
+ inc cl ;increase sector
+ jmp Readloop ;read next sector with this head
+NextHead:
+ and cl,0C0h ;extract highest cylinder
+ or cl,1 ;set sector to 1
+ cmp dh,[HdMax] ;already at end of cylinder?
+ je NextCyl ; yes -> reset head and increase cylinder
+ inc dh ;next head
+ jmp Readloop ;read next side in this cylinder
+NextCyl:
+ xor dh,dh ;reset head
+ inc ch ;increase cylinder
+ jnz Readloop ;no overflow, read this cylinder
+ add cl,040h ;increase highest two bits of cylinder
+ jmp Readloop ;read next cylinder
+ReadError:
+ dec byte [MxReadErr] ;try to decrease maximum of read errors left
+ jz NRL ; nothing left -> loop forever
+ mov al,'e' ;character to print
+ call PrintChar ;say "read error"
+ xor ah,ah ;function 000h: reset
+ int 13h ;BIOS-call: DISK
+ jmp Readloop ;try again
+ReadComplete:
+ mov dx,03F2h ;port adress of disk controler
+ in al,dx ;get status register of disk controler
+ and al,0EFh ;switch of motor
+ out dx,al ;set status register
+ cli ;disable interrupts
+ cmp ebp,[CRC32] ;checksum correct?
+ je CallJava ; yes -> continue
+ mov al,"c" ;character to print
+ call PrintChar ;say "read error"
+NRL:
+ jmp NRL ;stop machine
+;________________ Switch to protected mode and call java ____________
+CallJava:
+ mov al,'P' ;character to print
+ call PrintChar ;say "Protected Mode"
+ lgdt [ptrgdt] ;load gdt (pointer to six-byte-mem-loc)
+ mov eax,cr0 ;read machine-status
+ or al,1 ;set bit: protected mode enabled
+ mov cr0,eax ;write machine-status
+ db 0EAh ;jump to 32-Bit Code
+ dw doit ; offset (linear physical address)
+ dw 008h ; selector
+BITS 32
+;________________ Initialise segments ____________________________
+doit:
+ mov dx,010h ;helper for data-segment
+ mov ds,dx ;load data-segment into ds
+ mov es,dx ;load data-segment into es
+ mov fs,dx ;load data-segment into fs
+ mov gs,dx ;load data-segment into gs
+ mov ss,dx ;load data-segment into ss
+ mov esp,INITSTACK ;set stackpointer
+ mov edi,[PICDAddr] ;load address of class descriptor
+ mov eax,[PIExAddr] ;load method address
+ call eax ;call java-method
+Ready:
+ jmp Ready ;endless loop
+BITS 16
+ times 01FEh-($-$$) db 0 ;fill with zero until BIOS-mark of sector
+ db 055h, 0AAh ;BIOS-mark at 510: valid sector for booting
+end
