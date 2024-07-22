@@ -16,6 +16,30 @@ public class Win32
 	 * Length of the buffer
 	 */
 	private static final int BUFFER_LENGTH = 128;
+
+	public static String[] getCommandLineArgs()
+	{
+		int argc = MAGIC.rMem32(MAGIC.imageBase - 512 + 16);
+		int base = MAGIC.rMem32(MAGIC.imageBase - 512 + 12);
+		String[] args = new String[argc];
+		
+		for (int i = 0; i < argc; i++)
+		{
+			int addr = MAGIC.rMem32(base + (i << 2));
+			StringBuilder sb = new StringBuilder();
+			int c;
+			
+			while ((c = (int) MAGIC.rMem16(addr)) != 0)
+			{
+				sb.append((char) c);
+				addr += 2;
+			}
+			
+			args[i] = sb.toString();
+		}
+		
+		return args;
+	}
 	
 	/**
 	 * Method to load a given DLL
@@ -68,13 +92,13 @@ public class Win32
 		
 		// call GetProcAddress
 		procAddr = MAGIC.addr(buffer[0]);
-		MAGIC.inline(0xFF, 0x75, 0xFC);  // push dword [ebp-4] (==addr)
-		MAGIC.inline(0xFF, 0x75, 0x0C);  // push dword [ebp+12] (==handle)
-		MAGIC.inline(0xFF, 0x15);
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xFC);  // push dword [ebp-4] (==addr)
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0x0C);  // push dword [ebp+12] (==handle)
+		MAGIC.inline(x86.CALL_NEAR, 0x15);
 		MAGIC.inline32(rte.DynamicRuntime._Kernel_GetProcAddress); // call getProcAddress
 		
 		// save result to procAddr
-		MAGIC.inline(0x89, 0x45, 0xFC);  // mov [ebp-4],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45, 0xFC);  // mov [ebp-4],eax
 		
 		return procAddr;
 	}
@@ -137,11 +161,11 @@ public class Win32
 		addrTitle = MAGIC.addr(buffer[0]);
 		
 		// call MessageBoxW
-		MAGIC.inline(0x6A, 0x00);  // push byte 0 => uType==MB_OK
-		MAGIC.inline(0xFF, 0x75, 0xF0); // push dword [ebp-16 => address of caption
-		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-12] => address of text
-		MAGIC.inline(0x6A, 0x00);  // push byte 0 => parent==null
-		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);  // push byte 0 => uType==MB_OK
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF0); // push dword [ebp-16 => address of caption
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12] => address of text
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);  // push byte 0 => parent==null
+		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
 	}
 	
 	public static void print(int c)
@@ -180,9 +204,9 @@ public class Win32
 		
 		addrPath = MAGIC.addr(buffer[0]);
 		
-		MAGIC.inline(0x6A, 0x00); //PUSH lpSecurityAttributes (NULL)
-		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-12 => address of path
-		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00); //PUSH lpSecurityAttributes (NULL)
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
 		
 		return true;
 	}
@@ -207,8 +231,8 @@ public class Win32
 		
 		addrPath = MAGIC.addr(buffer[0]);
 		
-		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-12 => address of path
-		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
 		
 		return true;
 	}
@@ -233,8 +257,8 @@ public class Win32
 		
 		addrPath = MAGIC.addr(buffer[0]);
 		
-		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-12 => address of path
-		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
 		
 		return true;
 	}
@@ -264,12 +288,12 @@ public class Win32
 		addrNewPath = MAGIC.addr(buffer[0]);
 		
 		// call MoveFileA
-		MAGIC.inline(0xFF, 0x75, 0xF4); // push dword [ebp-16 => address of new path
-		MAGIC.inline(0xFF, 0x75, 0xF0); // push dword [ebp-12] => address of old path
-		MAGIC.inline(0xFF, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-16 => address of new path
+		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF0); // push dword [ebp-12] => address of old path
+		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
 		
 		// save results to handleDLL
-		MAGIC.inline(0x89, 0x45, 0xF0);  // mov [ebp-4],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45, 0xF0);  // mov [ebp-4],eax
 		
 		// assuming that if EAX is 0, the function failed
 		return addrNewPath != 0;
