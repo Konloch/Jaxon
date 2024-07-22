@@ -152,10 +152,12 @@ public class Win32
 		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x01);                            //push byte 1 (single character)
 		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0x08);     //lea eax,[ebp+8] (address of string)
 		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
-		MAGIC.inline(x86.CALL_NEAR, 0x35);
-		MAGIC.inline32(rte.DynamicRuntime._hndStdOut);                          //push handle
-		MAGIC.inline(x86.CALL_NEAR, 0x15);
-		MAGIC.inline32(rte.DynamicRuntime._Kernel_WriteFile);                   //call
+		
+		//Push handle for standard output
+		MAGIC.inline(x86.CALL_NEAR, 0x35); MAGIC.inline32(rte.DynamicRuntime._hndStdOut);
+		
+		//Call WriteFile function
+		MAGIC.inline(x86.CALL_NEAR, 0x15); MAGIC.inline32(rte.DynamicRuntime._Kernel_WriteFile);
 	}
 	
 	public static boolean createDirectory(String path)
