@@ -9,6 +9,8 @@
 /operating-system
 /atmega
 
+*.HEX
+
 jaxon.jar
 jaxon.exe
 dependency-reduced-pom.xml
