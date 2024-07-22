@@ -19,17 +19,17 @@ public class Win32
 
 	public static String[] getCommandLineArgs()
 	{
-		int argc = MAGIC.rMem32(MAGIC.imageBase - 512 + 16);
-		int base = MAGIC.rMem32(MAGIC.imageBase - 512 + 12);
-		String[] args = new String[argc];
+		int argc = MAGIC.rMem32(rte.DynamicRuntime._cntParam);
+		int base = MAGIC.rMem32(rte.DynamicRuntime._ptrParam);
 		
+		String[] args = new String[argc];
 		for (int i = 0; i < argc; i++)
 		{
 			int addr = MAGIC.rMem32(base + (i << 2));
 			StringBuilder sb = new StringBuilder();
 			int c;
 			
-			while ((c = (int) MAGIC.rMem16(addr)) != 0)
+			while ((c = MAGIC.rMem16(addr)) != 0)
 			{
 				sb.append((char) c);
 				addr += 2;
