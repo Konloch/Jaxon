@@ -1,0 +1,1 @@
+"C:\msys64\mingw32\bin\qemu-system-i386.exe" -boot a -fda build\operating-system\build.img
