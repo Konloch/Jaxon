@@ -5,7 +5,7 @@ Whether you're a seasoned SJC developer or just getting started, this repository
 
 Join the Jaxon community today and help us build a brighter future for SJC development!
 
-## Index
+## Applications
 + [Console Demo](application/demo-console/) - A cross platform hello world. Compiles to Win32 Executable & Linux
     + **Note** This template contains the in-development runtime library.
     + This version is considered the most 'cutting edge' and will contain the most complete runtime API.
@@ -16,7 +16,7 @@ Join the Jaxon community today and help us build a brighter future for SJC devel
 + [Fake Javac](application/fake-javac/) - A tiny program that pretends to be javac 1.8.
     + Used in the Jaxon Blank SDK.
 
-### Operating-Systems
+## Operating-Systems
 + **Note** To run these operating systems, use QEMU - example scripts are included to get you started!
 + [Hello World](operating-system/hello-world/) - A slimmed down hello world demo
 + [PicOS](operating-system/picos/) - The original OS written with SJC
@@ -25,7 +25,7 @@ Join the Jaxon community today and help us build a brighter future for SJC devel
 + [Self-Made-OS](operating-system/self-made-os/) - An operating system written in Java
 + [Winux](operating-system/winux/) - An operating system written in Java
 
-### Embedded
+## Embedded
 + [ATmega](embedded/atmega/) - A demo controlling an ATmega board
 	+ This is currently not compiling, this is planned to be fixed
 
