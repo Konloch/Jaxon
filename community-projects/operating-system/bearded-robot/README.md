@@ -1,5 +1,5 @@
-# PicOS Operating System Demo
+# Bearded Robot
 A proof of concept Operating-System written in Java.
 
 # Notes
-+ Originally based off [work by @lenidh](https://github.com/lenidh/bearded-robot)
++ Parent repository [@lenidh/bearded-robot](https://github.com/lenidh/bearded-robot)
