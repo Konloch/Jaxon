@@ -6,22 +6,22 @@ Whether you're a seasoned SJC developer or just getting started, this repository
 Join the Jaxon community today and help us build a brighter future for SJC development!
 
 ## Index
-+ [Console Demo](https://github.com/Konloch/Jaxon/tree/master/community-projects/applications/demo-console/) - A cross platform hello world. Compiles to Win32 Executable & Linux
++ [Console Demo](application/demo-console/) - A cross platform hello world. Compiles to Win32 Executable & Linux
     + **Note** This template contains the in-development runtime library.
     + This version is considered the most 'cutting edge' and will contain the most complete runtime API.
-+ [Barebones Demo](https://github.com/Konloch/Jaxon/tree/master/community-projects/applications/demo-barebones/) - A cross platform barebones version of hello world. Compiles to Win32 Executable & Linux
++ [Barebones Demo](application/demo-barebones/) - A cross platform barebones version of hello world. Compiles to Win32 Executable & Linux
 	+ This contains a very minified runtime which requires the developer to implement the expected features.
-+ [Graphical Demo](https://github.com/Konloch/Jaxon/tree/master/community-projects/applications/demo-graphical/) - A cross platform example of windowed graphical drawing. Compiles to Win32 Executable & Linux
++ [Graphical Demo](application/demo-graphical/) - A cross platform example of windowed graphical drawing. Compiles to Win32 Executable & Linux
     + The graphical template is currently paused until the runtime has been completed more.
-+ [Fake Javac](https://github.com/Konloch/Jaxon/tree/master/community-projects/applications/fake-javac/) - A tiny program that pretends to be javac 1.8.
++ [Fake Javac](application/fake-javac/) - A tiny program that pretends to be javac 1.8.
     + Used in the Jaxon Blank SDK.
 
 ### Operating-Systems
 + **Note** To run these operating systems, use QEMU - example scripts are included to get you started!
-+ [Hello World](https://github.com/Konloch/Jaxon/tree/master/community-projects/operating-systems/hello-world/) - A slimmed down hello world demo
-+ [Bearded Robot](https://github.com/Konloch/Jaxon/tree/master/community-projects/operating-systems/bearded-robot/) - An operating system written in Java
++ [Hello World](operating-system/hello-world/) - A slimmed down hello world demo
++ [Bearded Robot](operating-system/bearded-robot/) - An operating system written in Java
 	+ Currently has a bug on boot, this is planned to be fixed
-+ [PicOS](https://github.com/Konloch/Jaxon/tree/master/community-projects/operating-systems/picos/) - The original OS written with SJC
++ [PicOS](operating-system/picos/) - The original OS written with SJC
 
 ## Links
 + [Jaxon](https://konloch.com/jaxon)
