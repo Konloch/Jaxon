@@ -15,7 +15,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
           + Your JDK will be in {user}/.jaxon/JDK
         + If you haven't done that, just run the following command
           + `jaxon jdk jdk-1.8`
-        + Then set it as the SDK loaded from folder 'jdk-1.8' in Intellij.
+        + Then set the JDK folder as the SDK in Intellij:
             + F4 for Module Settings
             + Project > SDK > Edit
             + Click the Plus > Add JDK...
@@ -23,7 +23,6 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 
 ## Using Jaxon Templates
 + The templates all contain the basics to get you running (`Console` shows hello world, `Graphical` shows windowing & image drawing)
-+ Rely heavily on the provided standard library and if there isn't a function or class that you regularly use, open a GitHub issue.
 + Each template can contain a different application starting class
     + You can find this class by going into Windows/kernel/Kernel.java & Linux/kernel/Kernel.java
 + The templates contain the entire standard library, edit these as much as you want
@@ -42,8 +41,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + `ATmega` - ARM7 ATmega embedded controller template.
     + **Note** This template is currently having build issues.
 + `Operating-System` - 32bit / 64bit template for operating system.
-    + This runtime is also outdated and won't be updated for quite some time.
-    + A modified and minified version will be added as we won't need to support the concept of cross-platform runtimes.
+    + This runtime is also outdated is planned for a runtime update.
 + `Operating-System-Hello-World` - 32bit / 64bit operating system hello world.
     + A minified operating system runtime with nothing more than a video buffer.
 
@@ -128,6 +126,11 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + Since the SJC community is so small I've decided to consolidate all the source code into one mono repo.
 + The idea behind this is to provide one singular resource to introduce SJC with real projects, not just templates.
 + This will be slowly maintained by myself - this is an open invitation for anyone to submit their SJC project and preform any edits you think are needed.
+
+## Requirements
++ Jaxon should run out of the box without any modifications required.
+  + Just make sure to run `jaxon install` and you'll be good to go for full development.
++ Jaxon runs on Windows, MacOS, Linux & has a Java jar variant if those binaries aren't compatible.
 
 ## Notes
 + *Note about Java 1.4-1.5 - Certain features of 1.5 are added.
