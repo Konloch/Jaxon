@@ -2,14 +2,12 @@
 Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compiles a tailored subset of Java directly to native code, eliminating the need for bytecode and virtual machines.
 
 ## Jaxon Quick Start Guide
-+ [First start by downloading Jaxon](https://github.com/Konloch/Jaxon/releases/latest)
++ [First start by downloading Jaxon for your platform](https://github.com/Konloch/Jaxon/releases/latest)
   + Run the command `jaxon install`
     + If you're not on windows you'll have to **add Jaxon to your System-Path manually**
 + Then start by creating a new project, this is done through code templates. (such as `jaxon template console`)
     + `Console` - Cross-platform minified template for printing to console.
         + **Note** This template contains the in-development runtime library.
-        + This version is considered the most 'cutting edge' and will contain the most complete runtime API.
-        + The graphical template is currently paused until the runtime has been ironed out more.
 + After you have created a template using Jaxon:
     + Use the build scripts to build binaries.
     + At some point you're going to want to get Intellij working.
@@ -35,10 +33,9 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + `Console` - Cross-platform template for printing to console.
     + **Note** This template contains the latest in-development runtime library.
     + This version is considered the most 'cutting edge' and will contain the most complete runtime library.
-    + The graphical template is currently paused until the runtime has been ironed out more.
 + `Graphical` - Cross-platform template for windowed graphical applications.
     + This contains an early proof of concept for shared windowing between Linux and Windows.
-    + The runtime is outdated and won't be updated until we support windowing on the runtime officially.
+    + The runtime is outdated and is planned to be updated with a windowing API.
 + `Barebones` - Cross-platform minified template for printing to console.
     + This is added if you want to roll your own runtime library.
     + This lacks the entire Runtime and only contains the bare template to compile.
@@ -48,7 +45,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
     + This runtime is also outdated and won't be updated for quite some time.
     + A modified and minified version will be added as we won't need to support the concept of cross-platform runtimes.
 + `Operating-System-Hello-World` - 32bit / 64bit operating system hello world.
-    + A minified operating system runtime with nothing more than a character buffer.
+    + A minified operating system runtime with nothing more than a video buffer.
 
 ## Jaxon Command Line
 + `template` - Create a new template in the current directory
