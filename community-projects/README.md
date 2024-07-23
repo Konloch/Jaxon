@@ -17,7 +17,12 @@ Join the Jaxon community today and help us build a brighter future for SJC devel
     + Used in the Jaxon Blank SDK.
 
 ### Operating-Systems
-+ [PicOS](operating-systems/picos/) - The original OS written with SJC (Demo)
-
++ **Note** To run these operating systems, use QEMU - example scripts are included to get you started!
++ [Hello World](operating-systems/hello-world/) - A slimmed down hello world demo
++ [PicOS](operating-systems/picos/) - The original OS written with SJC
 
 ## Links
++ [Jaxon](https://konloch.com/jaxon)
++ [SJC Home Page](https://www.fam-frenz.de/stefan/compiler.html)
++ [SJC Manual English](https://www.fam-frenz.de/stefan/man042_0182eng.pdf)
++ [SJC Manual German](https://www.fam-frenz.de/stefan/man046_0190.pdf)
