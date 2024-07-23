@@ -160,9 +160,14 @@ public class BuildUtil
 	
 	public static void exportBuild(String currentOutputBinary, String newOutputBinary) throws IOException
 	{
-		File outputBinary = new File(currentOutputBinary).getAbsoluteFile();
-		File newOutputBinaryFile = new File(newOutputBinary);
-		File newOutputBinaryFileParent = newOutputBinaryFile.getParentFile();
+		File buildOut = new File("build"); //referencing original user.dir location
+		File outputBinary = new File(currentOutputBinary).getAbsoluteFile(); //referencing new user.dir location
+		File newOutputBinaryFile = new File(newOutputBinary); //referencing new user.dir location
+		File newOutputBinaryFileParent = newOutputBinaryFile.getParentFile(); //referencing original user.dir location
+		
+		//required to fix a bug since we're abusing the "user.dir" system property
+		if(!buildOut.exists())
+			buildOut.mkdirs();
 		
 		if (!newOutputBinaryFileParent.exists() || !newOutputBinaryFileParent.isDirectory())
 			newOutputBinaryFileParent.mkdirs();
