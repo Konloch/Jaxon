@@ -23,6 +23,10 @@ Join the Jaxon community today and help us build a brighter future for SJC devel
 	+ Currently has a bug on boot, this is planned to be fixed
 + [PicOS](operating-system/picos/) - The original OS written with SJC
 
+### Embedded
++ [ATmega](embedded/ATmega/) - A demo controlling an ATmega board
+	+ This is currently not compiling, this is planned to be fixed
+
 ## Links
 + [Jaxon](https://konloch.com/jaxon)
 + [SJC Home Page](https://www.fam-frenz.de/stefan/compiler.html)
