@@ -142,7 +142,7 @@ public class SystemPathUtil
 				while(jaxonBinary.exists())
 					Files.delete(jaxonBinary.toPath());
 				
-				//TODO delete all jaxonSystem files
+				jaxonBin.delete();
 				
 				System.out.println();
 				System.out.println("Jaxon has been successfully uninstalled from the System-Path");
