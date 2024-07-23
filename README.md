@@ -122,7 +122,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + @SJC: Instructions for the compiler to perform special treatment of the current method or the subsequent code.
     + For example marking the current method as an interrupt handler using @SJC.Interrupt or marking static final arrays as immutable and thus to be kept in flash using @SJC.Flash.
 
-## SJC Community Projects
+## Jaxon Community Projects
 + Since the SJC community is so small I've decided to consolidate all the source code into one mono repo.
 + The idea behind this is to provide one singular resource to introduce SJC with real projects, not just templates.
 + This will be slowly maintained by myself - this is an open invitation for anyone to submit their SJC project and preform any edits you think are needed.
@@ -140,12 +140,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + **Fully compatible with Intellij, just select "NO SDK" and you'll have no errors with full modern tooling.**
 
 ## Links
++ [Jaxon Community Projects](https://github.com/Konloch/Jaxon/tree/master/community-projects)
 + [SJC Home Page](https://www.fam-frenz.de/stefan/compiler.html)
 + [SJC Manual English](https://www.fam-frenz.de/stefan/man042_0182eng.pdf)
 + [SJC Manual German](https://www.fam-frenz.de/stefan/man046_0190.pdf)
-
-## SJC Operating-Systems (Operating systems written in Java)
-+ [PicOS](https://www.fam-frenz.de/stefan/picos.html) - The original OS written with SJC (Demo)
-+ [Bearded-Robot](https://github.com/lenidh/bearded-robot) - OS witten in SJC (Demo)
-+ [Winlux](https://github.com/jassler/Winux) - OS witten in SJC (Demo)
-+ [SelfMade-OS](https://github.com/niklasstich/selfmade-os) - OS Written in OS (Demo)
