@@ -101,7 +101,6 @@ public class SystemPathUtil
 				
 				if(selfBinary.exists() && !jaxonBinary.exists())
 				{
-					System.out.println("IS: " + selfBinary.getAbsolutePath());
 					if(selfBinary.getName().toLowerCase().endsWith("jar") || selfBinary.isDirectory() || !selfBinary.isFile())
 					{
 						System.out.println("You cannot add a Java jar to the System-Path");
@@ -121,6 +120,7 @@ public class SystemPathUtil
 					
 					System.out.println();
 					System.out.println("Jaxon has been successfully installed");
+					System.out.println();
 				}
 				else
 				{
@@ -139,7 +139,8 @@ public class SystemPathUtil
 				//TODO delete all jaxonSystem files
 				
 				System.out.println();
-				System.out.println("Jaxon has been successfully uninstalled");
+				System.out.println("Jaxon has been successfully uninstalled from the System-Path");
+				System.out.println();
 			}
 		}
 		catch (Exception e)

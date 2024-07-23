@@ -67,7 +67,14 @@ public class Jaxon
 				jaxonRoot.mkdirs();
 			
 			SystemPathUtil.systemPathCLI(new String[]{"", "add"});
-			JDKUtil.jdkCLI(new String[]{"", jaxonJDK.getAbsolutePath()});
+			
+			if(!jaxonJDK.exists())
+				JDKUtil.jdkCLI(new String[]{"", jaxonJDK.getAbsolutePath()});
+			else //assume JDK is already installed
+			{
+				System.out.println("Re-using Jaxon-Blank-JDK: " + jaxonJDK.getAbsolutePath());
+				System.out.println("Import that SDK inside of Intellij and use that for your Jaxon projects.");
+			}
 		}
 		else if (command.equalsIgnoreCase("uninstall"))
 			SystemPathUtil.systemPathCLI(new String[]{"", "remove"});

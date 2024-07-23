@@ -21,7 +21,7 @@ public class JDKUtil
 		if(newJDK.exists())
 		{
 			System.out.println(newJDK.getAbsolutePath() + " already exists");
-			System.out.println("Export the JDK into a blank directory.");
+			System.out.println("Export this JDK into a blank directory.");
 			return;
 		}
 		
