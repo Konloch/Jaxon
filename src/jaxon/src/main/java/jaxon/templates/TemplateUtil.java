@@ -20,7 +20,9 @@ public class TemplateUtil
 		else if (template.equalsIgnoreCase("graphical"))
 			createTemplate("graphical");
 		else if (template.equalsIgnoreCase("operating-system"))
-			createTemplate("operating-system");
+			createTemplate("operating-system-demo");
+		else if (template.equalsIgnoreCase("operating-system-hello-world"))
+			createTemplate("operating-system-hello-world");
 		else if (template.equalsIgnoreCase("atmega"))
 		{
 			createTemplate("atmega");
