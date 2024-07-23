@@ -131,6 +131,12 @@ public class SystemPathUtil
 			}
 			else
 			{
+				if(!jaxonBin.exists())
+				{
+					System.out.println("Jaxon is not currently installed");
+					return;
+				}
+				
 				modifyPathWindows(jaxonBin.getAbsolutePath(), false);
 				
 				while(jaxonBinary.exists())
