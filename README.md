@@ -64,7 +64,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
   + Add Jaxon to the System-Path
   + Copy the Jaxon JDK into {user}/.jaxon/JDK
 + `uninstall` - Uninstall Jaxon from the computer
-  + Delete the {user}/.jaxon folder
+  + Delete the {user}/.jaxon/bin/ folder
   + Remove all traces of Jaxon from the System-Path
 + `jdk` - Create a Jaxon-Blank-SDK that will resolve all issues with Jaxon template projects.
   + Example Command: `jaxon jdk jdk-1.8`
