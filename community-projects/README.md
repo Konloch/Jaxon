@@ -19,9 +19,10 @@ Join the Jaxon community today and help us build a brighter future for SJC devel
 ### Operating-Systems
 + **Note** To run these operating systems, use QEMU - example scripts are included to get you started!
 + [Hello World](operating-system/hello-world/) - A slimmed down hello world demo
++ [PicOS](operating-system/picos/) - The original OS written with SJC
 + [Bearded Robot](operating-system/bearded-robot/) - An operating system written in Java
 	+ Currently has a bug on boot, this is planned to be fixed
-+ [PicOS](operating-system/picos/) - The original OS written with SJC
++ [Self-Made-OS](operating-system/self-made-os/) - An operating system written in Java
 
 ### Embedded
 + [ATmega](embedded/atmega/) - A demo controlling an ATmega board
