@@ -128,16 +128,14 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + This will be slowly maintained by myself - this is an open invitation for anyone to submit their SJC project and preform any edits you think are needed.
 
 ## Requirements
-+ Jaxon should run out of the box without any modifications required.
-  + Just make sure to run `jaxon install` and you'll be good to go for full development.
-+ Jaxon runs on Windows, MacOS, Linux & has a Java jar variant if those binaries aren't compatible.
++ Jaxon runs out of the box without any requirements.
+  + **Just make sure to install Jaxon via** `jaxon install` and you'll be good to go for full development.
++ Jaxon runs on **Windows, MacOS, Linux** & has a Java Jar variant if those binaries aren't compatible.
 
 ## Notes
 + *Note about Java 1.4-1.5 - Certain features of 1.5 are added.
     + Enhanced for-loops is one example.
-+ Built on top of SJC.
-    + You can access SJC command-line by using `jaxon sjc [sjc commands goes here]`
-+ **Fully compatible with Intellij, just select "NO SDK" and you'll have no errors with full modern tooling.**
++ **Fully compatible with Intellij**
 
 ## Links
 + [Jaxon Community Projects](https://github.com/Konloch/Jaxon/tree/master/community-projects)
