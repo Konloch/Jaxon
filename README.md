@@ -1,5 +1,6 @@
 # Jaxon
 Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compiles a tailored subset of Java directly to native code, eliminating the need for bytecode and virtual machines.
++ [Click here for a quick preview of some example projects](https://github.com/Konloch/Jaxon/tree/master/community-projects)
 
 ## Jaxon Quick Start Guide
 + [First start by downloading Jaxon for your platform](https://github.com/Konloch/Jaxon/releases/latest)
