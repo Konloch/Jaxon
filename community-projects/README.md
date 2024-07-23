@@ -24,7 +24,7 @@ Join the Jaxon community today and help us build a brighter future for SJC devel
 + [PicOS](operating-system/picos/) - The original OS written with SJC
 
 ### Embedded
-+ [ATmega](embedded/ATmega/) - A demo controlling an ATmega board
++ [ATmega](embedded/atmega/) - A demo controlling an ATmega board
 	+ This is currently not compiling, this is planned to be fixed
 
 ## Links
