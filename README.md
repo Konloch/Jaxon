@@ -4,7 +4,9 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 
 ## What Does It Do?
 + Compiles Java 1.6 source to multiple native architectures.
-+ Templates for [Cross-platform Win32 / X11 Linux Applications](https://github.com/Konloch/Jaxon/tree/master/community-projects/application/demo-graphical), and even multiple [operating system templates](https://github.com/Konloch/Jaxon/tree/master/community-projects/operating-system).
++ Code templates for [Cross-platform Win32 / X11 Linux Applications](https://github.com/Konloch/Jaxon/tree/master/community-projects/application/demo-graphical), and even multiple [operating system templates](https://github.com/Konloch/Jaxon/tree/master/community-projects/operating-system).
++ Install to System-Path / Uninstall.
++ Deploys Intellij compatible JDK to enable JetBrains tooling to work.
 
 ## Jaxon Quick Start Guide
 + [First start by downloading Jaxon for your platform](https://github.com/Konloch/Jaxon/releases/latest)
@@ -107,7 +109,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
     + `jaxon build win-exe` is the equivalent of `sjc sc -s 1m -a 4198912 -l -o boot -O #win`
 
 ## What Does SJC Do?
-+ SJC compiles a subset of Java 1.4-1.6* compliant syntax to:
++ SJC compiles a subset of Java 1.6* compliant syntax to:
     + Native IA32 & x86_64
         + Executables for Windows & Linux
             + Win32 console application
@@ -139,7 +141,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + Jaxon runs on **Windows, MacOS, Linux** & has a Java Jar variant if those binaries aren't compatible.
 
 ## Notes
-+ *Note about Java 1.4-1.6 - Certain features of 1.5 are added.
++ *Note about Java 1.6 - Certain features of 1.4-1.6 are added.
     + Enhanced for-loops is one example.
 + **Fully compatible with Intellij**
 
