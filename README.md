@@ -29,20 +29,20 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
     + One benefit is you are not restricted by the concept of precompiled libraries, you are always provided the source unless you are invoking a DLL
 
 ## Jaxon Templates
-+ `Console` - Cross-platform template for printing to console.
++ **[Console](community-projects/application/demo-console)** - Cross-platform template for printing to console.
     + **Note** This template contains the latest in-development runtime library.
     + This version is considered the most 'cutting edge' and will contain the most complete runtime library.
-+ `Graphical` - Cross-platform template for windowed graphical applications.
++ **[Graphical](community-projects/application/demo-graphical)** - Cross-platform template for windowed graphical applications.
     + This contains an early proof of concept for shared windowing between Linux and Windows.
     + The runtime is outdated and is planned to be updated with a windowing API.
-+ `Barebones` - Cross-platform minified template for printing to console.
++ **[Barebones](community-projects/application/demo-barebones)** - Cross-platform minified template for printing to console.
     + This is added if you want to roll your own runtime library.
     + This lacks the entire Runtime and only contains the bare template to compile.
-+ `ATmega` - ARM7 ATmega embedded controller template.
++ **[ATmega](community-projects/embedded/atmega)** - ARM7 ATmega embedded controller template.
     + **Note** This template is currently having build issues.
-+ `Operating-System` - 32bit / 64bit template for operating system.
++ **[Operating-System](community-projects/operating-system/picos)** - 32bit / 64bit template for operating system.
     + This runtime is also outdated is planned for a runtime update.
-+ `Operating-System-Hello-World` - 32bit / 64bit operating system hello world.
++ **[Operating-System-Hello-World](community-projects/operating-system/hello-world)** - 32bit / 64bit operating system hello world.
     + A minified operating system runtime with nothing more than a video buffer.
 
 ## Jaxon Command Line
