@@ -131,7 +131,7 @@ public class SystemPathUtil
 			}
 			else
 			{
-				if(!jaxonBin.exists())
+				if(!jaxonBinary.exists())
 				{
 					System.out.println("Jaxon is not currently installed");
 					return;
