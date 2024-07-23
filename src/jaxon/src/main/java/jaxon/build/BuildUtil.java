@@ -40,6 +40,13 @@ public class BuildUtil
 		else if (buildScript.equalsIgnoreCase("lin"))
 		{
 			setupEnv("native");
+			SJCUtil.sjcCLI(merge(new String[]{"-s", "512k", "-a", "1049008", "-l", "-o", "boot", "-O", "#lin"}, dirs));
+			exportBuild("OUT_LIN.O", "build/linux/" + buildName);
+			exportBuild("syminfo.txt", "build/build_sym_info.txt");
+		}
+		else if (buildScript.equalsIgnoreCase("llb"))
+		{
+			setupEnv("native");
 			SJCUtil.sjcCLI(merge(new String[]{"-s", "512k", "-a", "1049008", "-l", "-o", "boot", "-O", "#llb"}, dirs));
 			exportBuild("OUT_LIN.O", "build/linux/" + buildName);
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
