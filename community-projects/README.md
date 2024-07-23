@@ -23,6 +23,7 @@ Join the Jaxon community today and help us build a brighter future for SJC devel
 + [Bearded Robot](operating-system/bearded-robot/) - An operating system written in Java
 	+ Currently has a bug on boot, this is planned to be fixed
 + [Self-Made-OS](operating-system/self-made-os/) - An operating system written in Java
++ [Winux](operating-system/winux/) - An operating system written in Java
 
 ### Embedded
 + [ATmega](embedded/atmega/) - A demo controlling an ATmega board
