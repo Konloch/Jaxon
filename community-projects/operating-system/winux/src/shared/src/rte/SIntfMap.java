@@ -1,6 +1,7 @@
 package rte;
 
-public class SIntfMap {
-    protected SIntfDesc owner;
-    protected SIntfMap next;
+public class SIntfMap
+{
+	protected SIntfDesc owner;
+	protected SIntfMap next;
 }
