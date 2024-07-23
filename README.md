@@ -29,6 +29,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
     + One benefit is you are not restricted by the concept of precompiled libraries, you are always provided the source unless you are invoking a DLL
 
 ## Jaxon Templates
++ **Note** To use these templates use `jaxon template [name]` such as `jaxon template console`
 + **[Console](community-projects/application/demo-console)** - Cross-platform template for printing to console.
     + **Note** This template contains the latest in-development runtime library.
     + This version is considered the most 'cutting edge' and will contain the most complete runtime library.
