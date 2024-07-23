@@ -19,6 +19,8 @@ Join the Jaxon community today and help us build a brighter future for SJC devel
 ### Operating-Systems
 + **Note** To run these operating systems, use QEMU - example scripts are included to get you started!
 + [Hello World](operating-systems/hello-world/) - A slimmed down hello world demo
++ [Bearded Robot](operating-systems/bearded-robot/) - An operating system written in Java
+	+ Currently has a bug on boot, this is planned to be fixed
 + [PicOS](operating-systems/picos/) - The original OS written with SJC
 
 ## Links
