@@ -68,12 +68,12 @@ public class DynamicRuntime
 	private static int allocMem(int size)
 	{
 		int result = 0;
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x40);                   //push flProtect (READ_WRITE)
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x40);          //push flProtect (READ_WRITE)
 		MAGIC.inline(x86.PUSH_IMMEDIATE_WORD);
 		MAGIC.inline32(0x1000);                          //push flAllocationType (MEM_COMMIT)
 		MAGIC.inline(x86.PUSH, 0x75);
 		MAGIC.inlineOffset(1, size);                         //push [ebp+8] (size)
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                   //push lpAddress (0)
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);         //push lpAddress (0)
 		MAGIC.inline(x86.PUSH, 0x15);
 		MAGIC.inline32(_Kernel_VirtualAlloc);                //call
 		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45);
