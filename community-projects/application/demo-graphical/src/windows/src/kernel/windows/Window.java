@@ -497,19 +497,22 @@ public class Window
 		//-- fields for image processing
 		DrawBitmap rt;
 		WindowDraw cTAi;
-		RECT lineRect = null;
+		RECT lineRect;
 		boolean wait;
 		int[] line;
 		
 		msgAddr = MAGIC.addr((new byte[44])[0]);
 		ps = (PAINTSTRUCT) MAGIC.cast2Struct(MAGIC.addr((new byte[64])[0]));
 		lineRect = (RECT) MAGIC.cast2Struct(MAGIC.addr((new byte[16])[0]));
+		
 		//---
 		// init all needed functions
 		initFunctions();
+		
 		// reset errors
 		getLastError();
 		setLastError(0);
+		
 		// init WNDCLASSEX
 		initWndCls();
 		
@@ -552,7 +555,7 @@ public class Window
 		deleteObject(bitmapHandle);
 	}
 	
-	private final static void memCpy32(int src, int dst, int dwordCnt)
+	private static void memCpy32(int src, int dst, int dwordCnt)
 	{
 		MAGIC.inline(0x56);             //push esi
 		MAGIC.inline(0x57);             //push edi

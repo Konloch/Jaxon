@@ -151,6 +151,7 @@ public class Window
 			System.println("could not open default display");
 			return;
 		}
+		
 		int colorDepth = XDisplayDepth(display, XDefaultScreen(display));
 		if (colorDepth != 24 && colorDepth != 32)
 			System.println("current demo requires 24 or 32 bit color depth on screen");
@@ -161,6 +162,7 @@ public class Window
 			System.println("could not create main window");
 			return;
 		}
+		
 		int mainGC = XDefaultGC(display, 0);
 		XMapWindow(display, mainWindow);
 		XTextProperty windowName;
@@ -195,10 +197,13 @@ public class Window
 		int linesDone = 0;
 		boolean goOn = true;
 		boolean wait = false; //do not wait for messages until calculation is done
+		
+		//keep running until procWind tells us to leave
 		while (goOn)
-		{ //keep running until procWind tells us to leave
+		{
+			//something left to calculate
 			if (linesDone < YRES)
-			{ //something left to calculate
+			{
 				rt.renderLine(line = image[cTAi.y = linesDone], cTAi);
 				memCpy32(MAGIC.addr(line[0]), linesDone * (XRES * 4) + bitmapBytes, XRES);
 				XPutImage(display, mainWindow, mainGC, ximage, 0, linesDone, 0, linesDone++, XRES, 1);
@@ -206,16 +211,20 @@ public class Window
 			}
 			else
 				wait = true; //nothing more to calculate, wait for messages now
+			
+			//no wait, check if event existing
 			if (wait || XCheckWindowEvent(display, mainWindow, -1, event) != 0)
-			{ //no wait, check if event existing
+			{
 				if (wait)
 					XNextEvent(display, event); //get event if we have to wait for it
+				
 				switch (event.type)
 				{
 					case Expose:
 						XPutImage(display, mainWindow, mainGC, ximage, 0, 0, 0, 0, XRES, linesDone);
 						XFlush(display);
 						break;
+						
 					case ButtonPress:
 						if (buttonEvent.window == mainWindow)
 						{
@@ -228,7 +237,7 @@ public class Window
 		}
 	}
 	
-	private final static void memCpy32(int src, int dst, int dwordCnt)
+	private static void memCpy32(int src, int dst, int dwordCnt)
 	{
 		MAGIC.inline(0x56);             //push esi
 		MAGIC.inline(0x57);             //push edi
