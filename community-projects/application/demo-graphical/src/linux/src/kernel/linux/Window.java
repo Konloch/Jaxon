@@ -1,8 +1,7 @@
 package kernel.linux;
 
-import app.CalcTAinfo;
-import app.RayTrace;
-import app.Scene;
+import app.WindowDraw;
+import app.DrawBitmap;
 
 /**
  * @author S. Frenz
@@ -139,8 +138,8 @@ public class Window
 	public static void run()
 	{
 		//-- fields for image processing
-		RayTrace rt;
-		CalcTAinfo cTAi;
+		DrawBitmap rt;
+		WindowDraw cTAi;
 		
 		//---
 		// init all needed functions
@@ -166,7 +165,7 @@ public class Window
 		XMapWindow(display, mainWindow);
 		XTextProperty windowName;
 		windowName = (XTextProperty) MAGIC.cast2Struct(MAGIC.addr((new int[4])[0]));
-		windowName.stringAddr = MAGIC.addr(MAGIC.toByteArray("LinRay", true)[0]);
+		windowName.stringAddr = MAGIC.addr(MAGIC.toByteArray("Graphical Demo - Linux", true)[0]);
 		windowName.encoding = XA_STRING;
 		windowName.format = 8;
 		windowName.nitems = 6;
@@ -174,9 +173,8 @@ public class Window
 		XFlush(display);
 		
 		int[][] image = new int[YRES][XRES];
-		rt = new RayTrace(new Scene());
-		rt.init(XRES, YRES);
-		cTAi = new CalcTAinfo();
+		rt = new DrawBitmap(XRES, YRES);
+		cTAi = new WindowDraw();
 		
 		XSelectInput(display, mainWindow, ButtonPressMask | ExposureMask);
 		

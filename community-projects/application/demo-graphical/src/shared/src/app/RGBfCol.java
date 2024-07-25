@@ -6,7 +6,6 @@ package app;
  * @author Stefan Frenz
  * @version 0.000.03.SF
  */
-
 public class RGBfCol
 {
 	private final static int RED = 2, GREEN = 1, BLUE = 0; // order in long

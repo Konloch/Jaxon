@@ -1,8 +1,7 @@
 package kernel.windows;
 
-import app.CalcTAinfo;
-import app.RayTrace;
-import app.Scene;
+import app.WindowDraw;
+import app.DrawBitmap;
 
 /**
  * @author S. Frenz
@@ -34,7 +33,7 @@ public class Window
 	/**
 	 * Caption of the window
 	 */
-	private final static byte[] caption = MAGIC.toByteArray("WinRay", true);
+	private final static byte[] caption = MAGIC.toByteArray("Graphical Demo - Windows", true);
 	
 	/**
 	 * Placeholder for the WNDCLASSEX struct
@@ -496,8 +495,8 @@ public class Window
 	public static void run()
 	{
 		//-- fields for image processing
-		RayTrace rt;
-		CalcTAinfo cTAi;
+		DrawBitmap rt;
+		WindowDraw cTAi;
 		RECT lineRect = null;
 		boolean wait;
 		int[] line;
@@ -520,18 +519,20 @@ public class Window
 		initPaint(XRES, YRES);
 		
 		image = new int[YRES][XRES];
-		rt = new RayTrace(new Scene());
-		rt.init(XRES, YRES);
-		cTAi = new CalcTAinfo();
+		rt = new DrawBitmap(XRES, YRES);
+		cTAi = new WindowDraw();
 		
 		lineRect.left = 0;
 		lineRect.right = XRES;
 		goOn = true;
 		wait = false; //do not wait for messages until calculation is done
+		
+		//keep running until procWind tells us to leave
 		while (goOn)
-		{ //keep running until procWind tells us to leave
+		{
+			//something left to calculate
 			if (linesDone < YRES)
-			{ //something left to calculate
+			{
 				rt.renderLine(line = image[lineRect.top = cTAi.y = linesDone++], cTAi);
 				memCpy32(MAGIC.addr(line[0]), XRES * YRES * 4 - (lineRect.bottom = linesDone) * (XRES * 4) + bitmapBytes, XRES);
 				invalidateRect(windowHandle, lineRect, false);
@@ -541,16 +542,13 @@ public class Window
 				wait = true; //nothing more to calculate, wait for messages now
 			
 			while (goOn && (wait ? getMessage(msgAddr, windowHandle, 0, 0)
-					
 					: peekMessage(msgAddr, windowHandle, 0, 0, true)) != 0)
 			{
-				
 				translateMessage(msgAddr);
-				
 				dispatchMessage(msgAddr);
-				
 			}
 		}
+		
 		deleteObject(bitmapHandle);
 	}
 	
