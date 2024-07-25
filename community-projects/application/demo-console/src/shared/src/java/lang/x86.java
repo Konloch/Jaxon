@@ -8,13 +8,6 @@ package java.lang;
  */
 public class x86
 {
-	// Opcodes
-	public static final int NOP = 0x90;
-	public static final int JMP = 0xEB;
-	public static final int CALL = 0xE8;
-	public static final int PUSH = 0xFF;
-	public static final int RET = 0xC3;
-	
 	// ModRM bytes
 	public static final int MODRM_RM = 0x40;
 	public static final int REG_CALL = 0x10;
@@ -76,6 +69,7 @@ public class x86
 	
 	
 	//Push instructions
+	public static final int PUSH = 0xFF;
 	public static final int PUSH_IMMEDIATE_BYTE = 0x6A;
 	public static final int PUSH_IMMEDIATE_WORD = 0x68;
 	public static final int PUSH_IMMEDIATE_DWORD = 0xFF;
