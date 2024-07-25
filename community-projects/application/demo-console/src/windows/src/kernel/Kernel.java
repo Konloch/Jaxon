@@ -1,6 +1,7 @@
 package kernel;
 
 import app.AppEntry;
+import kernel.windows.Win32;
 import kernel.windows.WinSystem;
 
 /**
@@ -12,5 +13,7 @@ public class Kernel
 	{
 		System._system = new WinSystem();
 		AppEntry.start(System._system.getCommandLineArgs());
+		Win32.showMessageBox("Test", "test");
+		//Win32.testSetMemoryAddress();
 	}
 }

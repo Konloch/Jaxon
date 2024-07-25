@@ -71,10 +71,10 @@ public class DynamicRuntime
 		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x40);                   //push flProtect (READ_WRITE)
 		MAGIC.inline(x86.PUSH_IMMEDIATE_WORD);
 		MAGIC.inline32(0x1000);                          //push flAllocationType (MEM_COMMIT)
-		MAGIC.inline(x86.CALL_NEAR, 0x75);
+		MAGIC.inline(x86.PUSH, 0x75);
 		MAGIC.inlineOffset(1, size);                         //push [ebp+8] (size)
 		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                   //push lpAddress (0)
-		MAGIC.inline(x86.CALL_NEAR, 0x15);
+		MAGIC.inline(x86.PUSH, 0x15);
 		MAGIC.inline32(_Kernel_VirtualAlloc);                //call
 		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45);
 		MAGIC.inlineOffset(1, result);                       //mov [ebp-4],eax
@@ -232,7 +232,7 @@ public class DynamicRuntime
 	public static void rtError()
 	{
 		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0xFF);         //push byte -1 (error code)
-		MAGIC.inline(x86.CALL_NEAR, 0x15);
+		MAGIC.inline(x86.PUSH, 0x15);
 		MAGIC.inline32(_Kernel_ExitProcess);                //call
 	}
 }

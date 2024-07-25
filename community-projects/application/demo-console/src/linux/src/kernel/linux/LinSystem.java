@@ -22,11 +22,11 @@ public class LinSystem extends System
 		
 		// Get the address of the argv array
 		MAGIC.inline(0x8B, 0x45, 0x08); // mov eax, [ebp+8]
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-12 => address of path
 		
 		// Get the value of argc
 		MAGIC.inline(0x8B, 0x45, 0x0C); // mov eax, [ebp+12]
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-12 => address of path
 		
 		String[] args = new String[argc];
 		

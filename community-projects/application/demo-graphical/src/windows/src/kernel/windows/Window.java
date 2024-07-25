@@ -167,12 +167,15 @@ public class Window
 				break;
 			case WM_PAINT:
 				hdc = beginPaint(windowHandle, ps); //fills PAINTSTRUCT ps with update region
+				
 				xLeft = ps.rcPaint.left;
 				if (XRES < (xRight = ps.rcPaint.right))
 					xRight = XRES;
+				
 				yTop = ps.rcPaint.top;
 				if (linesDone < (yBottom = ps.rcPaint.bottom))
 					yBottom = linesDone;
+				
 				hdcMem = createCompatibleDC(hdc);
 				oldBitmap = selectObject(hdcMem, bitmapHandle);
 				bitBlt(hdc, xLeft, yTop, xRight - xLeft, yBottom - yTop, hdcMem, xLeft, yTop, 0xCC0020);
@@ -355,6 +358,7 @@ public class Window
 		MAGIC.inline(0x6A, 0x00); // push byte 0  y
 		MAGIC.inline(0x6A, 0x00); // push byte 0  x
 		MAGIC.inline(0x68, 0x00, 0x00, 0x8A, 0x10); // push dword 0x108A0000
+		
 		// WS_BORDER, WS_VISIBLE,
 		// WS_SYSTEM, WS_MINIMIZEBOX
 		MAGIC.inline(0xFF, 0x75);

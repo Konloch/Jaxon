@@ -63,12 +63,12 @@ public class Win32
 		
 		// call LoadLibrary from kernel32.dll
 		handle = MAGIC.addr(buffer[0]);
-		MAGIC.inline(0xFF, 0x75, 0xFC);                        //push dword [ebp-4]
-		MAGIC.inline(0xFF, 0x15);
-		MAGIC.inline32(rte.DynamicRuntime._Kernel_LoadLibraryA); //call LoadLibrary
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_4);  //push dword [ebp-4]
+		MAGIC.inline(x86.PUSH, 0x15);
+		MAGIC.inline32(rte.DynamicRuntime._Kernel_LoadLibraryA);                                    //call LoadLibrary
 		
 		// save to handle
-		MAGIC.inline(0x89, 0x45, 0xFC); //mov [ebp-4],eax
+		MAGIC.inline(0x89, 0x45, 0xFC);                                                             //mov [ebp-4],eax
 		
 		return handle;
 	}
@@ -92,13 +92,13 @@ public class Win32
 		
 		// call GetProcAddress
 		procAddr = MAGIC.addr(buffer[0]);
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xFC);  // push dword [ebp-4] (==addr)
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0x0C);  // push dword [ebp+12] (==handle)
-		MAGIC.inline(x86.CALL_NEAR, 0x15);
-		MAGIC.inline32(rte.DynamicRuntime._Kernel_GetProcAddress); // call getProcAddress
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_4);  // push dword [ebp-4] (==addr)
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_PLUS_12);  // push dword [ebp+12] (==handle)
+		MAGIC.inline(x86.PUSH, 0x15);
+		MAGIC.inline32(rte.DynamicRuntime._Kernel_GetProcAddress);                                  // call getProcAddress
 		
 		// save result to procAddr
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45, 0xFC);  // mov [ebp-4],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45,  x86.EBP_MINUS_4);                        // mov [ebp-4],eax
 		
 		return procAddr;
 	}
@@ -161,27 +161,27 @@ public class Win32
 		addrTitle = MAGIC.addr(buffer[0]);
 		
 		// call MessageBoxW
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);  // push byte 0 => uType==MB_OK
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF0); // push dword [ebp-16 => address of caption
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12] => address of text
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);  // push byte 0 => parent==null
-		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                                                    // push byte 0 => uType==MB_OK
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_16);     // push dword [ebp-16 => address of caption
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12);     // push dword [ebp-12] => address of text
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                                                    // push byte 0 => parent==null
+		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);                                                        // call function
 	}
 	
 	public static void print(int c)
 	{
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                            //push byte 0 (no overlap)
-		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0xFC);     //lea eax,[ebp-4] (address of result)
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                            // push byte 0 (no overlap)
+		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_RM | x86.REG_EBP, x86.EBP_MINUS_4);     // lea eax,[ebp-4] (address of result)
 		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
-		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x01);                            //push byte 1 (single character)
-		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_REGISTER, 0x08);     //lea eax,[ebp+8] (address of string)
-		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    //push eax
+		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x01);                            // push byte 1 (single character)
+		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, x86.MODRM_RM | x86.REG_EBP, x86.EBP_PLUS_8);     // lea eax,[ebp+8] (address of string)
+		MAGIC.inline(x86.PUSH_REGISTER_EAX);                                    // push eax
 		
 		//Push handle for standard output
-		MAGIC.inline(x86.CALL_NEAR, 0x35); MAGIC.inline32(rte.DynamicRuntime._hndStdOut);
+		MAGIC.inline(x86.PUSH, 0x35); MAGIC.inline32(rte.DynamicRuntime._hndStdOut);
 		
 		//Call WriteFile function
-		MAGIC.inline(x86.CALL_NEAR, 0x15); MAGIC.inline32(rte.DynamicRuntime._Kernel_WriteFile);
+		MAGIC.inline(x86.PUSH, 0x15); MAGIC.inline32(rte.DynamicRuntime._Kernel_WriteFile);
 	}
 	
 	public static boolean createDirectory(String path)
@@ -205,8 +205,8 @@ public class Win32
 		addrPath = MAGIC.addr(buffer[0]);
 		
 		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00); //PUSH lpSecurityAttributes (NULL)
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
-		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.PUSH, 0x55, 0xF8); // call function
 		
 		return true;
 	}
@@ -231,8 +231,8 @@ public class Win32
 		
 		addrPath = MAGIC.addr(buffer[0]);
 		
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
-		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.PUSH, 0x55, 0xF8); // call function
 		
 		return true;
 	}
@@ -257,8 +257,8 @@ public class Win32
 		
 		addrPath = MAGIC.addr(buffer[0]);
 		
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-12 => address of path
-		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.PUSH, 0x55, 0xF8); // call function
 		
 		return true;
 	}
@@ -288,14 +288,92 @@ public class Win32
 		addrNewPath = MAGIC.addr(buffer[0]);
 		
 		// call MoveFileA
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF4); // push dword [ebp-16 => address of new path
-		MAGIC.inline(x86.CALL_NEAR, 0x75, 0xF0); // push dword [ebp-12] => address of old path
-		MAGIC.inline(x86.CALL_NEAR, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-16 => address of new path
+		MAGIC.inline(x86.PUSH, 0x75, 0xF0); // push dword [ebp-12] => address of old path
+		MAGIC.inline(x86.PUSH, 0x55, 0xF8); // call function
 		
 		// save results to handleDLL
 		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45, 0xF0);  // mov [ebp-4],eax
 		
 		// assuming that if EAX is 0, the function failed
 		return addrNewPath != 0;
+	}
+	
+	public static boolean setMemoryAddress(int address, int value)
+	{
+		int handleDLL = loadLibrary("kernel32.dll"); /*-4*/
+		int fctAddress = loadFunction(handleDLL, "WriteProcessMemory"); /*ebp-8*/
+		int addrAddress; /*ebp-12*/
+		int addrValue; /*ebp-16*/
+		int processHandle = -1; /*ebp-20*/
+		int bytesWritten = 0; /*ebp-24*/
+		
+		if (fctAddress == 0)
+			throw new RuntimeException("Failed to load WriteProcessMemory function.");
+		
+		if (address == 0)
+			throw new NullPointerException("Address is null");
+		
+		// get the current process handle
+		processHandle = loadFunction(handleDLL, "GetCurrentProcess");
+		
+		// set addresses of strings
+		addrAddress = address;
+		addrValue = value;
+		
+		// call WriteProcessMemory
+		MAGIC.inline(x86.PUSH, 0x75, 0xE4); // push dword [ebp-24] => bytes written
+		MAGIC.inline(x86.PUSH, 0x75, 0xE8); // push dword [ebp-20] => process handle
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-16] => value
+		MAGIC.inline(x86.PUSH, 0x75, 0xE0); // push dword [ebp-12] => address
+		MAGIC.inline(x86.PUSH, 0x55, 0xF8); // call function
+		
+		// save results to bytesWritten
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45, 0xF0);  // mov [ebp-24],eax
+		
+		// assuming that if EAX is 0, the function failed
+		return bytesWritten != 0;
+	}
+	
+	public static void testSetMemoryAddress()
+	{
+		int handleDLL = loadLibrary("kernel32.dll");
+		int handleMSVCRT = loadLibrary("msvcrt.dll");
+		
+		// allocate a block of memory
+		int allocAddress = loadFunction(handleMSVCRT, "malloc");
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-4] => size
+		MAGIC.inline(x86.PUSH, 0x55, 0xF8); // call function
+		int allocatedAddress = MAGIC.addr(buffer[0]);
+		
+		// set a value at a specific address within the allocated block
+		int setValue = 0x12345678;
+		int setAddress = allocatedAddress + 4;
+		setMemoryAddress(setAddress, setValue);
+		
+		// read the value at the same address
+		int bytesRead = 0;
+		int readValue = 0;
+		int readAddress = setAddress;
+		int processHandle = loadFunction(handleDLL, "GetCurrentProcess");
+		int readFunction = loadFunction(handleDLL, "ReadProcessMemory");
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-24] => bytes read
+		MAGIC.inline(x86.PUSH, 0x75, 0xF0); // push dword [ebp-20] => process handle
+		MAGIC.inline(x86.PUSH, 0x75, 0xEC); // push dword [ebp-16] => value
+		MAGIC.inline(x86.PUSH, 0x75, 0xE8); // push dword [ebp-12] => address
+		MAGIC.inline(x86.PUSH, 0x55, 0xF8); // call function
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45, 0xF0);  // mov [ebp-24],eax
+		readValue = MAGIC.addr(buffer[0]);
+		
+		// compare the read value with the original value
+		if (readValue == setValue)
+			System.out.println("setMemoryAddress function worked correctly!");
+		else
+			System.out.println("setMemoryAddress function failed!");
+		
+		// free the allocated memory
+		int freeAddress = loadFunction(handleMSVCRT, "free");
+		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-4] => address
+		MAGIC.inline(x86.PUSH, 0x55, 0xF8); // call function
 	}
 }
