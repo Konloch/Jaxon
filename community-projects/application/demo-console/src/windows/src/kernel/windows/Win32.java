@@ -75,7 +75,7 @@ public class Win32
 		MAGIC.inline32(rte.DynamicRuntime._Kernel_LoadLibraryA);                                    //call LoadLibrary
 		
 		// save to handle
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, 0xFC);             //mov [ebp-4],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, x86.EBP_MINUS_4);   //mov [ebp-4],eax
 		
 		return handle;
 	}
@@ -169,10 +169,10 @@ public class Win32
 		
 		// call MessageBoxW
 		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                                                    // push byte 0 => uType==MB_OK
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_16);     // push dword [ebp-16 => address of caption
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_16);     // push dword [ebp-16] => address of caption
 		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12);     // push dword [ebp-12] => address of text
 		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                                                    // push byte 0 => parent==null
-		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);                                                        // call function
+		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, x86.EBP_MINUS_8);        // call function
 	}
 	
 	public static void print(int c)
@@ -212,8 +212,8 @@ public class Win32
 		addrPath = MAGIC.addr(buffer[0]);
 		
 		MAGIC.inline(x86.PUSH_IMMEDIATE_BYTE, 0x00);                                                //PUSH lpSecurityAttributes (NULL)
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12 => address of path
-		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12] => address of path
+		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, x86.EBP_MINUS_8);    // call function
 		
 		return true;
 	}
@@ -238,8 +238,8 @@ public class Win32
 		
 		addrPath = MAGIC.addr(buffer[0]);
 		
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12 => address of path
-		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12] => address of path
+		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, x86.EBP_MINUS_8);    // call function
 		
 		return true;
 	}
@@ -264,8 +264,8 @@ public class Win32
 		
 		addrPath = MAGIC.addr(buffer[0]);
 		
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12 => address of path
-		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12] => address of path
+		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, x86.EBP_MINUS_8);    // call function
 		
 		return true;
 	}
@@ -295,12 +295,12 @@ public class Win32
 		addrNewPath = MAGIC.addr(buffer[0]);
 		
 		// call MoveFileA
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12 => address of new path
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12] => address of new path
 		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_16); // push dword [ebp-16] => address of old path
-		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
+		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, x86.EBP_MINUS_8);    // call function
 		
 		// save results to handleDLL
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, 0xF0);              // mov [ebp-4],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, x86.EBP_MINUS_16);  // mov [ebp-16],eax
 		
 		// assuming that if EAX is 0, the function failed
 		return addrNewPath != 0;
@@ -329,14 +329,14 @@ public class Win32
 		addrValue = value;
 		
 		// call WriteProcessMemory
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_28); // push dword [ebp-24] => bytes written
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_24); // push dword [ebp-20] => process handle
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-16] => value
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_32); // push dword [ebp-12] => address
-		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_28); // push dword [ebp-28] => bytes written
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_24); // push dword [ebp-24] => process handle
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12] => value
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_32); // push dword [ebp-32] => address
+		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, x86.EBP_MINUS_8);    // call function
 		
 		// save results to bytesWritten
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, 0xF0);              // mov [ebp-24],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, x86.EBP_MINUS_16);  // mov [ebp-16],eax
 		
 		// assuming that if EAX is 0, the function failed
 		return bytesWritten != 0;
@@ -364,12 +364,12 @@ public class Win32
 		int readAddress = setAddress;
 		int processHandle = loadFunction(handleDLL, "GetCurrentProcess");
 		int readFunction = loadFunction(handleDLL, "ReadProcessMemory");
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-24] => bytes read
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_16); // push dword [ebp-20] => process handle
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_20); // push dword [ebp-16] => value
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_24); // push dword [ebp-12] => address
-		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, 0xF0);              // mov [ebp-24],eax
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12] => bytes read
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_16); // push dword [ebp-16] => process handle
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_20); // push dword [ebp-20] => value
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_24); // push dword [ebp-24] => address
+		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, x86.EBP_MINUS_8);    // call function
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, x86.EBP_MINUS_16);  // mov [ebp-16],eax
 		readValue = MAGIC.addr(buffer[0]);
 		
 		// compare the read value with the original value
@@ -380,7 +380,7 @@ public class Win32
 		
 		// free the allocated memory
 		int freeAddress = loadFunction(handleMSVCRT, "free");
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-4] => address
-		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12] => address
+		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, x86.EBP_MINUS_8);    // call function
 	}
 }
