@@ -295,8 +295,8 @@ public class Win32
 		addrNewPath = MAGIC.addr(buffer[0]);
 		
 		// call MoveFileA
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12] => address of new path
-		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_16); // push dword [ebp-16] => address of old path
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12] => address of old path
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_16); // push dword [ebp-16] => address of new path
 		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, x86.EBP_MINUS_8);    // call function
 		
 		// save results to handleDLL
