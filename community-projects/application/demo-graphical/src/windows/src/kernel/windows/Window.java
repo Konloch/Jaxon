@@ -490,7 +490,7 @@ public class Window
 	private static int deleteObject;
 	
 	/**
-	 * Method starting the raytracer
+	 * Method starting the window
 	 */
 	public static void run()
 	{

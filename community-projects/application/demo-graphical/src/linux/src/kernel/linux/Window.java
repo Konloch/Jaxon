@@ -133,7 +133,7 @@ public class Window
 	public native static void XPutImage(int display, int window, int gc, int image, int srcX, int srcY, int dstX, int dstY, int width, int height);
 	
 	/**
-	 * Method starting the raytracer
+	 * Method starting the window
 	 */
 	public static void run()
 	{
