@@ -22,6 +22,10 @@ public class Win32
 		int argc = MAGIC.rMem32(rte.DynamicRuntime._cntParam);
 		int base = MAGIC.rMem32(rte.DynamicRuntime._ptrParam);
 		
+		//if arg count is only 1, don't read the params
+		if (argc < 2)
+			return new String[0];
+		
 		String[] args = new String[argc];
 		for (int i = 0; i < argc; i++)
 		{
@@ -38,7 +42,10 @@ public class Win32
 			args[i] = sb.toString();
 		}
 		
-		return args;
+		//shrink args so it skips the executable name
+		String[] argsNew = new String[argc-1];
+		Arrays.copy(args, 1, argsNew, 0, argsNew.length);
+		return argsNew;
 	}
 	
 	/**
@@ -68,7 +75,7 @@ public class Win32
 		MAGIC.inline32(rte.DynamicRuntime._Kernel_LoadLibraryA);                                    //call LoadLibrary
 		
 		// save to handle
-		MAGIC.inline(0x89, 0x45, 0xFC);                                                             //mov [ebp-4],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, 0xFC);             //mov [ebp-4],eax
 		
 		return handle;
 	}
@@ -98,7 +105,7 @@ public class Win32
 		MAGIC.inline32(rte.DynamicRuntime._Kernel_GetProcAddress);                                  // call getProcAddress
 		
 		// save result to procAddr
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45,  x86.EBP_MINUS_4);                        // mov [ebp-4],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP,  x86.EBP_MINUS_4);  // mov [ebp-4],eax
 		
 		return procAddr;
 	}
@@ -293,7 +300,7 @@ public class Win32
 		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
 		
 		// save results to handleDLL
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45, 0xF0);                                    // mov [ebp-4],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, 0xF0);              // mov [ebp-4],eax
 		
 		// assuming that if EAX is 0, the function failed
 		return addrNewPath != 0;
@@ -329,7 +336,7 @@ public class Win32
 		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
 		
 		// save results to bytesWritten
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45, 0xF0);                                    // mov [ebp-24],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, 0xF0);              // mov [ebp-24],eax
 		
 		// assuming that if EAX is 0, the function failed
 		return bytesWritten != 0;
@@ -362,7 +369,7 @@ public class Win32
 		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_20); // push dword [ebp-16] => value
 		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_24); // push dword [ebp-12] => address
 		MAGIC.inline(x86.CALL_NEAR, x86.MODRM_RM | x86.REG_CALL | x86.REG_EBP, 0xF8);               // call function
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0x45, 0xF0);                                    // mov [ebp-24],eax
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, 0xF0);              // mov [ebp-24],eax
 		readValue = MAGIC.addr(buffer[0]);
 		
 		// compare the read value with the original value
