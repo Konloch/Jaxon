@@ -29,7 +29,7 @@ public class Jaxon
 		
 		if (command.equalsIgnoreCase("sjc") && args.length > 2)
 			SJCUtil.sjcJaxon(args);
-		else if (command.equalsIgnoreCase("sjc-env") && args.length > 2)
+		else if (command.equalsIgnoreCase("sjc-env") && args.length > 4)
 			SJCUtil.sjcJaxonEnvironment(args);
 		else if (command.equalsIgnoreCase("build") && args.length > 2)
 			BuildUtil.buildCLI(args);
