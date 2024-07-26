@@ -26,49 +26,81 @@ public class BuildUtil
 		if (buildScript.equalsIgnoreCase("win-exe"))
 		{
 			setupEnv("native");
-			SJCUtil.sjcCLI(merge(new String[]{"-s", "512k", "-a", "4198912", "-l", "-o", "boot", "-O", "#exe"}, dirs));
+			SJCUtil.sjcCLI(merge(new String[]{
+					"-s", "512k",
+					"-a", "4198912",
+					"-o", "boot",
+					"-O", "#exe",
+					"-l"}, dirs));
 			exportBuild("OUT_WIN.EXE", "build/windows/build.exe");
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
 		else if (buildScript.equalsIgnoreCase("win-app"))
 		{
 			setupEnv("native");
-			SJCUtil.sjcCLI(merge(new String[]{"-s", "512k", "-a", "4198912", "-l", "-o", "boot", "-O", "#win"}, dirs));
+			SJCUtil.sjcCLI(merge(new String[]{
+					"-s", "512k",
+					"-a", "4198912",
+					"-o", "boot",
+					"-O", "#win",
+					"-l"}, dirs));
 			exportBuild("OUT_WIN.EXE", "build/windows/" + buildName + ".exe");
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
 		else if (buildScript.equalsIgnoreCase("lin"))
 		{
 			setupEnv("native");
-			SJCUtil.sjcCLI(merge(new String[]{"-s", "512k", "-a", "1049008", "-l", "-o", "boot", "-O", "#lin"}, dirs));
+			SJCUtil.sjcCLI(merge(new String[]{
+					"-s", "512k",
+					"-a", "1049008",
+					"-o", "boot",
+					"-O", "#lin",
+					"-l"}, dirs));
 			exportBuild("OUT_LIN.O", "build/linux/" + buildName);
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
 		else if (buildScript.equalsIgnoreCase("llb"))
 		{
 			setupEnv("native");
-			SJCUtil.sjcCLI(merge(new String[]{"-s", "512k", "-a", "1049008", "-l", "-o", "boot", "-O", "#llb"}, dirs));
+			SJCUtil.sjcCLI(merge(new String[]{
+					"-s", "512k",
+					"-a", "1049008",
+					"-o", "boot",
+					"-O", "#llb",
+					"-l"}, dirs));
 			exportBuild("OUT_LIN.O", "build/linux/" + buildName);
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
 		else if (buildScript.equalsIgnoreCase("atmega"))
 		{
 			setupEnv("atmega");
-			SJCUtil.sjcCLI(merge(new String[]{"-t", "atmega", "-L", "-P", "batmel32.bin", "-y", "-e", "0x60", "-E", "-a", "0", "-o", "boot", "-B", "-C", "-k"}, dirs));
+			SJCUtil.sjcCLI(merge(new String[]{
+					"-t", "atmega",
+					"-P", "batmel32.bin",
+					"-e", "0x60",
+					"-o", "boot",
+					"-a", "0",
+					"-y", "-L", "-E", "-B", "-C", "-k"}, dirs));
 			exportBuild("BOOT_ATM.HEX", "build/atmega/" + buildName + ".hex");
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
 		else if (buildScript.equalsIgnoreCase("os-32"))
 		{
 			setupEnv("operating-system");
-			SJCUtil.sjcCLI(merge(new String[]{"-t", "ia32", "-o", "boot", "-O", "#floppy32"}, dirs));
+			SJCUtil.sjcCLI(merge(new String[]{
+					"-t", "ia32",
+					"-o", "boot",
+					"-O", "#floppy32"}, dirs));
 			exportBuild("BOOT_FLP.IMG", "build/operating-system/" + buildName + ".img");
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
 		else if (buildScript.equalsIgnoreCase("os-64"))
 		{
 			setupEnv("operating-system");
-			SJCUtil.sjcCLI(merge(new String[]{"-t", "amd64", "-o", "boot", "-O", "#floppy64"}, dirs));
+			SJCUtil.sjcCLI(merge(new String[]{
+					"-t", "amd64",
+					"-o", "boot",
+					"-O", "#floppy64"}, dirs));
 			exportBuild("BOOT_FLP.IMG", "build/operating-system/" + buildName + ".img");
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
