@@ -1,1 +1,1 @@
-"C:\msys64\mingw32\bin\qemu-system-x86_64.exe" -serial stdio -boot a -fda build\operating-system\build.img
+qemu-system-x86_64 -serial stdio -boot a -fda build\operating-system\build.img
