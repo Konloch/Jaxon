@@ -18,3 +18,5 @@ dependency-reduced-pom.xml
 build.exe.bat
 build.exe.init.bat
 build.exe.post.bat
+build.jar.bat
+build.jar.install.bat
