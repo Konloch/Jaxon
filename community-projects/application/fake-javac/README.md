@@ -8,5 +8,5 @@ This is used in the Jaxon-Blank-JDK to make Intellij work with a JDK that contai
 	+ Note: 'app' won't have console output
 
 # How To Run
-+ Build files will output at `build/windows/build.exe` and `build/linux.build`
++ Build files will output at `build/windows/build.exe` and `build/linux/build`
 + Run them like you would a normal program `./build`

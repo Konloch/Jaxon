@@ -8,7 +8,7 @@ Displays a window on Linux and Windows
 	+ Note: 'app' won't have console output
 
 # How To Run
-+ Build files will output at `build/windows/build.exe` and `build/linux.build`
++ Build files will output at `build/windows/build.exe` and `build/linux/build`
 + Run them like you would a normal program `./build`
 
 # Notes
