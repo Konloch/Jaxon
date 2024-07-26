@@ -9,6 +9,7 @@ import jaxon.version.VersionUtil;
 import jaxon.zip.ZipUtil;
 
 import java.io.*;
+import java.util.Arrays;
 
 /**
  * @author Konloch
@@ -28,16 +29,29 @@ public class Jaxon
 		
 		if (command.equalsIgnoreCase("sjc") && args.length > 2)
 		{
-			int newArgumentsLength = args.length - 1;
-			String[] trimmedArgs = new String[newArgumentsLength];
-			int i;
-			for (i = 2; i < args.length; i++)
-			{
-				int normalizedIndex = i - 1;
-				trimmedArgs[normalizedIndex] = args[i];
-			}
+			String[] trimmedArgs = new String[args.length-1];
+			System.arraycopy(args, 1, trimmedArgs, 0, trimmedArgs.length);
+			SJCUtil.sjcCLI(SJCUtil.convertToAbsoluteFilePath(trimmedArgs));
+		}
+		else if (command.equalsIgnoreCase("sjc-env") && args.length > 2)
+		{
+			String env = args[1];
+			String input = args[2];
+			String output = args[3];
 			
+			String[] trimmedArgs = new String[args.length-4];
+			System.arraycopy(args, 4, trimmedArgs, 0, trimmedArgs.length);
+			trimmedArgs = SJCUtil.convertToAbsoluteFilePath(trimmedArgs);
+			
+			//setup env
+			BuildUtil.setupEnv(env);
+			
+			//run SJC
 			SJCUtil.sjcCLI(trimmedArgs);
+			
+			//export build files
+			BuildUtil.exportBuild(input, "build/operating-system/" + output);
+			BuildUtil.exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
 		else if (command.equalsIgnoreCase("build") && args.length > 2)
 			BuildUtil.buildCLI(args);
