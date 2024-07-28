@@ -10,7 +10,7 @@ public class WinSystem extends System
 {
 	public WinSystem()
 	{
-		platform = "Windows";
+		super("Windows");
 	}
 	
 	@Override

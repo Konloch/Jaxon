@@ -11,7 +11,7 @@ public class LinSystem extends System
 {
 	public LinSystem()
 	{
-		platform = "Linux";
+		super("Linux");
 	}
 	
 	@Override

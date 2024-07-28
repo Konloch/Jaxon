@@ -17,7 +17,12 @@ public abstract class System
 	
 	public static Out out = new Out();
 	
-	public static String platform;
+	public final String platform;
+	
+	protected System(String platform)
+	{
+		this.platform = platform;
+	}
 	
 	public abstract String[] getCommandLineArgs();
 	
