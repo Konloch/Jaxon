@@ -21,23 +21,27 @@ public class LinSystem extends System
 		int argv = 0;
 		
 		// Get the address of the argv array
-		MAGIC.inline(0x8B, 0x45, 0x08); // mov eax, [ebp+8]
-		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.MOVE_MEMORY_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, x86.EBP_PLUS_8);      // mov eax, [ebp+8]
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12 => address of path
 		
 		// Get the value of argc
-		MAGIC.inline(0x8B, 0x45, 0x0C); // mov eax, [ebp+12]
-		MAGIC.inline(x86.PUSH, 0x75, 0xF4); // push dword [ebp-12 => address of path
+		MAGIC.inline(x86.MOVE_MEMORY_TO_REGISTER, x86.MODRM_RM | x86.REG_EBP, x86.EBP_PLUS_12);     // mov eax, [ebp+12]
+		MAGIC.inline(x86.PUSH, x86.MODRM_RM | x86.REG_OPCODE_PUSH | x86.REG_EBP, x86.EBP_MINUS_12); // push dword [ebp-12 => address of path
 		
 		String[] args = new String[argc];
 		
-		for (int i = 0; i < argc; i++) {
+		for (int i = 0; i < argc; i++)
+		{
 			int addr = MAGIC.rMem32(argv + i * 4);
 			StringBuilder sb = new StringBuilder();
 			int c;
-			while ((c = MAGIC.rMem8(addr)) != 0) {
+			
+			while ((c = MAGIC.rMem8(addr)) != 0)
+			{
 				sb.append((char) c);
 				addr++;
 			}
+			
 			args[i] = sb.toString();
 		}
 		
@@ -101,14 +105,14 @@ public class LinSystem extends System
 	@Override
 	public void print(int c)
 	{
-		MAGIC.inline(x86.IMMEDIATE_DWORD, 0x04, 0x00, 0x00, 0x00);      //mov eax,4 (print string)
-		MAGIC.inline(x86.MOVE_IMMEDIATE_TO_REGISTER, 0x01, 0x00, 0x00, 0x00);                     //mov ebx,1 (handle for std-out)
-		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, 0x4D, 0x08);                          //lea ecx,[ebp+8] (address of string)
-		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0xDA);                            //mov edx,ebx (length of string: 1)
-		MAGIC.inline(x86.SYSCALL, 0x80);                                //call kernel
+		MAGIC.inline(x86.IMMEDIATE_DWORD, 0x04, 0x00, 0x00, 0x00);                  //mov eax,4 (print string)
+		MAGIC.inline(x86.MOVE_IMMEDIATE_TO_REGISTER, 0x01, 0x00, 0x00, 0x00);       //mov ebx,1 (handle for std-out)
+		MAGIC.inline(x86.LOAD_EFFECTIVE_ADDRESS, 0x4D, 0x08);                       //lea ecx,[ebp+8] (address of string)
+		MAGIC.inline(x86.MOVE_REGISTER_TO_REGISTER, 0xDA);                          //mov edx,ebx (length of string: 1)
+		MAGIC.inline(x86.SYSCALL, 0x80);                                            //call kernel
 		//sync for debugging
-		//MAGIC.inline(x86.IMMEDIATE_DWORD, 0x94, 0x00, 0x00, 0x00);                   //mov eax,148 (sync file)
-		//MAGIC.inline(x86.MOV_EBX_IMMEDIATE, 0x01, 0x00, 0x00, 0x00);                   //mov ebx,1 (handle for std-out)
-		//MAGIC.inline(x86.SYSCALL, 0x80);                                     //call kernel
+		//MAGIC.inline(x86.IMMEDIATE_DWORD, 0x94, 0x00, 0x00, 0x00);                //mov eax,148 (sync file)
+		//MAGIC.inline(x86.MOV_EBX_IMMEDIATE, 0x01, 0x00, 0x00, 0x00);              //mov ebx,1 (handle for std-out)
+		//MAGIC.inline(x86.SYSCALL, 0x80);                                          //call kernel
 	}
 }
