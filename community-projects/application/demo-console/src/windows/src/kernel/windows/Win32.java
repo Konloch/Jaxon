@@ -16,7 +16,7 @@ public class Win32
 	 * Length of the buffer
 	 */
 	private static final int BUFFER_LENGTH = 128;
-
+	
 	public static String[] getCommandLineArgs()
 	{
 		int argc = MAGIC.rMem32(rte.DynamicRuntime._cntParam);

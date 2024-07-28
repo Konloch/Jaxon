@@ -12,6 +12,8 @@ public class AppEntry
 			System.out.println(new StringBuilder("Arg: ").append(s));
 		
 		System.out.print(new StringBuilder("Hello world: ").append(args.length));
+		
+		//run test api
 		TestSystemAPI.testFileSystem();
 	}
 }
