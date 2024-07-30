@@ -4,7 +4,7 @@ import jaxon.build.BuildUtil;
 import jaxon.installer.Installer;
 import jaxon.jdk.JDKUtil;
 import jaxon.sjc.SJCUtil;
-import jaxon.systempath.SystemPathUtil;
+import jaxon.installer.SystemPathUtil;
 import jaxon.templates.TemplateUtil;
 import jaxon.version.VersionUtil;
 import jaxon.zip.ZipUtil;

@@ -1,7 +1,6 @@
 package jaxon.installer;
 
 import jaxon.jdk.JDKUtil;
-import jaxon.systempath.SystemPathUtil;
 
 import java.io.File;
 import java.io.IOException;

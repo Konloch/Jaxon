@@ -1,4 +1,4 @@
-package jaxon.systempath;
+package jaxon.installer;
 
 import java.io.File;
 import java.io.IOException;
