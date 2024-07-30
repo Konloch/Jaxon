@@ -27,19 +27,19 @@ public class Jaxon
 		
 		String command = args[0];
 		
-		if (command.equalsIgnoreCase("sjc") && args.length > 2)
+		if (command.equalsIgnoreCase("sjc") && args.length >= 2)
 			SJCUtil.sjcJaxon(args);
-		else if (command.equalsIgnoreCase("sjc-env") && args.length > 4)
+		else if (command.equalsIgnoreCase("sjc-env") && args.length >= 4)
 			SJCUtil.sjcJaxonEnvironment(args);
-		else if (command.equalsIgnoreCase("build") && args.length > 2)
+		else if (command.equalsIgnoreCase("build") && args.length >= 2)
 			BuildUtil.buildCLI(args);
-		else if (command.equalsIgnoreCase("template") && args.length > 2)
+		else if (command.equalsIgnoreCase("template") && args.length >= 2)
 			TemplateUtil.templateCLI(args);
-		else if (command.equalsIgnoreCase("zip") && args.length > 2)
+		else if (command.equalsIgnoreCase("zip") && args.length >= 2)
 			ZipUtil.zipCLI(args);
-		else if (command.equalsIgnoreCase("jdk") && args.length > 2)
+		else if (command.equalsIgnoreCase("jdk") && args.length >= 2)
 			JDKUtil.jdkCLI(args);
-		else if (command.equalsIgnoreCase("system-path") && args.length > 2)
+		else if (command.equalsIgnoreCase("system-path") && args.length >= 2)
 			SystemPathUtil.systemPathCLI(args);
 		else if (command.equalsIgnoreCase("install"))
 			Installer.install();
