@@ -35,6 +35,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + The templates contain the entire standard library, edit these as much as you want
     + One benefit is you are not restricted by the concept of precompiled libraries, you are always provided the source unless you are invoking a DLL
 + Templates also contain a versioning system, using the [package.list](https://raw.githubusercontent.com/Konloch/Jaxon/master/community-projects/package.list) you can view all the published versions of a template
+  + Using a template with a specific version: 'jaxon template console 0.1.0'
 
 ## Jaxon Templates
 + **Note** To use these templates use `jaxon template [name]` such as `jaxon template console`
