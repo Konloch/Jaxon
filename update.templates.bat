@@ -1,3 +1,0 @@
-cd src\jaxon\src\main\resources\templates
-jaxon zip ../../../../../../community-projects/application/demo-barebones barebones ../../../../../../community-projects/application/demo-console console ../../../../../../community-projects/application/demo-graphical graphical ../../../../../../community-projects/embedded/atmega atmega ../../../../../../community-projects/operating-system/picos operating-system-demo ../../../../../../community-projects/operating-system/hello-world operating-system-hello-world
-cd ../../../../../../

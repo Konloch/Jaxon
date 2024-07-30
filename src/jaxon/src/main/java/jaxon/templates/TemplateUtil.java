@@ -1,9 +1,11 @@
 package jaxon.templates;
 
-import jaxon.zip.ZipUtil;
-
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * @author Konloch
@@ -14,39 +16,84 @@ public class TemplateUtil
 	public static void templateCLI(String[] args) throws IOException
 	{
 		String template = args[1];
+		String version = args.length >= 3 ? args[2] : null;
+		boolean downloadLatest = version == null;
+		String[] packageList = readPackageList();
 		
-		if (template.equalsIgnoreCase("console"))
-			createTemplate("console");
-		else if (template.equalsIgnoreCase("graphical"))
-			createTemplate("graphical");
-		else if (template.equalsIgnoreCase("operating-system"))
-			createTemplate("operating-system-demo");
-		else if (template.equalsIgnoreCase("operating-system-hello-world"))
-			createTemplate("operating-system-hello-world");
-		else if (template.equalsIgnoreCase("atmega"))
+		String highestVersion = null;
+		String downloadURL = null;
+		for(String packageData : packageList)
 		{
-			createTemplate("atmega");
-			String warning = "WARNING: ATmega currently fails to build - this will need to be resolved";
-			System.err.println(warning);
-			System.out.println(warning);
+			String packageDataTrimmed = packageData.trim();
+			if(packageDataTrimmed.startsWith("#") || !packageDataTrimmed.contains("="))
+				continue;
+			
+			String[] packageInfo = packageData.split("=", 3);
+			if(packageInfo.length < 3)
+				continue;
+			
+			String packageName = packageInfo[0];
+			String packageVersion = packageInfo[1];
+			String packageURL = packageInfo[2];
+			
+			if(!packageName.equalsIgnoreCase(template))
+				continue;
+				
+			if(downloadLatest)
+			{
+				//compare versions
+				if(highestVersion == null || compare(highestVersion, packageVersion))
+				{
+					highestVersion = packageVersion;
+					downloadURL = packageURL;
+				}
+			}
+			else if(version.equalsIgnoreCase(packageVersion))
+				downloadURL = packageURL;
 		}
-		else if (template.equalsIgnoreCase("barebones"))
+		
+		if(downloadURL == null)
 		{
-			createTemplate("barebones");
-			String warning = "WARNING: You should instead use the template 'console' unless you know what you're doing";
-			System.err.println(warning);
-			System.out.println(warning);
+			if(!downloadLatest)
+				System.out.println("Could not find the template '" + template + "' with version `" + version + "`");
+			else
+				System.out.println("Could not find the template '" + template + "'");
+		}
+		else
+		{
+			File templateFile = new File(template);
+			GitHubAPICloneRepo.cloneRepo(templateFile,
+					downloadURL);
+			System.out.println("Finished downloading all resources.");
+			System.out.println("Open your new template using Intellij: " + templateFile.getAbsolutePath());
 		}
 	}
 	
-	public static void createTemplate(String path)
+	private static String[] readPackageList() throws IOException
 	{
-		if (ZipUtil.unzipFolder("/templates/" + path + ".zip", path))
+		URL url = new URL("https://raw.githubusercontent.com/Konloch/Jaxon/master/community-projects/package.list");
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		return new BufferedReader(new InputStreamReader(connection.getInputStream()))
+				.lines()
+				.toArray(String[]::new);
+	}
+	
+	private static boolean compare(String versionA, String versionB)
+	{
+		String[] aVersionParts = versionA.split("\\.");
+		String[] bVersionParts = versionB.split("\\.");
+		
+		for (int i = 0; i < 3; i++)
 		{
-			File location = new File(path);
-			System.out.println("Added the " + path + " template into " + location.getAbsolutePath());
-			System.out.println("Open that folder with your favorite Java IDE (Intellij is supported)");
-			System.out.println("Build using the build scripts provided by the templates");
+			int aPart = Integer.parseInt(aVersionParts[i]);
+			int bPart = Integer.parseInt(bVersionParts[i]);
+			
+			if (aPart > bPart)
+				return true;
+			else if (aPart < bPart)
+				return false;
 		}
+		
+		return false;
 	}
 }
