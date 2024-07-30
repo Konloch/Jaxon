@@ -6,5 +6,7 @@ graphical=0.1.0=https://github.com/Konloch/Jaxon/tree/375ae5b04462d777e4e3ab9cbe
 
 operating-system=0.1.0=https://github.com/Konloch/Jaxon/tree/375ae5b04462d777e4e3ab9cbe7b601709d2d816/community-projects/operating-system/picos
 
+operating-system-hello-world=0.1.0=https://github.com/Konloch/Jaxon/tree/375ae5b04462d777e4e3ab9cbe7b601709d2d816/community-projects/operating-system/hello-world
+
 atmega=0.0.1=https://github.com/Konloch/Jaxon/tree/8d6713cbaee635c843d450a0688f406440f0e953/community-projects/embedded/atmega
 
