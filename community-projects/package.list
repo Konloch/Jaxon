@@ -1,0 +1,10 @@
+console=0.1.0=https://github.com/Konloch/Jaxon/tree/1d4cd46e4271f50da639ef9faeb33bc429a3ffb4/community-projects/application/demo-console
+
+barebones=0.1.0=https://github.com/Konloch/Jaxon/tree/375ae5b04462d777e4e3ab9cbe7b601709d2d816/community-projects/application/demo-barebones
+
+graphical=0.1.0=https://github.com/Konloch/Jaxon/tree/375ae5b04462d777e4e3ab9cbe7b601709d2d816/community-projects/application/demo-graphical
+
+operating-system=0.1.0=https://github.com/Konloch/Jaxon/tree/375ae5b04462d777e4e3ab9cbe7b601709d2d816/community-projects/operating-system/picos
+
+atmega=0.0.1=https://github.com/Konloch/Jaxon/tree/8d6713cbaee635c843d450a0688f406440f0e953/community-projects/embedded/atmega
+
