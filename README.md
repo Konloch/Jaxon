@@ -81,7 +81,6 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
   + Add Jaxon to System-Path: `jaxon system-path add`
   + Remove Jaxon from System-Path: `jaxon system-path remove`
 + `sjc` - Access underlying SJC command-line
-  + If you end up needing to use this, open an issue on Github letting us know what command you used (We'll add it in the next update)
 + `zip` - Zip util for packaging Jaxon templates
 
 ## Java Differences
