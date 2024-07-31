@@ -24,7 +24,6 @@ public class KeyboardController
 	private static ALayout _layout;
 	
 	private static boolean _shiftPressed;
-	@SuppressWarnings("unused")
 	private static boolean _ctrlPressed;
 	private static boolean _altPressed;
 	private static boolean _capsLocked;

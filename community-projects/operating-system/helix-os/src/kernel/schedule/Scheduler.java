@@ -62,7 +62,7 @@ public class Scheduler
 	{
 		Logger.info("SCHED", "Starting Schedeuler");
 		
-		MemoryManager.EnableGarbageCollection();
+		MemoryManager.enableGarbageCollection();
 		Logger.info("SCHED", "Enabled Garbage Collection");
 		
 		MAGIC.inline(0x89, 0x2D);
@@ -84,8 +84,8 @@ public class Scheduler
 				
 			}
 			
-			if (MemoryManager.ShouldCollectGarbage())
-				MemoryManager.TriggerGarbageCollection();
+			if (MemoryManager.shouldCollectGarbage())
+				MemoryManager.triggerGarbageCollection();
 			
 			// x86.hlt();
 		}

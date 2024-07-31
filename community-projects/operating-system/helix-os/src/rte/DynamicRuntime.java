@@ -21,14 +21,14 @@ public class DynamicRuntime
 		Kernel.panic("Stack Overflow");
 	}
 	
-	static void nullException()
+	public static void nullException()
 	{
 		Kernel.panic("Null Pointer Exception");
 	}
 	
 	public static Object newInstance(int scalarSize, int relocEntries, SClassDesc type)
 	{
-		return MemoryManager.AllocateObject(scalarSize, relocEntries, type);
+		return MemoryManager.allocateObject(scalarSize, relocEntries, type);
 	}
 	
 	/*
@@ -44,7 +44,7 @@ public class DynamicRuntime
 		else
 			scS += length * entrySize; // Array mit skalaren Elementen
 		
-		SArray obj = (SArray) MemoryManager.AllocateObject(scS, rlE, MAGIC.clssDesc("SArray"));
+		SArray obj = (SArray) MemoryManager.allocateObject(scS, rlE, MAGIC.clssDesc("SArray"));
 		MAGIC.assign(obj.length, length);
 		MAGIC.assign(obj._r_dim, arrDim);
 		MAGIC.assign(obj._r_stdType, stdType);
@@ -55,20 +55,24 @@ public class DynamicRuntime
 	/*
 	 * Copied from SJC manual
 	 */
-	public static void newMultArray(SArray[] parent, int curLevel, int destLevel, int length, int arrDim, int entrySize, int stdType, Object unitType)
+	public static void newMultArray(SArray[] parent, int currentDimension, int destLevel, int length, int arrDim, int entrySize, int stdType, Object unitType)
 	{
-		int i; // temporäre Variable
-		if (curLevel + 1 < destLevel)
-		{ // es folgt noch mehr als eine Dimension
-			curLevel++; // aktuelle Dimension erhöhen
-			for (i = 0; i < parent.length; i++) // jedes Element mit Array befüllen
-				newMultArray((SArray[]) ((Object) parent[i]), curLevel, destLevel, length, arrDim, entrySize, stdType, unitType);
+		int temp;
+		
+		// more than one dimension follows
+		if (currentDimension + 1 < destLevel)
+		{
+			currentDimension++; // Increase current dimension
+			for (temp = 0; temp < parent.length; temp++) // fill each element with array
+				newMultArray((SArray[]) ((Object) parent[temp]), currentDimension, destLevel, length, arrDim, entrySize, stdType, unitType);
 		}
+		
+		// last dimension to be created
 		else
-		{ // letzte anzulegende Dimension
-			destLevel = arrDim - curLevel; // Zieldimension eines Elementes
-			for (i = 0; i < parent.length; i++) // jedes Element mit Zieltyp befüllen
-				parent[i] = newArray(length, destLevel, entrySize, stdType, unitType);
+		{
+			destLevel = arrDim - currentDimension; // Target dimension of an element
+			for (temp = 0; temp < parent.length; temp++) // fill each element with target type
+				parent[temp] = newArray(length, destLevel, entrySize, stdType, unitType);
 		}
 	}
 	
@@ -77,23 +81,37 @@ public class DynamicRuntime
 	 */
 	public static boolean isInstance(Object o, SClassDesc dest, boolean asCast)
 	{
+		// Check for zero
 		if (o == null)
-		{ // Prüfung auf null
+		{
+			// null may always be converted
 			if (asCast)
-				return true; // null darf immer konvertiert werden
-			return false; // null ist keine Instanz
+				return true;
+			
+			// null is not an instance
+			return false;
 		}
 		
-		SClassDesc check = o._r_type; // temporäre Variable // für weitere Vergleiche Objekttyp ermitteln
+		// for further comparisons Determine object type
+		SClassDesc check = o._r_type;
+		
+		// search for suitable class
 		while (check != null)
-		{ // suche passende Klasse
+		{
+			// suitable class found
 			if (check == dest)
-				return true; // passende Klasse gefunden
-			check = check.parent; // Elternklasse versuchen
+				return true;
+			
+			// Try parent class
+			check = check.parent;
 		}
+		
+		// Conversion error
 		if (asCast)
-			Kernel.panic("Conversion error"); // Konvertierungsfehler
-		return false; // Objekt passt nicht zu Klasse
+			Kernel.panic("Conversion error");
+		
+		// Object does not match class
+		return false;
 	}
 	
 	/*
@@ -101,20 +119,30 @@ public class DynamicRuntime
 	 */
 	public static SIntfMap isImplementation(Object o, SIntfDesc dest, boolean asCast)
 	{
+		// zero implements nothing
 		if (o == null)
-			return null; // null implementiert nichts
+			return null;
 		
+		// Determine the list of interface maps
 		SIntfMap check = o._r_type.implementations;
-		// Liste der Interface-Maps ermitteln
+		
+		// search for suitable interface
 		while (check != null)
-		{ // suche passendes Interface
+		{
+			// Interface found, deliver map
 			if (check.owner == dest)
-				return check; // Interface gefunden, Map liefern
-			check = check.next; // nächste Interface-Map versuchen
+				return check;
+			
+			// try next interface map
+			check = check.next;
 		}
+		
+		// Conversion error
 		if (asCast)
-			Kernel.panic("Conversion error");// Konvertierungsfehler
-		return null; // Objekt passt nicht zu Interface
+			Kernel.panic("Conversion error");
+		
+		// Object does not match interface
+		return null;
 	}
 	
 	/*
@@ -122,46 +150,74 @@ public class DynamicRuntime
 	 */
 	public static boolean isArray(SArray o, int stdType, Object unitType, int dim, boolean asCast)
 	{
-		// o ist eigentlich Object, Prüfung unten!
+		// o is actually Object, check below!
+		// Check for zero
 		if (o == null)
-		{ // Prüfung auf null
+		{
+			// null may always be converted
 			if (asCast)
-				return true; // null darf immer konvertiert werden
-			return false; // null ist keine Instanz
+				return true;
+			
+			// null is not an instance
+			return false;
 		}
+		
+		// Array check
 		if (o._r_type != MAGIC.clssDesc("SArray"))
-		{ // Array-Prüfung
+		{
 			if (asCast)
 				Kernel.panic("isArray: Conversion error");
-			return false; // kein Array
+			
+			// no Array
+			return false;
 		}
+		
+		// Special treatment for SArray
 		if (unitType == MAGIC.clssDesc("SArray"))
-		{ // Sonderbehandlung für SArray
+		{
+			// Array from SArray
 			if (o._r_unitType == MAGIC.clssDesc("SArray"))
-				dim--; // Array aus SArray
+				dim--;
+			
+			// Sufficient residual depth
 			if (o._r_dim > dim)
-				return true; // ausreichende Resttiefe
+				return true;
+			
 			if (asCast)
 				Kernel.panic("isArray: Conversion error");
-			return false; // kein SArray
+			
+			// no SArray
+			return false;
 		}
+		
+		// necessary conditions
 		if (o._r_stdType != stdType || o._r_dim < dim)
-		{ // notwendige Bedingungen
+		{
 			if (asCast)
 				Kernel.panic("isArray: Conversion error");
-			return false; // Array mit nicht passenden Elementen
+			
+			// Array with non-matching elements
+			return false;
 		}
+		
+		// Array of basic types
 		if (stdType != 0)
-		{ // Array aus Basistypen
+		{
+			// suitable depth
 			if (o._r_dim == dim)
-				return true; // passende Tiefe
+				return true;
+			
 			if (asCast)
 				Kernel.panic("isArray: Conversion error");
-			return false; // Array nicht mit passenden Elementen
+			
+			// Array not with matching elements
+			return false;
 		}
-		// Typ-Prüfung erforderlich
+		
+		// Type test required
 		if (o._r_unitType._r_type == MAGIC.clssDesc("SClassDesc"))
-		{ // Instanzen
+		{
+			// Instances
 			SClassDesc clss = (SClassDesc) o._r_unitType;
 			while (clss != null)
 			{
@@ -170,13 +226,14 @@ public class DynamicRuntime
 				clss = clss.parent;
 			}
 		}
-		else
-		{ // Interfaces nicht unterstützt
+		else // Interfaces not supported
 			Kernel.panic("isArray: Interface not supported");
-		}
+		
 		if (asCast)
 			Kernel.panic("isArray: Conversion error");
-		return false; // Array mit nicht passenden Elementen
+		
+		// Array with non-matching elements
+		return false;
 	}
 	
 	/*
@@ -184,15 +241,19 @@ public class DynamicRuntime
 	 */
 	public static void checkArrayStore(SArray dest, SArray newEntry)
 	{
-		// newEntry ist eigentlich Object", die Prüfung muss in isArray erfolgen!
+		// newEntry is actually “Object”, the check must be carried out in isArray!
+		
+		// Check the array via isArray, if the dimension of the target array is greater than 1
 		if (dest._r_dim > 1)
-			isArray(newEntry, dest._r_stdType, dest._r_unitType, dest._r_dim - 1, true); // Prüfung des Arrays über isArray,
-			// falls Dimension des Zielarrays größer 1 ist
+			isArray(newEntry, dest._r_stdType, dest._r_unitType, dest._r_dim - 1, true);
+			
+		// Assignment error, if target array off has no reloc elements
 		else if (dest._r_unitType == null)
-			Kernel.panic("Zuweisungsfehler"); // Zuweisungsfehler,
-			// falls Zielarray aus keine Reloc-Elemente hat
+			Kernel.panic("Zuweisungsfehler");
+			
+		// Instance check in all other cases
 		else
-		{ // Instanz-Prüfung in allen anderen Fällen
+		{
 			if (dest._r_unitType._r_type == MAGIC.clssDesc("SClassDesc"))
 				isInstance(newEntry, (SClassDesc) dest._r_unitType, true);
 			else

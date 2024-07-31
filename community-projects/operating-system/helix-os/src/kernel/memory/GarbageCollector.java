@@ -11,67 +11,67 @@ public class GarbageCollector
 	
 	private static int _gcCylce = 0;
 	
-	public static int InfoLastRunCollectedBytes = 0;
-	public static int InfoLastRunCollectedObjects = 0;
-	public static int InfoLastRunCompactedEmptyObjects = 0;
-	public static int InfoLastRunTimeMs = 0;
+	public static int infoLastRunCollectedBytes = 0;
+	public static int infoLastRunCollectedObjects = 0;
+	public static int infoLastRunCompactedEmptyObjects = 0;
+	public static int infoLastRunTimeMs = 0;
 	
-	public static void Initialize()
+	public static void initialize()
 	{
 		if (_isInitialized)
-		{
 			return;
-		}
+		
 		_isInitialized = true;
 		Logger.info("GC", "Initialized");
 	}
 	
-	public static boolean IsInitialized()
+	public static boolean isInitialized()
 	{
 		return _isInitialized;
 	}
 	
-	public static void Run()
+	public static void run()
 	{
 		int startT = Timer.ticks();
 		
-		int objects = ResetMark();
-		MarkFromStaticRoots();
+		int objects = resetMark();
+		markFromStaticRoots();
 		// MarkFromStack();
-		InfoLastRunCollectedBytes = Sweep();
-		MemoryManager.InvalidateLastAlloc();
-		InfoLastRunCompactedEmptyObjects = CompactIfNeeded();
-		InfoLastRunCollectedObjects = objects - MemoryManager.GetObjectCount();
+		infoLastRunCollectedBytes = sweep();
+		MemoryManager.invalidateLastAlloc();
+		infoLastRunCompactedEmptyObjects = compactIfNeeded();
+		infoLastRunCollectedObjects = objects - MemoryManager.getObjectCount();
 		
 		int endT = Timer.ticks();
-		InfoLastRunTimeMs = Timer.ticksToMs(endT - startT);
+		infoLastRunTimeMs = Timer.ticksToMs(endT - startT);
 		_gcCylce++;
 	}
 	
-	private static int CompactIfNeeded()
+	private static int compactIfNeeded()
 	{
-		if (ShouldCompact())
-		{
-			return MemoryManager.CompactEmptyObjects();
-		}
+		if (shouldCompact())
+			return MemoryManager.compactEmptyObjects();
+		
 		return 0;
 	}
 	
-	private static boolean ShouldCompact()
+	private static boolean shouldCompact()
 	{
 		return _gcCylce % 1 == 0;
 	}
 	
-	private static int ResetMark()
+	private static int resetMark()
 	{
 		int objects = 0;
-		Object o = MemoryManager.GetStaticAllocRoot();
+		Object o = MemoryManager.getStaticAllocRoot();
+		
 		while (o != null)
 		{
 			o.markUnused();
 			o = o._r_next;
 			objects++;
 		}
+		
 		return objects;
 	}
 	
@@ -80,8 +80,7 @@ public class GarbageCollector
 	 * This causes some issues atm so its basically ignored by only calling the gc
 	 * in situations where the stack is not used.
 	 */
-	@SuppressWarnings("unused")
-	private static void MarkFromStack()
+	private static void markFromStack()
 	{
 		// TODO: Push all registers to stack
 		int varAtTopOfStack = 0;
@@ -89,51 +88,46 @@ public class GarbageCollector
 		for (int i = MemoryLayout.PROGRAM_STACK_COMPILER_TOP; i > scanUntil; i -= MAGIC.ptrSize)
 		{
 			int mem = MAGIC.rMem32(i);
-			if (PointsToHeap(mem))
+			if (pointsToHeap(mem))
 			{
 				Object o = MAGIC.cast2Obj(mem);
-				MarkRecursive(o);
+				markRecursive(o);
 			}
 		}
 	}
 	
 	// brute force ftw
-	private static boolean PointsToHeap(int addr)
+	private static boolean pointsToHeap(int addr)
 	{
-		Object o = MemoryManager.GetStaticAllocRoot();
+		Object o = MemoryManager.getStaticAllocRoot();
 		while (o != null)
 		{
 			if (MAGIC.cast2Ref(o) == addr)
-			{
 				return true;
-			}
+			
 			o = o._r_next;
 		}
 		return false;
 	}
 	
-	private static void MarkFromStaticRoots()
+	private static void markFromStaticRoots()
 	{
-		Object end = MemoryManager.GetDynamicAllocRoot();
-		Object o = MemoryManager.GetStaticAllocRoot();
+		Object end = MemoryManager.getDynamicAllocRoot();
+		Object o = MemoryManager.getStaticAllocRoot();
 		while (o != end)
 		{
-			MarkRecursive(o);
+			markRecursive(o);
 			o = o._r_next;
 		}
 	}
 	
-	private static void MarkRecursive(Object o)
+	private static void markRecursive(Object o)
 	{
 		if (o == null || o.isMarked())
-		{
 			return;
-		}
 		
 		if (!(o instanceof Object))
-		{
 			return;
-		}
 		
 		o.markUsed();
 		
@@ -142,29 +136,29 @@ public class GarbageCollector
 		for (int relocIndex = 2; relocIndex < o._r_relocEntries; relocIndex++)
 		{
 			Object entry = o.readRelocEntry(relocIndex);
+			
 			if (entry != null)
-			{
-				MarkRecursive(entry);
-			}
+				markRecursive(entry);
 		}
 	}
 	
-	private static int Sweep()
+	private static int sweep()
 	{
 		int sweepedBytes = 0;
-		Object toRemove = MemoryManager.GetDynamicAllocRoot();
-		Object nextObject = null;
+		Object toRemove = MemoryManager.getDynamicAllocRoot();
+		Object nextObject;
 		while (toRemove != null)
 		{
 			nextObject = toRemove._r_next;
 			
 			if (!toRemove.isMarked())
 			{
-				sweepedBytes += MemoryManager.ObjectSize(toRemove);
-				MemoryManager.RemoveFromNextChain(toRemove);
-				EmptyObject replacedWithEO = MemoryManager.ReplaceWithEmptyObject(toRemove);
-				MemoryManager.InsertIntoEmptyObjectChain(replacedWithEO);
+				sweepedBytes += MemoryManager.objectSize(toRemove);
+				MemoryManager.removeFromNextChain(toRemove);
+				EmptyObject replacedWithEO = MemoryManager.replaceWithEmptyObject(toRemove);
+				MemoryManager.insertIntoEmptyObjectChain(replacedWithEO);
 			}
+			
 			toRemove = nextObject;
 		}
 		return sweepedBytes;

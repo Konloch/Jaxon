@@ -33,72 +33,71 @@ public class MemoryManager
 	private static boolean _gcEnabled;
 	private static boolean _gcRunning;
 	
-	public static void Initialize()
+	public static void initialize()
 	{
 		_gcEnabled = false;
 		_gcRunning = false;
 		
-		InitEmptyObjects();
+		initEmptyObjects();
 		if (_emptyObjectRoot == null)
-		{
 			Kernel.panic("No viable memory regions found");
-		}
 		
-		_dynamicAllocRoot = (DynamicAllocRoot) AllocateObject(MAGIC.getInstScalarSize("DynamicAllocRoot"), MAGIC.getInstRelocEntries("DynamicAllocRoot"), MAGIC.clssDesc("DynamicAllocRoot"));
+		_dynamicAllocRoot = (DynamicAllocRoot) allocateObject(MAGIC.getInstScalarSize("DynamicAllocRoot"),
+				MAGIC.getInstRelocEntries("DynamicAllocRoot"),
+				MAGIC.clssDesc("DynamicAllocRoot"));
 		
 		_gc_allocationSizeSinceLastGC = 0;
 	}
 	
-	public static boolean ShouldCollectGarbage()
+	public static boolean shouldCollectGarbage()
 	{
 		if (_gcEnabled == false)
-		{
 			return false;
-		}
+		
 		return _gc_allocationSizeSinceLastGC > 12 * 1024;
 	}
 	
-	public static void EnableGarbageCollection()
+	public static void enableGarbageCollection()
 	{
 		_gcEnabled = true;
 	}
 	
-	public static void DisableGarbageCollection()
+	public static void disableGarbageCollection()
 	{
 		_gcEnabled = false;
 	}
 	
-	public static void TriggerGarbageCollection()
+	public static void triggerGarbageCollection()
 	{
-		if (_gcEnabled == true && !_gcRunning && GarbageCollector.IsInitialized())
+		if (_gcEnabled == true && !_gcRunning && GarbageCollector.isInitialized())
 		{
 			_gcRunning = true;
-			GarbageCollector.Run();
+			GarbageCollector.run();
 			_gcRunning = false;
 			_gc_allocationSizeSinceLastGC = 0;
 		}
 	}
 	
 	@SJC.Inline
-	public static Object GetStaticAllocRoot()
+	public static Object getStaticAllocRoot()
 	{
 		return MAGIC.cast2Obj(BOOT_IMAGE.firstHeapObject);
 	}
 	
 	@SJC.Inline
-	public static DynamicAllocRoot GetDynamicAllocRoot()
+	public static DynamicAllocRoot getDynamicAllocRoot()
 	{
 		return _dynamicAllocRoot;
 	}
 	
 	@SJC.Inline
-	public static EmptyObject GetEmptyObjectRoot()
+	public static EmptyObject getEmptyObjectRoot()
 	{
 		return _emptyObjectRoot;
 	}
 	
 	@SJC.Inline
-	public static int ObjectSize(Object o)
+	public static int objectSize(Object o)
 	{
 		return o._r_scalarSize + o._r_relocEntries * MAGIC.ptrSize;
 	}
@@ -108,7 +107,7 @@ public class MemoryManager
 	 * Will be needed for garbage collection.
 	 */
 	@SJC.Inline
-	public static void InvalidateLastAlloc()
+	public static void invalidateLastAlloc()
 	{
 		_lastAllocationAddress = -1;
 	}
@@ -120,20 +119,20 @@ public class MemoryManager
 	 * @return The last allocated object.
 	 */
 	@SJC.Inline
-	public static Object LastAlloc()
+	public static Object lastAlloc()
 	{
 		if (_lastAllocationAddress != -1)
-		{
 			return MAGIC.cast2Obj(_lastAllocationAddress);
-		}
 		
 		// Recalculate the last allocation address
 		// DynamicAllocRoot is null when we create the root object
-		Object obj = _dynamicAllocRoot != null ? _dynamicAllocRoot : GetStaticAllocRoot();
+		Object obj = _dynamicAllocRoot != null ? _dynamicAllocRoot : getStaticAllocRoot();
+		
 		while (obj._r_next != null)
 		{
 			obj = obj._r_next;
 		}
+		
 		_lastAllocationAddress = MAGIC.cast2Ref(obj);
 		return obj;
 	}
@@ -142,147 +141,148 @@ public class MemoryManager
 	 * Sets the last allocated object cache value.
 	 */
 	@SJC.Inline
-	public static void SetLastAlloc(Object o)
+	public static void setLastAlloc(Object o)
 	{
 		if (o != null)
-		{
 			_lastAllocationAddress = MAGIC.cast2Ref(o);
-		}
 		else
-		{
-			InvalidateLastAlloc();
-		}
+			invalidateLastAlloc();
 	}
 	
-	public static int GetEmptyObjectCount()
+	public static int getEmptyObjectCount()
 	{
 		int count = 0;
 		Object eo = _emptyObjectRoot;
+		
 		while (eo != null)
 		{
 			count++;
 			eo = eo._r_next;
 		}
+		
 		return count;
 	}
 	
-	public static int GetObjectCount()
+	public static int getObjectCount()
 	{
 		int size = 0;
-		Object o = GetStaticAllocRoot();
+		Object o = getStaticAllocRoot();
+		
 		while (o != null)
 		{
 			o = o._r_next;
 			size++;
 		}
+		
 		return size;
 	}
 	
-	public static int GetDynamicObjectCount()
+	public static int getDynamicObjectCount()
 	{
 		int size = 0;
-		Object o = GetDynamicAllocRoot();
+		Object o = getDynamicAllocRoot();
+		
 		while (o != null)
 		{
 			o = o._r_next;
 			size++;
 		}
+		
 		return size;
 	}
 	
-	public static int GetFreeSpace()
+	public static int getFreeSpace()
 	{
 		int freeSpace = 0;
 		Object eo = _emptyObjectRoot;
+		
 		while (eo != null)
 		{
-			freeSpace += ObjectSize(eo);
+			freeSpace += objectSize(eo);
 			eo = eo._r_next;
 		}
+		
 		return freeSpace;
 	}
 	
-	public static int GetUsedSpace()
+	public static int getUsedSpace()
 	{
 		int usedSpace = 0;
-		Object o = GetStaticAllocRoot();
+		Object o = getStaticAllocRoot();
+		
 		while (o != null)
 		{
-			usedSpace += ObjectSize(o);
+			usedSpace += objectSize(o);
 			o = o._r_next;
 		}
+		
 		return usedSpace;
 	}
 	
-	public static int Padding(int offset, int align)
+	public static int padding(int offset, int align)
 	{
 		return (align - (offset % align)) % align;
 	}
 	
-	public static Object AllocateObject(int scalarSize, int relocEntries, SClassDesc type)
+	public static Object allocateObject(int scalarSize, int relocEntries, SClassDesc type)
 	{
-		int paddedScalarSize = scalarSize + Padding(scalarSize, 4);
+		int paddedScalarSize = scalarSize + padding(scalarSize, 4);
 		int newObjectTotalSize = paddedScalarSize + relocEntries * MAGIC.ptrSize;
-		newObjectTotalSize += Padding(newObjectTotalSize, 4);
+		newObjectTotalSize += padding(newObjectTotalSize, 4);
 		
-		EmptyObject emptyObj = FindEmptyObjectFitting(newObjectTotalSize);
+		EmptyObject emptyObj = findEmptyObjectFitting(newObjectTotalSize);
 		if (emptyObj == null)
-		{
 			Kernel.panic("Out of memory");
-		}
 		
 		int newObjectBottom = 0;
-		Object newObject = null;
-		if (ObjectSize(emptyObj) == newObjectTotalSize)
+		Object newObject;
+		if (objectSize(emptyObj) == newObjectTotalSize)
 		{
 			// The new object fits exactly into the empty object
 			// We can replace the empty object with the new object
-			RemoveFromEmptyObjectChain(emptyObj);
+			removeFromEmptyObjectChain(emptyObj);
 			// The empty object will be overwritten
 			newObjectBottom = emptyObj.addressBottom();
 		}
-		else if (emptyObj.UnreservedScalarSize() >= newObjectTotalSize)
+		else if (emptyObj.unreservedScalarSize() >= newObjectTotalSize)
 		{
 			// The new object does not fit exactly into the empty object
 			// We need to split the empty object
 			newObjectBottom = emptyObj.addressTop() - newObjectTotalSize;
-			emptyObj.ShrinkBy(newObjectTotalSize);
+			emptyObj.shrinkBy(newObjectTotalSize);
 		}
 		else
-		{
 			Kernel.panic("Failed to allocate object");
-		}
-		newObject = WriteObject(newObjectBottom, Padding(newObjectBottom, 4), paddedScalarSize, relocEntries, type, true);
-		InsertIntoNextChain(LastAlloc(), newObject);
-		SetLastAlloc(newObject);
+		
+		newObject = writeObject(newObjectBottom, padding(newObjectBottom, 4), paddedScalarSize, relocEntries, type, true);
+		insertIntoNextChain(lastAlloc(), newObject);
+		setLastAlloc(newObject);
 		_gc_allocationSizeSinceLastGC += newObjectTotalSize;
 		return newObject;
 	}
 	
-	public static EmptyObject ReplaceWithEmptyObject(Object o)
+	public static EmptyObject replaceWithEmptyObject(Object o)
 	{
 		if (o == null)
-		{
 			return null;
-		}
 		
 		int startOfObject = o.addressBottom();
 		int endOfObject = o.addressTop();
 		
-		return FillRegionWithEmptyObject(startOfObject, endOfObject);
+		return fillRegionWithEmptyObject(startOfObject, endOfObject);
 	}
 	
-	public static EmptyObject FillRegionWithEmptyObject(long start, long end)
+	public static EmptyObject fillRegionWithEmptyObject(long start, long end)
 	{
 		int emptyObjStart = (int) start;
 		int emptyObjEnd = (int) end;
-		int emptyObjScalarSize = emptyObjEnd - emptyObjStart - EmptyObject.RelocEntriesSize();
-		int padding = Padding(emptyObjStart, 4); // should be 0 since object is aligned
-		EmptyObject eo = (EmptyObject) WriteObject(emptyObjStart, padding, emptyObjScalarSize, EmptyObject.RelocEntries(), EmptyObject.Type(), true);
+		int emptyObjScalarSize = emptyObjEnd - emptyObjStart - EmptyObject.relocEntriesSize();
+		int padding = padding(emptyObjStart, 4); // should be 0 since object is aligned
+		EmptyObject eo = (EmptyObject) writeObject(emptyObjStart, padding, emptyObjScalarSize, EmptyObject.relocEntries(), EmptyObject.type(), true);
 		return eo;
 	}
 	
-	private static void InitEmptyObjects()
+	private static void initEmptyObjects()
 	{
 		int contIndex = 0;
 		do
@@ -295,17 +295,13 @@ public class MemoryManager
 			long end = base + length;
 			
 			if (base < BOOT_IMAGE.memoryStart + BOOT_IMAGE.memorySize)
-			{
 				base = BitHelper.alignUp(BOOT_IMAGE.memoryStart + BOOT_IMAGE.memorySize + 1, 4);
-			}
 			
-			if (!isFree || base >= end || length <= EmptyObject.MinimumClassSize())
-			{
+			if (!isFree || base >= end || length <= EmptyObject.minimumClassSize())
 				continue;
-			}
 			
-			EmptyObject eo = FillRegionWithEmptyObject(base, end);
-			InsertIntoEmptyObjectChain(eo);
+			EmptyObject eo = fillRegionWithEmptyObject(base, end);
+			insertIntoEmptyObjectChain(eo);
 		} while (contIndex != 0);
 	}
 	
@@ -318,7 +314,7 @@ public class MemoryManager
 	 * @param type         The type of the object.
 	 * @return The allocated object.
 	 */
-	private static Object WriteObject(int ptrNextFree, int padding, int scalarSize, int relocEntries, SClassDesc type, boolean clearMemory)
+	private static Object writeObject(int ptrNextFree, int padding, int scalarSize, int relocEntries, SClassDesc type, boolean clearMemory)
 	{
 		// Each reloc entry is a pointer
 		int relocsSize = relocEntries * MAGIC.ptrSize;
@@ -327,19 +323,13 @@ public class MemoryManager
 		int lengthOfObject = relocsSize + scalarSize + padding;
 		
 		if (lengthOfObject % 4 != 0)
-		{
 			Kernel.panic("Object size not aligned");
-		}
 		
 		if (startOfObject % 4 != 0)
-		{
 			Kernel.panic("Object start not aligned");
-		}
 		
 		if (clearMemory == true)
-		{
 			Memory.Memset32(startOfObject, lengthOfObject / 4, 0);
-		}
 		
 		// cast2Obj expects the pointer to the first scalar field.
 		// It needs space because relocs will be stored in front of the object
@@ -354,19 +344,19 @@ public class MemoryManager
 	}
 	
 	@SJC.Inline
-	private static void InsertIntoNextChain(Object insertAfter, Object o)
+	private static void insertIntoNextChain(Object insertAfter, Object o)
 	{
 		MAGIC.assign(o._r_next, insertAfter._r_next);
 		MAGIC.assign(insertAfter._r_next, o);
 	}
 	
-	public static void RemoveFromNextChain(Object removeThis)
+	public static void removeFromNextChain(Object removeThis)
 	{
-		Object t = GetStaticAllocRoot();
+		Object t = getStaticAllocRoot();
+		
 		while (t._r_next != removeThis)
-		{
 			t = t._r_next;
-		}
+		
 		MAGIC.assign(t._r_next, removeThis._r_next);
 	}
 	
@@ -374,17 +364,13 @@ public class MemoryManager
 	 * Adds an empty object to the chain of empty objects.
 	 * The chain is sorted by the address of the empty objects.
 	 */
-	public static void InsertIntoEmptyObjectChain(EmptyObject toInsert)
+	public static void insertIntoEmptyObjectChain(EmptyObject toInsert)
 	{
 		if (toInsert == null)
-		{
 			return;
-		}
 		
 		if (_emptyObjectRoot == null)
-		{
 			_emptyObjectRoot = toInsert;
-		}
 		else
 		{
 			int toInsertAddr = MAGIC.cast2Ref(toInsert);
@@ -393,13 +379,12 @@ public class MemoryManager
 			while (eo != null)
 			{
 				if (MAGIC.cast2Ref(eo) > toInsertAddr)
-				{
 					break;
-				}
 				
 				prev = eo;
 				eo = eo._r_next;
 			}
+			
 			if (prev == null)
 			{
 				MAGIC.assign(toInsert._r_next, eo);
@@ -412,7 +397,7 @@ public class MemoryManager
 		}
 	}
 	
-	public static int CompactEmptyObjects()
+	public static int compactEmptyObjects()
 	{
 		int compactedObjects = 0;
 		Object eo = _emptyObjectRoot;
@@ -424,9 +409,8 @@ public class MemoryManager
 			{
 				int distance = next.addressBottom() - prevTop;
 				if (distance > 4)
-				{
 					break;
-				}
+				
 				prevTop = next.addressTop();
 				EmptyObject nextEO = (EmptyObject) next;
 				next = next._r_next;
@@ -444,12 +428,10 @@ public class MemoryManager
 					if (eo instanceof EmptyObject)
 					{
 						// Memory.Memset32(eo.AddressTop(), expandBy / 4, 0);
-						((EmptyObject) eo).ExpandBy(expandBy);
+						((EmptyObject) eo).expandBy(expandBy);
 					}
 					else
-					{
 						Kernel.panic(eo._r_type.name);
-					}
 				}
 			}
 			
@@ -459,35 +441,34 @@ public class MemoryManager
 	}
 	
 	@SJC.Inline
-	public static void RemoveFromEmptyObjectChain(EmptyObject emptyObj)
+	public static void removeFromEmptyObjectChain(EmptyObject emptyObj)
 	{
 		if (_emptyObjectRoot == emptyObj)
-		{
-			_emptyObjectRoot = emptyObj.Next();
-		}
+			_emptyObjectRoot = emptyObj.next();
 		else
 		{
 			EmptyObject t = _emptyObjectRoot;
-			while (t.Next() != emptyObj)
+			while (t.next() != emptyObj)
 			{
-				t = t.Next();
+				t = t.next();
 			}
-			t.SetNext(emptyObj.Next());
+			t.setNext(emptyObj.next());
 		}
 	}
 	
 	@SJC.Inline
-	private static EmptyObject FindEmptyObjectFitting(int objectSize)
+	private static EmptyObject findEmptyObjectFitting(int objectSize)
 	{
 		EmptyObject emptyObj = _emptyObjectRoot;
+		
 		while (emptyObj != null)
 		{
-			if (emptyObj.UnreservedScalarSize() >= objectSize || ObjectSize(emptyObj) == objectSize)
-			{
+			if (emptyObj.unreservedScalarSize() >= objectSize || objectSize(emptyObj) == objectSize)
 				return emptyObj;
-			}
-			emptyObj = emptyObj.Next();
+			
+			emptyObj = emptyObj.next();
 		}
+		
 		return null;
 	}
 }

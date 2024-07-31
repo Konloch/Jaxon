@@ -33,13 +33,13 @@ public class Kernel
 	{
 		Logger.logSerial("Initializing Kernel..\n");
 		
-		MemoryManager.Initialize();
+		MemoryManager.initialize();
 		Logger.logSerial("Initialized Memory Manager\n");
 		
 		Logger.initialize(Logger.TRACE, 100, false);
 		Logger.info("BOOT", "Initialized Logger");
 		
-		SymbolResolution.Initialize();
+		SymbolResolution.initialize();
 		Logger.info("BOOT", "Initialized Symbol Resolution");
 		
 		IDT.Initialize();
@@ -48,13 +48,13 @@ public class Kernel
 		MAGIC.doStaticInit();
 		Logger.info("BOOT", "Initialized Static Initializers");
 		
-		GarbageCollector.Initialize();
+		GarbageCollector.initialize();
 		Logger.info("BOOT", "Initialized Garbage Collector");
 		
-		MemoryManager.DisableGarbageCollection();
+		MemoryManager.disableGarbageCollection();
 		Logger.info("BOOT", "Disabled Garbage Collection");
 		
-		VirtualMemory.EnableVirtualMemory();
+		VirtualMemory.enableVirtualMemory();
 		Logger.info("BOOT", "Enabled Virtual Memory");
 		
 		PrintAllPciDevices();

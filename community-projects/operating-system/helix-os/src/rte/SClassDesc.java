@@ -1,12 +1,12 @@
 package rte;
 
 public class SClassDesc
-{ // Klasse mit zusätzlichen Instanz-Variablen
-	public SClassDesc parent; // bereits bisher vorhanden: erweiterte Klasse
-	public SIntfMap implementations; // bereits bisher vorhanden: Interfaces
-	public SClassDesc nextUnit; // nächste Unit des aktuellen Packages
-	public String name; // einfacher Name der Unit
-	public SPackage pack; // besitzendes Package, noClassPack deaktiviert*
-	public SMthdBlock mthds; // erste Methode der Unit
-	public int modifier; // Modifier der Unit, noClassMod deaktiviert*
+{ // class with additional instance variables
+	public SClassDesc parent; // already exists: extended class
+	public SIntfMap implementations; // already exists: Interfaces
+	public SClassDesc nextUnit; // next unit of the current package
+	public String name; // simple name of the unit
+	public SPackage pack; // owning package, noClassPack deactivated*
+	public SMthdBlock mthds; // first method of the unit
+	public int modifier; // modifier of the unit, noClassMod deactivated*
 }

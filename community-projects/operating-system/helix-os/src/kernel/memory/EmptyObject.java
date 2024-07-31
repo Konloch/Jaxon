@@ -7,73 +7,69 @@ public class EmptyObject extends Object
 {
 	
 	@SJC.Inline
-	public EmptyObject Next()
+	public EmptyObject next()
 	{
 		if (_r_next == null)
-		{
 			return null;
-		}
+		
 		return (EmptyObject) _r_next;
 	}
 	
 	@SJC.Inline
-	public void SetNext(EmptyObject next)
+	public void setNext(EmptyObject next)
 	{
 		MAGIC.assign(_r_next, (Object) next);
 	}
 	
 	@SJC.Inline
-	public static int MinimumClassSize()
+	public static int minimumClassSize()
 	{
 		return MAGIC.getInstRelocEntries("EmptyObject") * MAGIC.ptrSize + MAGIC.getInstScalarSize("EmptyObject");
 	}
 	
 	@SJC.Inline
-	public static int BaseScalarSize()
+	public static int baseScalarSize()
 	{
 		return MAGIC.getInstScalarSize("EmptyObject");
 	}
 	
 	@SJC.Inline
-	public static int RelocEntries()
+	public static int relocEntries()
 	{
 		return MAGIC.getInstRelocEntries("EmptyObject");
 	}
 	
 	@SJC.Inline
-	public static SClassDesc Type()
+	public static SClassDesc type()
 	{
 		return MAGIC.clssDesc("EmptyObject");
 	}
 	
 	@SJC.Inline
-	public void ShrinkBy(int shrinkBy)
+	public void shrinkBy(int shrinkBy)
 	{
 		MAGIC.assign(_r_scalarSize, _r_scalarSize - shrinkBy);
 		if (_r_scalarSize < 4)
-		{
 			Kernel.panic("EmptyObject::ShrinkBy: _r_scalarSize < 4");
-		}
 	}
 	
 	@SJC.Inline
-	public void ExpandBy(int expandBy)
+	public void expandBy(int expandBy)
 	{
 		if (expandBy < 0)
-		{
 			Kernel.panic("EmptyObject::ExpandBy: expandBy < 0");
-		}
+		
 		MAGIC.assign(_r_scalarSize, _r_scalarSize + expandBy);
 	}
 	
 	@SJC.Inline
-	public int UnreservedScalarSize()
+	public int unreservedScalarSize()
 	{
 		return _r_scalarSize - MAGIC.getInstScalarSize("EmptyObject");
 	}
 	
 	@SJC.Inline
-	public static int RelocEntriesSize()
+	public static int relocEntriesSize()
 	{
 		return MAGIC.getInstRelocEntries("EmptyObject") * MAGIC.ptrSize;
 	}

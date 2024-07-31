@@ -66,11 +66,11 @@ public class Logger
 			return;
 		
 		LogEntry log = logBuffer.get();
-		log.SetCategory(category);
-		log.SetMessage(message);
-		log.SetPriority(priority);
+		log.setCategory(category);
+		log.setMessage(message);
+		log.setPriority(priority);
 		if (_logTime)
-			log.SetTimeHMS(getTimeHMS());
+			log.setTimeHMS(getTimeHMS());
 		logSerial(log);
 		logBuffer.put(log);
 		logTicks++;
@@ -78,13 +78,13 @@ public class Logger
 	
 	public static void logSerial(LogEntry entry)
 	{
-		logSerial(entry.TimeHMS());
+		logSerial(entry.timeHMS());
 		logSerial(" [");
-		logSerial(entry.PriorityString());
+		logSerial(entry.priorityString());
 		logSerial("] ");
-		logSerial(entry.Category());
+		logSerial(entry.category());
 		logSerial(": ");
-		logSerial(entry.Message());
+		logSerial(entry.message());
 		logSerial("\n");
 	}
 	
