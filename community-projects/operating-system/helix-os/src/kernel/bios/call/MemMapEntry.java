@@ -13,7 +13,7 @@ public class MemMapEntry
 		this.Type = type;
 	}
 	
-	public boolean IsFree()
+	public boolean isFree()
 	{
 		return Type == 1;
 	}

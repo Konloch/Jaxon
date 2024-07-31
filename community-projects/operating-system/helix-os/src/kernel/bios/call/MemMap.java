@@ -14,50 +14,50 @@ public class MemMap extends BIOS
 		super();
 	}
 	
-	public boolean HasNext()
+	public boolean hasNext()
 	{
 		return memMapContinuationIndex != 0;
 	}
 	
-	public MemMapEntry Next()
+	public MemMapEntry next()
 	{
 		if (_first)
 		{
 			_first = false;
-			MemMapEntry e = Exec(0);
-			memMapContinuationIndex = GetMemMapContinuationIndex();
+			MemMapEntry e = exec(0);
+			memMapContinuationIndex = getMemMapContinuationIndex();
 			return e;
 		}
+		
 		if (memMapContinuationIndex == 0)
-		{
 			return null;
-		}
-		MemMapEntry e = Exec(memMapContinuationIndex);
-		memMapContinuationIndex = GetMemMapContinuationIndex();
+		
+		MemMapEntry e = exec(memMapContinuationIndex);
+		memMapContinuationIndex = getMemMapContinuationIndex();
 		return e;
 	}
 	
-	public MemMapEntry NextFree()
+	public MemMapEntry nextFree()
 	{
-		MemMapEntry e = null;
-		while (HasNext())
+		MemMapEntry e;
+		
+		while (hasNext())
 		{
-			e = Next();
-			if (e.IsFree())
-			{
+			e = next();
+			if (e.isFree())
 				return e;
-			}
 		}
+		
 		return null;
 	}
 	
-	public static MemMapEntry Exec(int idx)
+	public static MemMapEntry exec(int idx)
 	{
-		ExecMemMap(idx);
-		return ReadMemMap();
+		execMemMap(idx);
+		return readMemMap();
 	}
 	
-	public static void ExecMemMap(int idx)
+	public static void execMemMap(int idx)
 	{
 		Registers.EAX = 0x0000E820;
 		Registers.EDX = 0x534D4150;
@@ -69,40 +69,40 @@ public class MemMap extends BIOS
 	}
 	
 	@SJC.Inline
-	public static int GetMemMapContinuationIndex()
+	public static int getMemMapContinuationIndex()
 	{
 		return Registers.EBX;
 	}
 	
 	@SJC.Inline
-	public static long GetMemMapBase()
+	public static long getMemMapBase()
 	{
 		return MAGIC.rMem64(MemoryLayout.BIOS_BUFFER_MEMMAP_START);
 	}
 	
 	@SJC.Inline
-	public static long GetMemMapLength()
+	public static long getMemMapLength()
 	{
 		return MAGIC.rMem64(MemoryLayout.BIOS_BUFFER_MEMMAP_START + 8);
 	}
 	
 	@SJC.Inline
-	public static int GetMemMapType()
+	public static int getMemMapType()
 	{
 		return MAGIC.rMem32(MemoryLayout.BIOS_BUFFER_MEMMAP_START + 16);
 	}
 	
 	@SJC.Inline
-	public static boolean MemMapTypeIsFree()
+	public static boolean memMapTypeIsFree()
 	{
 		return MAGIC.rMem32(MemoryLayout.BIOS_BUFFER_MEMMAP_START + 16) == 1;
 	}
 	
-	private static MemMapEntry ReadMemMap()
+	private static MemMapEntry readMemMap()
 	{
-		long base = GetMemMapBase();
-		long length = GetMemMapLength();
-		int type = GetMemMapType();
+		long base = getMemMapBase();
+		long length = getMemMapLength();
+		int type = getMemMapType();
 		return new MemMapEntry(base, length, type);
 	}
 }

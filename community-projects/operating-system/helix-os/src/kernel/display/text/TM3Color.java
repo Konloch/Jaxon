@@ -30,45 +30,45 @@ public class TM3Color
 	public static final byte WHITE = 15;
 	
 	@SJC.Inline
-	public static byte Set(byte fg, byte bg)
+	public static byte set(byte fg, byte bg)
 	{
 		byte color = 0;
-		color = SetFg(color, fg);
-		color = SetBg(color, bg);
+		color = setFg(color, fg);
+		color = setBg(color, bg);
 		return color;
 	}
 	
 	@SJC.Inline
-	public static byte Set(byte fg, byte bg, boolean fgIsBright, boolean bgIsBright)
+	public static byte set(byte fg, byte bg, boolean fgIsBright, boolean bgIsBright)
 	{
 		byte color = 0;
-		color = SetFg(color, fg);
-		color = SetBg(color, bg);
-		color = SetFgBright(color, fgIsBright);
-		color = SetBgBright(color, bgIsBright);
+		color = setFg(color, fg);
+		color = setBg(color, bg);
+		color = setFgBright(color, fgIsBright);
+		color = setBgBright(color, bgIsBright);
 		return color;
 	}
 	
 	@SJC.Inline
-	public static byte SetFg(byte color, byte fg)
+	public static byte setFg(byte color, byte fg)
 	{
 		return (byte) BitHelper.setRange(color, 0, 4, fg);
 	}
 	
 	@SJC.Inline
-	public static byte SetBg(byte color, byte bg)
+	public static byte setBg(byte color, byte bg)
 	{
 		return (byte) BitHelper.setRange(color, 4, 4, bg);
 	}
 	
 	@SJC.Inline
-	public static byte SetFgBright(byte color, boolean isBright)
+	public static byte setFgBright(byte color, boolean isBright)
 	{
 		return (byte) BitHelper.setFlag(color, 3, isBright);
 	}
 	
 	@SJC.Inline
-	public static byte SetBgBright(byte color, boolean isBright)
+	public static byte setBgBright(byte color, boolean isBright)
 	{
 		return (byte) BitHelper.setFlag(color, 7, isBright);
 	}

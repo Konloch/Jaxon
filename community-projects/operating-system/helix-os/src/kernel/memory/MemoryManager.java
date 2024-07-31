@@ -287,11 +287,11 @@ public class MemoryManager
 		int contIndex = 0;
 		do
 		{
-			MemMap.ExecMemMap(contIndex);
-			contIndex = MemMap.GetMemMapContinuationIndex();
-			boolean isFree = MemMap.MemMapTypeIsFree();
-			long base = MemMap.GetMemMapBase();
-			long length = MemMap.GetMemMapLength();
+			MemMap.execMemMap(contIndex);
+			contIndex = MemMap.getMemMapContinuationIndex();
+			boolean isFree = MemMap.memMapTypeIsFree();
+			long base = MemMap.getMemMapBase();
+			long length = MemMap.getMemMapLength();
 			long end = base + length;
 			
 			if (base < BOOT_IMAGE.memoryStart + BOOT_IMAGE.memorySize)

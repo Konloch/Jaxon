@@ -29,70 +29,68 @@ public class TM3
 	}
 	
 	@SJC.Inline
-	public void SetCursor(int line, int column)
+	public void setCursor(int line, int column)
 	{
-		_cursorPos = Index1d(line, column);
-		UpdateCursorCaretDisplay();
+		_cursorPos = index1D(line, column);
+		updateCursorCaretDisplay();
 	}
 	
 	@SJC.Inline
-	public void SetCursorPos(int idx)
+	public void setCursorPos(int idx)
 	{
 		_cursorPos = idx;
-		UpdateCursorCaretDisplay();
+		updateCursorCaretDisplay();
 	}
 	
 	@SJC.Inline
-	public int CursorPos()
+	public int cursorPos()
 	{
 		return _cursorPos;
 	}
 	
 	@SJC.Inline
-	public int CurrentLine()
+	public int currentLine()
 	{
 		return _cursorPos / LINE_LENGTH;
 	}
 	
 	@SJC.Inline
-	public void Print(byte b)
+	public void print(byte b)
 	{
-		SetCharacterByte(b);
-		UpdateCursorCaretDisplay();
+		setCharacterByte(b);
+		updateCursorCaretDisplay();
 	}
 	
-	public void Print(String str)
+	public void print(String str)
 	{
 		for (int i = 0; i < str.length(); i++)
-		{
-			SetCharacterByte((byte) str.get(i));
-		}
-		UpdateCursorCaretDisplay();
+			setCharacterByte((byte) str.get(i));
+		
+		updateCursorCaretDisplay();
 	}
 	
-	public void Print(char[] chars)
+	public void print(char[] chars)
 	{
 		for (char c : chars)
-		{
-			SetCharacterByte((byte) c);
-		}
-		UpdateCursorCaretDisplay();
+			setCharacterByte((byte) c);
+		
+		updateCursorCaretDisplay();
 	}
 	
 	@SJC.Inline
-	public void Print(char c)
+	public void print(char c)
 	{
-		SetCharacterByte((byte) c);
-		UpdateCursorCaretDisplay();
+		setCharacterByte((byte) c);
+		updateCursorCaretDisplay();
 	}
 	
 	@SJC.Inline
-	public void Print(boolean b)
+	public void print(boolean b)
 	{
-		Print(b ? "true" : "false");
+		print(b ? "true" : "false");
 	}
 	
-	public void Print(int n, int base)
+	public void print(int n, int base)
 	{
 		int max_len = MAX_CURSOR - _cursorPos;
 		int old_pos = _cursorPos;
@@ -100,79 +98,78 @@ public class TM3
 		
 		// Set color for the printed number
 		for (int i = old_pos; i < _cursorPos; i++)
-		{
-			VidMem.Cells[i].Color = Brush.Color();
-		}
-		UpdateCursorCaretDisplay();
+			VidMem.cells[i].color = Brush.color();
+		
+		updateCursorCaretDisplay();
 	}
 	
 	@SJC.Inline
-	public void Print(int n)
+	public void print(int n)
 	{
-		Print(n, 10);
+		print(n, 10);
 	}
 	
 	@SJC.Inline
-	public void Println()
+	public void printLn()
 	{
 		_cursorPos = sNewLine(_cursorPos);
-		ShiftIfOutOfBounds();
-		UpdateCursorCaretDisplay();
+		shiftIfOutOfBounds();
+		updateCursorCaretDisplay();
 	}
 	
 	@SJC.Inline
-	public void Println(byte b)
+	public void printLn(byte b)
 	{
-		Print(b);
-		Println();
+		print(b);
+		printLn();
 	}
 	
-	public void Println(char[] chars)
+	public void printLn(char[] chars)
 	{
-		Print(chars);
-		Println();
-	}
-	
-	@SJC.Inline
-	public void Println(boolean b)
-	{
-		Print(b);
-		Println();
+		print(chars);
+		printLn();
 	}
 	
 	@SJC.Inline
-	public void Println(char c)
+	public void printLn(boolean b)
 	{
-		Print(c);
-		Println();
+		print(b);
+		printLn();
 	}
 	
 	@SJC.Inline
-	public void Println(String str)
+	public void printLn(char c)
 	{
-		Print(str);
-		Println();
+		print(c);
+		printLn();
 	}
 	
 	@SJC.Inline
-	public void Println(int n, int base)
+	public void printLn(String str)
 	{
-		Print(n, base);
-		Println();
+		print(str);
+		printLn();
 	}
 	
 	@SJC.Inline
-	public void Println(int n)
+	public void printLn(int n, int base)
 	{
-		Print(n);
-		Println();
+		print(n, base);
+		printLn();
+	}
+	
+	@SJC.Inline
+	public void printLn(int n)
+	{
+		print(n);
+		printLn();
 	}
 	
 	@SJC.Inline
 	public static int sPrint(char c, int position, int color)
 	{
-		VidMem.Cells[position].Character = (byte) c;
-		VidMem.Cells[position].Color = (byte) color;
+		VidMem.cells[position].character = (byte) c;
+		VidMem.cells[position].color = (byte) color;
 		return position + 1;
 	}
 	
@@ -186,9 +183,8 @@ public class TM3
 	public static int sPrint(String s, int position, int color)
 	{
 		for (int i = 0; i < s.length(); i++)
-		{
 			sPrint((char) s.get(i), position + i, color);
-		}
+		
 		return position + s.length();
 	}
 	
@@ -196,15 +192,15 @@ public class TM3
 	{
 		int len = Math.min(s.length(), maxLen - 3);
 		for (int i = 0; i < len; i++)
-		{
 			sPrint((char) s.get(i), position + i, color);
-		}
+		
 		if (len < s.length())
 		{
 			sPrint('.', position + len, color);
 			sPrint('.', position + len + 1, color);
 			sPrint('.', position + len + 2, color);
 		}
+		
 		return position + len;
 	}
 	
@@ -219,10 +215,10 @@ public class TM3
 	{
 		int max_len = MAX_CURSOR - position;
 		int len = NoAllocConv.iToA(MAGIC.cast2Ref(VidMem) + position * 2, 2, max_len, n, base);
+		
 		for (int i = 0; i < len; i++)
-		{
-			VidMem.Cells[position + i].Color = (byte) color;
-		}
+			VidMem.cells[position + i].color = (byte) color;
+		
 		return position + len;
 	}
 	
@@ -235,22 +231,16 @@ public class TM3
 		{
 			int shiftCharsBy = leftpadBy - len;
 			for (int i = 0; i <= len; i++)
-			{
-				VidMem.Cells[position + len + shiftCharsBy - i].Character = VidMem.Cells[position + len - i].Character;
-			}
+				VidMem.cells[position + len + shiftCharsBy - i].character = VidMem.cells[position + len - i].character;
 			
 			for (int i = 0; i < shiftCharsBy; i++)
-			{
-				VidMem.Cells[position + i].Character = (byte) leftpadChar;
-			}
+				VidMem.cells[position + i].character = (byte) leftpadChar;
 			
 			len += shiftCharsBy;
 		}
 		
 		for (int i = 0; i < len; i++)
-		{
-			VidMem.Cells[position + i].Color = (byte) color;
-		}
+			VidMem.cells[position + i].color = (byte) color;
 		
 		return position + len;
 	}
@@ -269,7 +259,7 @@ public class TM3
 	}
 	
 	@SJC.Inline
-	public static int Line(int cursor)
+	public static int line(int cursor)
 	{
 		return cursor / LINE_LENGTH;
 	}
@@ -277,7 +267,7 @@ public class TM3
 	/**
 	 * https://wiki.osdev.org/Text_Mode_Cursor#Moving_the_Cursor_2
 	 */
-	public static void SetCursorCaret(int pos)
+	public static void setCursorCaret(int pos)
 	{
 		MAGIC.wIOs8(0x3D4, (byte) 0x0F);
 		MAGIC.wIOs8(0x3D5, (byte) (pos & 0xFF));
@@ -286,14 +276,14 @@ public class TM3
 	}
 	
 	@SJC.Inline
-	public static void DisableCursorCaret()
+	public static void disableCursorCaret()
 	{
 		MAGIC.wIOs8(0x3D4, (byte) 0x0A);
 		MAGIC.wIOs8(0x3D5, (byte) 0x20);
 	}
 	
 	@SJC.Inline
-	public void ClearScreen()
+	public void clearScreen()
 	{
 		sClearScreen();
 		_cursorPos = 0;
@@ -302,36 +292,33 @@ public class TM3
 	@SJC.Inline
 	public static void sClearScreen()
 	{
-		byte colClear = TM3Color.Set(TM3Color.GREY, TM3Color.BLACK);
+		byte colClear = TM3Color.set(TM3Color.GREY, TM3Color.BLACK);
 		for (int i = 0; i < LINE_COUNT; i++)
-		{
-			SetLine(i, (byte) ' ', colClear);
-		}
+			setLine(i, (byte) ' ', colClear);
 	}
 	
-	public static void ShiftLines()
+	public static void shiftLines()
 	{
 		for (int line = BUFFER_START; line < BUFFER_END; line += LINE_SIZE_BYTES)
-		{
 			Memory.Memcopy(line + LINE_SIZE_BYTES, line, LINE_SIZE_BYTES);
-		}
 		
-		byte clearColor = TM3Color.Set(TM3Color.GREY, TM3Color.BLACK);
-		SetLine(LINE_COUNT - 1, (byte) ' ', clearColor);
+		byte clearColor = TM3Color.set(TM3Color.GREY, TM3Color.BLACK);
+		setLine(LINE_COUNT - 1, (byte) ' ', clearColor);
 	}
 	
-	public static void SetLine(int line, byte character, byte color)
+	public static void setLine(int line, byte character, byte color)
 	{
 		int lineStart = line * LINE_LENGTH;
 		int lineEnd = lineStart + LINE_LENGTH;
+		
 		for (int i = lineStart; i < lineEnd; i++)
 		{
-			VidMem.Cells[i].Character = character;
-			VidMem.Cells[i].Color = color;
+			VidMem.cells[i].character = character;
+			VidMem.cells[i].color = color;
 		}
 	}
 	
-	public static int LineStart(int line)
+	public static int lineStart(int line)
 	{
 		return line * LINE_LENGTH;
 	}
@@ -341,17 +328,18 @@ public class TM3
 	 * If the cursor position exceeds the maximum limit, it performs a scroll down
 	 * operation and adjusts the cursor position accordingly.
 	 */
-	private void SetCharacterByte(byte b)
+	private void setCharacterByte(byte b)
 	{
 		if (b == '\n')
 		{
 			_cursorPos = sNewLine(_cursorPos);
-			ShiftIfOutOfBounds();
+			shiftIfOutOfBounds();
 			return;
 		}
-		ShiftIfOutOfBounds();
-		VidMem.Cells[_cursorPos].Character = b;
-		VidMem.Cells[_cursorPos].Color = Brush.Color();
+		
+		shiftIfOutOfBounds();
+		VidMem.cells[_cursorPos].character = b;
+		VidMem.cells[_cursorPos].color = Brush.color();
 		_cursorPos += 1;
 	}
 	
@@ -359,17 +347,17 @@ public class TM3
 	 * Updates the cursor caret position if it has changed.
 	 * Used to avoid unnecessary I/O operations to update the cursor position.
 	 */
-	private void UpdateCursorCaretDisplay()
+	private void updateCursorCaretDisplay()
 	{
 		if (_onScreenCursorPos != _cursorPos)
 		{
-			SetCursorCaret(_cursorPos);
+			setCursorCaret(_cursorPos);
 			_onScreenCursorPos = _cursorPos;
 		}
 	}
 	
 	@SJC.Inline
-	private static int Index1d(int line, int column)
+	private static int index1D(int line, int column)
 	{
 		return (line * LINE_LENGTH) + column;
 	}
@@ -380,16 +368,17 @@ public class TM3
 	 * updated accordingly.
 	 */
 	@SJC.Inline
-	private boolean ShiftIfOutOfBounds()
+	private boolean shiftIfOutOfBounds()
 	{
 		if (_cursorPos >= MAX_CURSOR)
 		{
-			ShiftLines();
+			shiftLines();
 			_cursorPos -= LINE_LENGTH;
-			UpdateCursorCaretDisplay();
+			updateCursorCaretDisplay();
 			
 			return true;
 		}
+		
 		return false;
 	}
 }

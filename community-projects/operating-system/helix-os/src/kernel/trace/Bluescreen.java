@@ -13,16 +13,16 @@ public class Bluescreen
 	
 	public static void show(String title, String message)
 	{
-		DisplayModes.ActivateTextMode();
-		TM3.DisableCursorCaret();
+		DisplayModes.activateTextMode();
+		TM3.disableCursorCaret();
 		int pos = 0;
 		pos = printHeader(pos, title, message);
 	}
 	
 	public static void show(String title, String reason, int ebp, int eip)
 	{
-		DisplayModes.ActivateTextMode();
-		TM3.DisableCursorCaret();
+		DisplayModes.activateTextMode();
+		TM3.disableCursorCaret();
 		int pos = 0;
 		pos = printHeader(pos, title, reason);
 		pos = TM3.sNewLine(pos);
@@ -31,8 +31,8 @@ public class Bluescreen
 	
 	public static void show(String title, String reason, int ebp, int eip, int rEDI, int rESI, int rEBP, int rESP, int rEBX, int rEDX, int rECX, int rEAX)
 	{
-		DisplayModes.ActivateTextMode();
-		TM3.DisableCursorCaret();
+		DisplayModes.activateTextMode();
+		TM3.disableCursorCaret();
 		int pos = 0;
 		pos = printHeader(pos, title, reason);
 		pos = TM3.sNewLine(pos);
@@ -123,7 +123,7 @@ public class Bluescreen
 			pos = TM3.sNewLine(pos);
 			ebp = MAGIC.rMem32(ebp);
 			eip = MAGIC.rMem32(ebp + 4);
-		} while (ebp <= MemoryLayout.PROGRAM_STACK_COMPILER_TOP && ebp > 0 && TM3.Line(pos) < TM3.LINE_COUNT);
+		} while (ebp <= MemoryLayout.PROGRAM_STACK_COMPILER_TOP && ebp > 0 && TM3.line(pos) < TM3.LINE_COUNT);
 		return pos;
 	}
 }

@@ -34,7 +34,7 @@ public class VESAGraphics extends GraphicsContext
 	public void Activate()
 	{
 		Logger.info("VESA", "Activate VESA Graphics Mode");
-		DisplayModes.SetVesaMode(curMode.ModeNr);
+		DisplayModes.setVesaMode(curMode.ModeNr);
 	}
 	
 	@Override
