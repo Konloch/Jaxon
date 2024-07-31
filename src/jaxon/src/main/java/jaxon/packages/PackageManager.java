@@ -1,4 +1,4 @@
-package jaxon.templates;
+package jaxon.packages;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,14 +11,14 @@ import java.net.URL;
  * @author Konloch
  * @since 7/21/2024
  */
-public class TemplateUtil
+public class PackageManager
 {
 	public static void init(String[] args) throws IOException
 	{
 		String name = (args.length >= 2) ? args[1] : null;
 		
 		//download the console template
-		templateCLI(new String[]{"", "console"});
+		preformCLI(new String[]{"", "console"});
 		
 		//process the folder
 		File console = new File("console");
@@ -34,7 +34,7 @@ public class TemplateUtil
 			System.out.println("Open your project using Intellij: " + console.getAbsolutePath());
 	}
 	
-	public static void templateCLI(String[] args) throws IOException
+	public static void preformCLI(String[] args) throws IOException
 	{
 		String template = args[1];
 		String version = args.length >= 3 ? args[2] : null;

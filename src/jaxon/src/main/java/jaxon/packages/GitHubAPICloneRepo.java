@@ -1,4 +1,4 @@
-package jaxon.templates;
+package jaxon.packages;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

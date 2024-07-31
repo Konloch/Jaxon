@@ -5,7 +5,7 @@ import jaxon.installer.Installer;
 import jaxon.jdk.JDKUtil;
 import jaxon.sjc.SJCUtil;
 import jaxon.installer.SystemPathUtil;
-import jaxon.templates.TemplateUtil;
+import jaxon.packages.PackageManager;
 import jaxon.version.VersionUtil;
 import jaxon.zip.ZipUtil;
 
@@ -33,8 +33,8 @@ public class Jaxon
 			SJCUtil.sjcJaxonEnvironment(args);
 		else if (command.equalsIgnoreCase("build") && args.length >= 2)
 			BuildUtil.buildCLI(args);
-		else if (command.equalsIgnoreCase("template") && args.length >= 2)
-			TemplateUtil.templateCLI(args);
+		else if (command.equalsIgnoreCase("package") && args.length >= 2)
+			PackageManager.preformCLI(args);
 		else if (command.equalsIgnoreCase("zip") && args.length >= 2)
 			ZipUtil.zipCLI(args);
 		else if (command.equalsIgnoreCase("jdk") && args.length >= 2)
@@ -42,7 +42,7 @@ public class Jaxon
 		else if (command.equalsIgnoreCase("system-path") && args.length >= 2)
 			SystemPathUtil.systemPathCLI(args);
 		else if (command.equalsIgnoreCase("init"))
-			TemplateUtil.init(args);
+			PackageManager.init(args);
 		else if (command.equalsIgnoreCase("install"))
 			Installer.install();
 		else if (command.equalsIgnoreCase("uninstall"))

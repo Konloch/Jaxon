@@ -12,7 +12,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + [First start by downloading Jaxon for your platform](https://github.com/Konloch/Jaxon/releases/latest)
   + Run the command `jaxon install`
     + If you're not on windows you'll have to **add Jaxon to your System-Path manually**
-+ Then start by creating a new project, this is done through code templates. (such as `jaxon template console`)
++ Then start by creating a new project, this is done through code templates. (such as `jaxon package console`)
     + `Console` - Cross-platform minified template for printing to console.
         + **Note** This template contains the in-development runtime library.
 + After you have created a template using Jaxon:
@@ -28,17 +28,17 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
             + Click the Plus > Add JDK...
             + Paste in the path sent from the Jaxon CLI
 
-## Using Jaxon Templates
-+ The templates all contain the basics to get you running (`Console` shows hello world, `Graphical` shows windowing & image drawing)
-+ Each template can contain a different application starting class
+## Using Jaxon Package Templates
++ The packages contain all the basics to get you running (`Console` shows hello world, `Graphical` shows windowing & image drawing)
++ Each package can contain a different application starting class
     + You can find this class by going into Windows/kernel/Kernel.java & Linux/kernel/Kernel.java
-+ The templates contain the entire standard library, edit these as much as you want
++ The packages contain the entire standard library, edit these as much as you want
     + One benefit is you are not restricted by the concept of precompiled libraries, you are always provided the source unless you are invoking a DLL
-+ Templates also contain a versioning system, using the [package.list](https://raw.githubusercontent.com/Konloch/Jaxon/master/community-projects/package.list) you can view all the published versions of a template
-  + Using a template with a specific version: `jaxon template console 0.1.0`
++ Packages also contain a versioning system, using the [package.list](https://raw.githubusercontent.com/Konloch/Jaxon/master/community-projects/package.list) you can view all the published versions of a template
+  + Using a package with a specific version: `jaxon package console 0.1.0`
 
-## Jaxon Templates
-+ **Note** To use these templates use `jaxon template [name]` such as `jaxon template console`
+## Jaxon Packages
++ **Note** To use these packages use `jaxon package [name]` such as `jaxon package console`
 + **[Console](community-projects/application/demo-console)** - Cross-platform template for printing to console.
     + **Note** This template contains the latest in-development runtime library.
     + This version is considered the most 'cutting edge' and will contain the most complete runtime library.
@@ -59,9 +59,8 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + `init` - Create a blank project with the latest runtime.
   + Example Command: `jaxon init project-name`
     + `jaxon init` - *Name is optional, it will just use 'console' by default*
-+ `template` - Create a new template in the current directory
-  + Available Templates: (`Console`, `Graphical`, `ATmega`, `Operating-System`)
-  + Example Command: `jaxon template console`
++ `package` - Create a new package template in the current directory
+  + Example Command: `jaxon package console`
 + `build` - Build using a specific profile
   + Available Profiles: (`win-exe`, `win-app`, `lin`, `atmega`, `os-32`, `os-64`)
   + Example Command: `jaxon build win-exe src/shared/src src/windows/src`
@@ -73,7 +72,7 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + `uninstall` - Uninstall Jaxon from the computer
   + Delete the {user}/.jaxon/bin/ folder
   + Remove all traces of Jaxon from the System-Path
-+ `jdk` - Create a Jaxon-Blank-SDK that will resolve all issues with Jaxon template projects.
++ `jdk` - Create a Jaxon-Blank-SDK that will resolve all issues with Jaxon projects.
   + Example Command: `jaxon jdk jdk-1.8`
   * **Load the SDK Into Intellij:**
     + F4 for Module Settings
@@ -84,7 +83,6 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
   + Add Jaxon to System-Path: `jaxon system-path add`
   + Remove Jaxon from System-Path: `jaxon system-path remove`
 + `sjc` - Access underlying SJC command-line
-+ `zip` - Zip util for packaging Jaxon templates
 
 ## Java Differences
 + Source code only - compiles directly to native instead of bytecode
@@ -105,10 +103,11 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 
 ## Jaxon vs SJC Differences
 + Jaxon is built on top of SJC and requires it to do anything
++ Jaxon acts as a package manager for the community projects repository
 + Jaxon provides built-in templates - allowing you to easily start new projects
-    + `jaxon template console`
+    + `jaxon package console`
 + Jaxon templates use Maven to separate the modules
-+ Jaxon provides a tool to create a Jaxon-Blank-SDK to make all Jaxon templates fully Intellij compatible
++ Jaxon provides a tool to create a Jaxon-Blank-SDK to make all Jaxon templates compatible with JetBrains tooling (Intellij)
 + Jaxon provides a build wrapper on top of the SJC build system
     + `jaxon build win-exe` is the equivalent of `sjc sc -s 1m -a 4198912 -l -o boot -O #win`
 
@@ -134,10 +133,8 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
 + @SJC: Instructions for the compiler to perform special treatment of the current method or the subsequent code.
     + For example marking the current method as an interrupt handler using @SJC.Interrupt or marking static final arrays as immutable and thus to be kept in flash using @SJC.Flash.
 
-## Jaxon Community Projects
-+ Since the SJC community is so small I've decided to consolidate all the source code into one mono repo.
-+ The idea behind this is to provide one singular resource to introduce SJC with real projects, not just templates.
-+ This will be slowly maintained by myself - this is an open invitation for anyone to submit their SJC project and preform any edits you think are needed.
+### Jaxon Community Projects
++ Jaxon packages are hosted in the [Community Projects](https://github.com/Konloch/Jaxon/tree/master/community-projects) area of the repo.
 
 ## Requirements
 + Jaxon runs out of the box without any requirements.
