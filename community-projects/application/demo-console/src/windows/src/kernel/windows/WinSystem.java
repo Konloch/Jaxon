@@ -48,8 +48,7 @@ public class WinSystem extends System
 	@Override
 	public boolean createDirectory(String path)
 	{
-		Win32.createDirectory(path);
-		return false;
+		return Win32.createDirectory(path);
 	}
 	
 	@Override
