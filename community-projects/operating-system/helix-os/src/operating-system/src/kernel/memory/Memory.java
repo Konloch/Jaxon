@@ -4,19 +4,15 @@ import java.lang.StringBuilder;
 
 public class Memory
 {
-	public static void Memset(int start, int len, byte value)
+	public static void memset(int start, int len, byte value)
 	{
 		int end = start + len;
 		if (len % 4 == 0)
-		{
-			Memset32(start, len / 4, value);
-		}
+			memset32(start, len / 4, value);
 		else
 		{
 			for (int i = start; i < end; i++)
-			{
 				MAGIC.wMem8(i, value);
-			}
 		}
 	}
 	
@@ -28,7 +24,7 @@ public class Memory
 	 * Cannot be inlined since it has fixed offsets to function argument pointers.
 	 */
 	@SJC.NoInline
-	public static void Memset32(int start, int numberOf32BitBlocks, int value)
+	public static void memset32(int start, int numberOf32BitBlocks, int value)
 	{
 		MAGIC.inlineBlock("memset32");
 	}
@@ -36,12 +32,10 @@ public class Memory
 	/*
 	 * Copy bytes from one memory location to another.
 	 */
-	public static void Memcopy(int from, int to, int len)
+	public static void memcopy(int from, int to, int len)
 	{
 		if (len % 4 == 0)
-		{
-			Memcopy32(from, to, len / 4);
-		}
+			memcopy32(from, to, len / 4);
 		else
 		{
 			while (len > 0)
@@ -62,38 +56,30 @@ public class Memory
 	 * Cannot be inlined since it has fixed offsets to function argument pointers.
 	 */
 	@SJC.NoInline
-	public static void Memcopy32(int from, int to, int cnt)
+	public static void memcopy32(int from, int to, int cnt)
 	{
 		MAGIC.inlineBlock("memcopy32");
 	}
 	
-	public static String FormatBytes(int bytes)
+	public static String formatBytes(int bytes)
 	{
 		StringBuilder sb = new StringBuilder();
+
 		if (bytes < 1024)
-		{
 			sb.append(bytes).append(" B");
-		}
 		else if (bytes < 1024 * 1024)
-		{
 			sb.append(bytes / 1024).append(" KB");
-		}
 		else if (bytes < 1024 * 1024 * 1024)
-		{
 			sb.append(bytes / 1024 / 1024).append(" MB");
-		}
 		else if (bytes < 1024 * 1024 * 1024 * 1024)
-		{
 			sb.append(bytes / 1024 / 1024 / 1024).append(" GB");
-		}
 		else
-		{
 			sb.append(bytes / 1024 / 1024 / 1024 / 1024).append(" TB");
-		}
+		
 		return sb.toString();
 	}
 	
-	public static String FormatBytesToKb(int bytes)
+	public static String formatBytesToKb(int bytes)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append(bytes / 1024).append(" KB");

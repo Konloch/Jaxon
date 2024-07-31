@@ -60,9 +60,9 @@ public class WindowManager extends Task
 	public void AddWindow(Window window)
 	{
 		_widgets.add(window);
-		Scheduler.AddTask(window);
+		Scheduler.addTask(window);
 		
-		if (_selectedWindow == null && window.IsSelectable())
+		if (_selectedWindow == null && window.isSelectable())
 		{
 			SetSelectedTo(window);
 		}
@@ -71,7 +71,7 @@ public class WindowManager extends Task
 	public void RemoveWindow(Window window)
 	{
 		_widgets.remove(window);
-		Scheduler.RemoveTask(window);
+		Scheduler.removeTask(window);
 	}
 	
 	public void StaticDisplayFor(int ms)
@@ -176,7 +176,7 @@ public class WindowManager extends Task
 			KeyEvent keyEvent = KeyboardController.ReadEvent();
 			if (keyEvent != null)
 			{
-				Logger.Trace("WIN", "Handling ".append(keyEvent.debug()));
+				Logger.trace("WIN", "Handling ".append(keyEvent.debug()));
 				if (keyEvent.IsDown)
 				{
 					if (ConsumedInternalOnKeyPressed(keyEvent.Key))
@@ -221,9 +221,9 @@ public class WindowManager extends Task
 			_lastMouseX = Math.Clamp(_lastMouseX, 0, _ctx.Width());
 			_lastMouseY = Math.Clamp(_lastMouseY, 0, _ctx.Height());
 			
-			if (_is_dragging && _selectedWindow != null && _selectedWindow.IsDraggable())
+			if (_is_dragging && _selectedWindow != null && _selectedWindow.isDraggable())
 			{
-				_selectedWindow.MoveBy(event.X_Delta, -event.Y_Delta);
+				_selectedWindow.moveBy(event.X_Delta, -event.Y_Delta);
 			}
 		}
 		
@@ -239,7 +239,7 @@ public class WindowManager extends Task
 			}
 			else
 			{
-				Logger.Trace("WIN", "Mouse Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
+				Logger.trace("WIN", "Mouse Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
 				SetSelectedAt(_lastMouseX, _lastMouseY);
 				boolean consumedBySelected = false;
 				if (_selectedWindow != null)
@@ -264,12 +264,12 @@ public class WindowManager extends Task
 		
 		if (event.RightButtonPressed())
 		{
-			Logger.Trace("WIN", "Mouse Right Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
+			Logger.trace("WIN", "Mouse Right Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
 		}
 		
 		if (event.MiddleButtonPressed())
 		{
-			Logger.Trace("WIN", "Mouse Middle Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
+			Logger.trace("WIN", "Mouse Middle Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
 		}
 	}
 	
@@ -290,7 +290,7 @@ public class WindowManager extends Task
 		for (int i = _widgets.size() - 1; i >= 0; i--)
 		{
 			Window window = _widgets.get(i);
-			if (window == null || !window.IsSelectable())
+			if (window == null || !window.isSelectable())
 			{
 				continue;
 			}
@@ -304,7 +304,7 @@ public class WindowManager extends Task
 	
 	private void SetSelectedTo(Window window)
 	{
-		Logger.Trace("WIN", "Selected ".append(window.name));
+		Logger.trace("WIN", "Selected ".append(window.name));
 		if (_selectedWindow != null)
 		{
 			_selectedWindow.setSelected(false);

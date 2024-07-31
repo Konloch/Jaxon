@@ -59,7 +59,7 @@ public class FlowField extends Window
 	}
 	
 	@Override
-	public void DrawContent()
+	public void drawContent()
 	{
 		renderTarget.Rectangle(contentRelativeX, contentRelativeY, contentWidth, contentHeight, 0);
 		

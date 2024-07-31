@@ -11,49 +11,47 @@ public class GarbageCollector
 	
 	private static int _gcCylce = 0;
 	
-	public static int InfoLastRunCollectedBytes = 0;
-	public static int InfoLastRunCollectedObjects = 0;
-	public static int InfoLastRunCompactedEmptyObjects = 0;
-	public static int InfoLastRunTimeMs = 0;
+	public static int infoLastRunCollectedBytes = 0;
+	public static int infoLastRunCollectedObjects = 0;
+	public static int infoLastRunCompactedEmptyObjects = 0;
+	public static int infoLastRunTimeMs = 0;
 	
-	public static void Initialize()
+	public static void initialize()
 	{
 		if (_isInitialized)
-		{
 			return;
-		}
+		
 		_isInitialized = true;
-		Logger.Info("GC", "Initialized");
+		Logger.info("GC", "Initialized");
 	}
 	
-	public static boolean IsInitialized()
+	public static boolean isInitialized()
 	{
 		return _isInitialized;
 	}
 	
-	public static void Run()
+	public static void run()
 	{
 		int startT = Timer.Ticks();
 		
 		int objects = ResetMark();
 		MarkFromStaticRoots();
 		// MarkFromStack();
-		InfoLastRunCollectedBytes = Sweep();
-		MemoryManager.InvalidateLastAlloc();
-		InfoLastRunCompactedEmptyObjects = CompactIfNeeded();
-		InfoLastRunCollectedObjects = objects - MemoryManager.GetObjectCount();
+		infoLastRunCollectedBytes = Sweep();
+		MemoryManager.invalidateLastAlloc();
+		infoLastRunCompactedEmptyObjects = compactIfNeeded();
+		infoLastRunCollectedObjects = objects - MemoryManager.getObjectCount();
 		
 		int endT = Timer.Ticks();
-		InfoLastRunTimeMs = Timer.TicksToMs(endT - startT);
+		infoLastRunTimeMs = Timer.TicksToMs(endT - startT);
 		_gcCylce++;
 	}
 	
-	private static int CompactIfNeeded()
+	private static int compactIfNeeded()
 	{
 		if (ShouldCompact())
-		{
-			return MemoryManager.CompactEmptyObjects();
-		}
+			return MemoryManager.compactEmptyObjects();
+		
 		return 0;
 	}
 	
@@ -65,13 +63,15 @@ public class GarbageCollector
 	private static int ResetMark()
 	{
 		int objects = 0;
-		Object o = MemoryManager.GetStaticAllocRoot();
+		Object o = MemoryManager.getStaticAllocRoot();
+		
 		while (o != null)
 		{
 			o.MarkUnused();
 			o = o._r_next;
 			objects++;
 		}
+		
 		return objects;
 	}
 	
@@ -100,13 +100,12 @@ public class GarbageCollector
 	// brute force ftw
 	private static boolean PointsToHeap(int addr)
 	{
-		Object o = MemoryManager.GetStaticAllocRoot();
+		Object o = MemoryManager.getStaticAllocRoot();
 		while (o != null)
 		{
 			if (MAGIC.cast2Ref(o) == addr)
-			{
 				return true;
-			}
+			
 			o = o._r_next;
 		}
 		return false;
@@ -114,8 +113,8 @@ public class GarbageCollector
 	
 	private static void MarkFromStaticRoots()
 	{
-		Object end = MemoryManager.GetDynamicAllocRoot();
-		Object o = MemoryManager.GetStaticAllocRoot();
+		Object end = MemoryManager.getDynamicAllocRoot();
+		Object o = MemoryManager.getStaticAllocRoot();
 		while (o != end)
 		{
 			MarkRecursive(o);
@@ -126,14 +125,10 @@ public class GarbageCollector
 	private static void MarkRecursive(Object o)
 	{
 		if (o == null || o.IsMarked())
-		{
 			return;
-		}
 		
 		if (!(o instanceof Object))
-		{
 			return;
-		}
 		
 		o.MarkUsed();
 		
@@ -142,17 +137,16 @@ public class GarbageCollector
 		for (int relocIndex = 2; relocIndex < o._r_relocEntries; relocIndex++)
 		{
 			Object entry = o.ReadRelocEntry(relocIndex);
+			
 			if (entry != null)
-			{
 				MarkRecursive(entry);
-			}
 		}
 	}
 	
 	private static int Sweep()
 	{
 		int sweepedBytes = 0;
-		Object toRemove = MemoryManager.GetDynamicAllocRoot();
+		Object toRemove = MemoryManager.getDynamicAllocRoot();
 		Object nextObject = null;
 		while (toRemove != null)
 		{
@@ -160,11 +154,12 @@ public class GarbageCollector
 			
 			if (!toRemove.IsMarked())
 			{
-				sweepedBytes += MemoryManager.ObjectSize(toRemove);
-				MemoryManager.RemoveFromNextChain(toRemove);
-				EmptyObject replacedWithEO = MemoryManager.ReplaceWithEmptyObject(toRemove);
-				MemoryManager.InsertIntoEmptyObjectChain(replacedWithEO);
+				sweepedBytes += MemoryManager.getObjectSize(toRemove);
+				MemoryManager.removeFromNextChain(toRemove);
+				EmptyObject replacedWithEO = MemoryManager.replaceWithEmptyObject(toRemove);
+				MemoryManager.insertIntoEmptyObjectChain(replacedWithEO);
 			}
+
 			toRemove = nextObject;
 		}
 		return sweepedBytes;

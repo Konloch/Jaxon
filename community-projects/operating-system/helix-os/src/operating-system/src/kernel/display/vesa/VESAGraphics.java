@@ -27,13 +27,13 @@ public class VESAGraphics extends GraphicsContext
 		needsRedraw = true;
 		curMode = mode;
 		
-		Logger.Info("VESA", "SetMode to ".append(curMode.debug()));
+		Logger.info("VESA", "SetMode to ".append(curMode.debug()));
 	}
 	
 	@Override
 	public void Activate()
 	{
-		Logger.Info("VESA", "Activate VESA Graphics Mode");
+		Logger.info("VESA", "Activate VESA Graphics Mode");
 		DisplayModes.SetVesaMode(curMode.ModeNr);
 	}
 	
@@ -101,7 +101,7 @@ public class VESAGraphics extends GraphicsContext
 			int from = MAGIC.addr(buffer.PixelData[0]);
 			int to = curMode.LfbAddress;
 			int len = buffer.PixelData.length;
-			Memory.Memcopy32(from, to, len);
+			Memory.memcopy32(from, to, len);
 		}
 		needsRedraw = false;
 	}

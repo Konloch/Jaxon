@@ -29,19 +29,17 @@ public class KeyboardController
 	private static boolean _altPressed;
 	private static boolean _capsLocked;
 	
-	public static void Initialize()
+	public static void initialize()
 	{
 		_layout = null;
 		packet = new int[3];
 		_eventBuffer = new QueueKeyEvent(32);
 		for (int i = 0; i < _eventBuffer.capacity(); i++)
-		{
 			_eventBuffer.put(new KeyEvent());
-		}
 		
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("KeyboardController"));
-		int handlerOffset = IDT.CodeOffset(dscAddr, MAGIC.mthdOff("KeyboardController", "KeyboardHandler"));
-		IDT.RegisterIrqHandler(IRQ_KEYBOARD, handlerOffset);
+		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("KeyboardController", "KeyboardHandler"));
+		IDT.registerIrqHandler(IRQ_KEYBOARD, handlerOffset);
 	}
 	
 	@SJC.Interrupt
@@ -71,24 +69,18 @@ public class KeyboardController
 		byte code = MAGIC.rIOs8(PORT_KEYCODE);
 		if (code >= 0xE2)
 		{
-			Logger.Warning("KeyC", "Ignoring ScanCode >0xE2");
+			Logger.warning("KeyC", "Ignoring ScanCode >0xE2");
 			return;
 		}
 		
 		if (cycle == 0)
 		{
 			if (code == KEYCODE_EXTEND1)
-			{
 				expectedLength = 2;
-			}
 			else if (code == KEYCODE_EXTEND2)
-			{
 				expectedLength = 3;
-			}
 			else
-			{
 				expectedLength = 1;
-			}
 		}
 		
 		packet[cycle++] = code;
@@ -108,7 +100,7 @@ public class KeyboardController
 			if (event.Key == Key.F10 && event.IsDown)
 			{
 				PIC.Acknowledge(IRQ_KEYBOARD);
-				Scheduler.TaskBreak();
+				Scheduler.taskBreak();
 			}
 		}
 	}

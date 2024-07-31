@@ -13,16 +13,16 @@ public class Scheduler
 	private static Task _currentTask;
 	private static int _storeEbp, _storeEsp;
 	
-	public static void Initialize()
+	public static void initialize()
 	{
 		_tasks = new Task[MAX_TASKS];
 		_taskCount = 0;
 		_currentTask = null;
 	}
 	
-	public static void AddTask(Task task)
+	public static void addTask(Task task)
 	{
-		Logger.Info("SCHED", "Added Task ".append(task.name));
+		Logger.info("SCHED", "Added Task ".append(task.name));
 		if (_taskCount >= MAX_TASKS)
 		{
 			Kernel.panic("Too many tasks");
@@ -31,52 +31,50 @@ public class Scheduler
 		_tasks[_taskCount++] = task;
 	}
 	
-	public static void RemoveTask(Task task)
+	public static void removeTask(Task task)
 	{
-		Logger.Info("SCHED", "Removing Task ".append(task.name));
+		Logger.info("SCHED", "Removing Task ".append(task.name));
 		for (int i = 0; i < _taskCount; i++)
 		{
 			if (_tasks[i] == task)
 			{
 				_tasks[i] = null;
+				
 				for (int j = i; j < _taskCount - 1; j++)
-				{
 					_tasks[j] = _tasks[j + 1];
-				}
+				
 				_taskCount--;
 				return;
 			}
 		}
 	}
 	
-	public static int GetTaskId(String name)
+	public static int getTaskId(String name)
 	{
 		for (int i = 0; i < _taskCount; i++)
 		{
 			if (_tasks[i].name == name)
-			{
 				return _tasks[i].id;
-			}
 		}
 		return -1;
 	}
 	
-	public static void Run()
+	public static void run()
 	{
-		Logger.Info("SCHED", "Starting Schedeuler");
+		Logger.info("SCHED", "Starting Schedeuler");
 		
-		MemoryManager.EnableGarbageCollection();
-		Logger.Info("SCHED", "Enabled Garbage Collection");
+		MemoryManager.enableGarbageCollection();
+		Logger.info("SCHED", "Enabled Garbage Collection");
 		
 		MAGIC.inline(0x89, 0x2D);
 		MAGIC.inlineOffset(4, _storeEbp); // mov [addr(v1)],ebp
 		MAGIC.inline(0x89, 0x25);
 		MAGIC.inlineOffset(4, _storeEsp); // mov [addr(v1)],esp
 		
-		Loop();
+		loop();
 	}
 	
-	private static void Loop()
+	private static void loop()
 	{
 		while (true)
 		{
@@ -84,26 +82,21 @@ public class Scheduler
 			{
 				_currentTask = _tasks[i];
 				_currentTask.run();
-				
 			}
 			
-			if (MemoryManager.ShouldCollectGarbage())
-			{
-				MemoryManager.TriggerGarbageCollection();
-			}
+			if (MemoryManager.shouldCollectGarbage())
+				MemoryManager.triggerGarbageCollection();
 			
 			// x86.hlt();
 		}
 	}
 	
-	public static void TaskBreak()
+	public static void taskBreak()
 	{
 		if (_currentTask == null)
-		{
 			return;
-		}
 		
-		RemoveTask(_currentTask);
+		removeTask(_currentTask);
 		_currentTask = null;
 		
 		MAGIC.inline(0x8B, 0x2D);
@@ -113,7 +106,7 @@ public class Scheduler
 		
 		x86.sti();
 		
-		Loop();
+		loop();
 	}
 	
 	public static int GetTaskCount()

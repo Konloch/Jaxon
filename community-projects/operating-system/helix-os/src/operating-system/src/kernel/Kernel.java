@@ -31,54 +31,54 @@ public class Kernel
 	
 	public static void main()
 	{
-		Logger.LogSerial("Initializing Kernel..\n");
+		Logger.logSerial("Initializing Kernel..\n");
 		
-		MemoryManager.Initialize();
-		Logger.LogSerial("Initialized Memory Manager\n");
+		MemoryManager.initialize();
+		Logger.logSerial("Initialized Memory Manager\n");
 		
-		Logger.Initialize(Logger.TRACE, 100, false);
-		Logger.Info("BOOT", "Initialized Logger");
+		Logger.initialize(Logger.TRACE, 100, false);
+		Logger.info("BOOT", "Initialized Logger");
 		
-		SymbolResolution.Initialize();
-		Logger.Info("BOOT", "Initialized Symbol Resolution");
+		SymbolResolution.initialize();
+		Logger.info("BOOT", "Initialized Symbol Resolution");
 		
-		IDT.Initialize();
-		Logger.Info("BOOT", "Initialized Interrupt Descriptor Table");
+		IDT.initialize();
+		Logger.info("BOOT", "Initialized Interrupt Descriptor Table");
 		
 		MAGIC.doStaticInit();
-		Logger.Info("BOOT", "Initialized Static Initializers");
+		Logger.info("BOOT", "Initialized Static Initializers");
 		
-		GarbageCollector.Initialize();
-		Logger.Info("BOOT", "Initialized Garbage Collector");
+		GarbageCollector.initialize();
+		Logger.info("BOOT", "Initialized Garbage Collector");
 		
-		MemoryManager.DisableGarbageCollection();
-		Logger.Info("BOOT", "Disabled Garbage Collection");
+		MemoryManager.disableGarbageCollection();
+		Logger.info("BOOT", "Disabled Garbage Collection");
 		
-		VirtualMemory.EnableVirtualMemory();
-		Logger.Info("BOOT", "Enabled Virtual Memory");
+		VirtualMemory.enableVirtualMemory();
+		Logger.info("BOOT", "Enabled Virtual Memory");
 		
 		PrintAllPciDevices();
 		
 		PIT.Initialize();
-		Logger.Info("BOOT", "Initialized PIT");
+		Logger.info("BOOT", "Initialized PIT");
 		
 		PIT.SetRate(1000);
-		Logger.Info("BOOT", "Set PIT Rate to 1000Hz");
+		Logger.info("BOOT", "Set PIT Rate to 1000Hz");
 		
-		KeyboardController.Initialize();
-		Logger.Info("BOOT", "Initialized PS2 Keyboard Controller");
+		KeyboardController.initialize();
+		Logger.info("BOOT", "Initialized PS2 Keyboard Controller");
 		
 		KeyboardController.SetLayout(new QWERTZ());
-		Logger.Info("BOOT", "Set Keyboard Layout to QWERTZ");
+		Logger.info("BOOT", "Set Keyboard Layout to QWERTZ");
 		
 		MouseController.Initialize();
-		Logger.Info("BOOT", "Initialized PS2 Mouse Controller");
+		Logger.info("BOOT", "Initialized PS2 Mouse Controller");
 		
-		IDT.Enable();
-		Logger.Info("BOOT", "Enabled Interrupts");
+		IDT.enable();
+		Logger.info("BOOT", "Enabled Interrupts");
 		
-		Scheduler.Initialize();
-		Logger.Info("BOOT", "Initialized Scheduler");
+		Scheduler.initialize();
+		Logger.info("BOOT", "Initialized Scheduler");
 		
 		VecVesaMode modes = VesaQuery.AvailableModes();
 		PrintAllVesaModes(modes);
@@ -98,27 +98,27 @@ public class Kernel
 		
 		Display = new VESAGraphics(mode);
 		Display.Activate();
-		Logger.Info("BOOT", "Initialized Display");
+		Logger.info("BOOT", "Initialized Display");
 		
 		Display.ClearScreen();
 		
 		WindowManager = new WindowManager(Display);
 		WindowManager.register();
-		Logger.Info("BOOT", "Initialized WindowManager");
+		Logger.info("BOOT", "Initialized WindowManager");
 		
-		Scheduler.Run();
+		Scheduler.run();
 	}
 	
 	private static void PrintAllPciDevices()
 	{
-		Logger.Info("BOOT", "Detecting PCI Devices..");
+		Logger.info("BOOT", "Detecting PCI Devices..");
 		LazyPciDeviceReader reader = new LazyPciDeviceReader();
 		while (reader.HasNext())
 		{
 			PciDevice device = reader.Next();
 			if (device == null)
 				continue;
-			Logger.Info("BOOT", "Found Device ".append(device.debug()));
+			Logger.info("BOOT", "Found Device ".append(device.debug()));
 		}
 	}
 	
@@ -127,7 +127,7 @@ public class Kernel
 		for (int i = 0; i < modes.Size(); i++)
 		{
 			VESAMode mode = modes.Get(i);
-			Logger.Info("BOOT", "Mode ".append(i).append(": ").append(mode.debug()));
+			Logger.info("BOOT", "Mode ".append(i).append(": ").append(mode.debug()));
 		}
 	}
 	
@@ -137,7 +137,7 @@ public class Kernel
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
 		int eip = x86.eipForFunction(ebp);
-		Bluescreen.Show("PANIC", msg, ebp, eip);
+		Bluescreen.show("PANIC", msg, ebp, eip);
 		while (true)
 		{
 		}

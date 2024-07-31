@@ -19,44 +19,44 @@ public class Logger
 	public static final byte ERROR = 4;
 	public static final byte FATAL = 5;
 	
-	public static void Initialize(byte logLevel, int capactiy, boolean logTime)
+	public static void initialize(byte logLevel, int capactiy, boolean logTime)
 	{
 		logBuffer = new QueueLogEntry(capactiy);
+		
 		for (int i = 0; i < capactiy; i++)
-		{
 			logBuffer.Put(new LogEntry("", "", NONE, ""));
-		}
+		
 		initialized = true;
 		minimumLogLevel = logLevel;
 		_logTime = logTime;
 	}
 	
 	@SJC.Inline
-	public static void Trace(String category, String message)
+	public static void trace(String category, String message)
 	{
 		log(category, message, TRACE);
 	}
 	
 	@SJC.Inline
-	public static void Info(String category, String message)
+	public static void info(String category, String message)
 	{
 		log(category, message, INFO);
 	}
 	
 	@SJC.Inline
-	public static void Warning(String category, String message)
+	public static void warning(String category, String message)
 	{
 		log(category, message, WARNING);
 	}
 	
 	@SJC.Inline
-	public static void Error(String category, String message)
+	public static void error(String category, String message)
 	{
 		log(category, message, ERROR);
 	}
 	
 	@SJC.Inline
-	public static void Fatal(String category, String message)
+	public static void fatal(String category, String message)
 	{
 		log(category, message, FATAL);
 	}
@@ -67,40 +67,40 @@ public class Logger
 			return;
 		
 		LogEntry log = logBuffer.Get();
-		log.SetCategory(category);
-		log.SetMessage(message);
-		log.SetPriority(priority);
+		log.setCategory(category);
+		log.setMessage(message);
+		log.setPriority(priority);
+		
 		if (_logTime)
-			log.SetTimeHMS(GetTimeHMS());
-		LogSerial(log);
+			log.setTimeHMS(GetTimeHMS());
+		
+		logSerial(log);
 		logBuffer.Put(log);
 		logTicks++;
 	}
 	
-	public static void LogSerial(LogEntry entry)
+	public static void logSerial(LogEntry entry)
 	{
-		LogSerial(entry.TimeHMS());
-		LogSerial(" [");
-		LogSerial(entry.PriorityString());
-		LogSerial("] ");
-		LogSerial(entry.Category());
-		LogSerial(": ");
-		LogSerial(entry.Message());
-		LogSerial("\n");
+		logSerial(entry.timeHMS());
+		logSerial(" [");
+		logSerial(entry.oriorityString());
+		logSerial("] ");
+		logSerial(entry.category());
+		logSerial(": ");
+		logSerial(entry.message());
+		logSerial("\n");
 	}
 	
-	public static void LogSerial(String str)
+	public static void logSerial(String str)
 	{
 		if (str == null)
 		{
-			LogSerial("null");
+			logSerial("null");
 			return;
 		}
 		
 		if (str.length() == 0)
-		{
 			return;
-		}
 		
 		for (int i = 0; i < str.length(); i++)
 		{
@@ -130,22 +130,22 @@ public class Logger
 		boolean minutesIsTwoDigits = minutes >= 10;
 		boolean secondsIsTwoDigits = seconds >= 10;
 		StringBuilder sb = new StringBuilder(10);
+		
 		if (!hoursIsTwoDigits)
-		{
 			sb.append('0');
-		}
+		
 		sb.append(hours);
 		sb.append(':');
+		
 		if (!minutesIsTwoDigits)
-		{
 			sb.append('0');
-		}
+		
 		sb.append(minutes);
 		sb.append(':');
+		
 		if (!secondsIsTwoDigits)
-		{
 			sb.append('0');
-		}
+		
 		sb.append(seconds);
 		return sb.toString();
 	}

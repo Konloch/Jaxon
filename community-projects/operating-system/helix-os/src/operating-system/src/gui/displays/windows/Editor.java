@@ -20,7 +20,8 @@ public class Editor extends Window
 		_textField = new TextField(0, 0, contentWidth, contentHeight, border, charSpacing, lineSpacing, fg, bg, true, font);
 	}
 	
-	public void DrawContent()
+	@Override
+	public void drawContent()
 	{
 		if (_textField.needsRedraw())
 		{
@@ -83,7 +84,7 @@ public class Editor extends Window
 		int cy = Math.Clamp(cellH, 0, _textField.LineCount - 1);
 		
 		_textField.setCursor(cx, cy);
-		Logger.Info("Cursor", "set to".append(cx).append(" ").append(cy));
+		Logger.info("Cursor", "set to".append(cx).append(" ").append(cy));
 		return true;
 	}
 	
@@ -128,9 +129,9 @@ public class Editor extends Window
 	}
 	
 	@Override
-	public void MoveBy(int dragDiffX, int dragDiffY)
+	public void moveBy(int dragDiffX, int dragDiffY)
 	{
-		super.MoveBy(dragDiffX, dragDiffY);
+		super.moveBy(dragDiffX, dragDiffY);
 		// _textField.DragBy(dragDiffX, dragDiffY);
 	}
 	

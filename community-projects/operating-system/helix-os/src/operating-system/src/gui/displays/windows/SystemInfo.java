@@ -42,12 +42,12 @@ public class SystemInfo extends Window
 		_sb = new StringBuilder(500);
 	}
 	
-	public void DrawContent()
+	@Override
+	public void drawContent()
 	{
 		if (_textField.needsRedraw())
-		{
 			_textField.draw();
-		}
+		
 		renderTarget.Blit(contentRelativeX, contentRelativeY, _textField.renderTarget, false);
 	}
 	
@@ -61,35 +61,34 @@ public class SystemInfo extends Window
 			_needsRedraw = true;
 		}
 		else
-		{
 			_needsRedraw = false;
-		}
+		
 		return _needsRedraw;
 	}
 	
 	@Override
-	public void MoveBy(int dragDiffX, int dragDiffY)
+	public void moveBy(int dragDiffX, int dragDiffY)
 	{
-		super.MoveBy(dragDiffX, dragDiffY);
+		super.moveBy(dragDiffX, dragDiffY);
 	}
 	
 	@Override
 	public void update()
 	{
-		int gcExecTime = GarbageCollector.InfoLastRunTimeMs;
-		int gcObjectsCollected = GarbageCollector.InfoLastRunCollectedObjects;
-		int gcBytesCollected = GarbageCollector.InfoLastRunCollectedBytes;
-		int gcEmptyObjectsCompacted = GarbageCollector.InfoLastRunCompactedEmptyObjects;
+		int gcExecTime = GarbageCollector.infoLastRunTimeMs;
+		int gcObjectsCollected = GarbageCollector.infoLastRunCollectedObjects;
+		int gcBytesCollected = GarbageCollector.infoLastRunCollectedBytes;
+		int gcEmptyObjectsCompacted = GarbageCollector.infoLastRunCompactedEmptyObjects;
 		
 		_gcExecTimes.put(gcExecTime);
 		_gcObjectsCollected.put(gcObjectsCollected);
 		_gcBytesCollected.put(gcBytesCollected);
 		_gcEmptyObjectsCompacted.put(gcEmptyObjectsCompacted);
 		
-		int consumedMemory = MemoryManager.GetUsedSpace();
-		int freeMemory = MemoryManager.GetFreeSpace();
-		int objectCount = MemoryManager.GetObjectCount();
-		int emptyObjectCount = MemoryManager.GetEmptyObjectCount();
+		int consumedMemory = MemoryManager.getUsedSpace();
+		int freeMemory = MemoryManager.getFreeSpace();
+		int objectCount = MemoryManager.getObjectCount();
+		int emptyObjectCount = MemoryManager.getEmptyObjectCount();
 		
 		int taskCount = Scheduler.GetTaskCount();
 		
@@ -98,10 +97,10 @@ public class SystemInfo extends Window
 		_sb.appendLine("Window Manger:").append("  ").append("Average Draw Time ").append(WindowManager.InfoAvgRenderTimeMs).append(" ms").appendLine();
 		
 		_sb.appendLine();
-		_sb.appendLine("Memory:").append("  ").append("Consumed: ").append(Memory.FormatBytesToKb(consumedMemory)).appendLine().append("  ").append("Free: ").append(Memory.FormatBytesToKb(freeMemory)).appendLine().append("  ").append("Objects: ").append(objectCount).appendLine().append("  ").append("Empty Objects: ").append(emptyObjectCount).appendLine();
+		_sb.appendLine("Memory:").append("  ").append("Consumed: ").append(Memory.formatBytesToKb(consumedMemory)).appendLine().append("  ").append("Free: ").append(Memory.formatBytesToKb(freeMemory)).appendLine().append("  ").append("Objects: ").append(objectCount).appendLine().append("  ").append("Empty Objects: ").append(emptyObjectCount).appendLine();
 		
 		_sb.appendLine();
-		_sb.appendLine("GC:").append("  ").append("Last Run Time: ").append(GarbageCollector.InfoLastRunTimeMs).append(" ms").appendLine().append("  ").append("Last Run Marked: ").append(GarbageCollector.InfoLastRunCollectedObjects).appendLine().append("  ").append("Last Run Collected: ").append(Memory.FormatBytes(GarbageCollector.InfoLastRunCollectedBytes)).appendLine().append("  ").append("Last Run Compacted: ").append(GarbageCollector.InfoLastRunCompactedEmptyObjects).appendLine();
+		_sb.appendLine("GC:").append("  ").append("Last Run Time: ").append(GarbageCollector.infoLastRunTimeMs).append(" ms").appendLine().append("  ").append("Last Run Marked: ").append(GarbageCollector.infoLastRunCollectedObjects).appendLine().append("  ").append("Last Run Collected: ").append(Memory.formatBytes(GarbageCollector.infoLastRunCollectedBytes)).appendLine().append("  ").append("Last Run Compacted: ").append(GarbageCollector.infoLastRunCompactedEmptyObjects).appendLine();
 		
 		_sb.appendLine();
 		_sb.appendLine("Tasks:").append("  ").append("Count: ").append(taskCount).appendLine();

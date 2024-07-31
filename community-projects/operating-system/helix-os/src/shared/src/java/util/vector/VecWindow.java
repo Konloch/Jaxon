@@ -84,7 +84,7 @@ public class VecWindow
 	{
 		for (int i = size - 1; i >= 0; i--)
 		{
-			if (elements[i].IsSelectable())
+			if (elements[i].isSelectable())
 				return elements[i];
 		}
 		
@@ -94,22 +94,18 @@ public class VecWindow
 	public Window nextSelectable(Window current)
 	{
 		if (current == null)
-		{
 			return null;
-		}
-		else
+		
+		for (int i = 0; i < size; i++)
 		{
-			for (int i = 0; i < size; i++)
+			if (elements[i] == current)
 			{
-				if (elements[i] == current)
+				for (int j = 1; j < size; j++)
 				{
-					for (int j = 1; j < size; j++)
-					{
-						int next = (i + j) % (size);
-						Window widget = elements[next];
-						if (widget.IsSelectable())
-							return elements[next];
-					}
+					int next = (i + j) % (size);
+					Window widget = elements[next];
+					if (widget.isSelectable())
+						return elements[next];
 				}
 			}
 		}

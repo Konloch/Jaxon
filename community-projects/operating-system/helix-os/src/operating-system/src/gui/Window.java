@@ -91,7 +91,7 @@ public abstract class Window extends Task implements IButtonListener
 	
 	public boolean onButtonClicked(ButtonClickedEventArgs button)
 	{
-		Logger.Info("Window", "Button event: ".append(button.debug()));
+		Logger.info("Window", "Button event: ".append(button.debug()));
 		if (button.buttonName == BTN_WINDOW_CLOSE)
 		{
 			Kernel.WindowManager.RemoveWindow(this);
@@ -107,18 +107,18 @@ public abstract class Window extends Task implements IButtonListener
 	{
 		if (_withFrame)
 		{
-			DrawFrame();
-			DrawTitleBar();
+			drawFrame();
+			drawTitleBar();
 		}
 		
-		DrawContent();
+		drawContent();
 		drawWidgets();
 		clearDirty();
 	}
 	
-	public abstract void DrawContent();
+	public abstract void drawContent();
 	
-	public void DrawFrame()
+	public void drawFrame()
 	{
 		if (isSelected)
 			renderTarget.Rectangle(0, 0, width, height, COL_TITLEBAR_SELECTED);
@@ -126,7 +126,7 @@ public abstract class Window extends Task implements IButtonListener
 			renderTarget.Rectangle(0, 0, width, height, COL_BORDER);
 	}
 	
-	public void DrawTitleBar()
+	public void drawTitleBar()
 	{
 		renderTarget.Rectangle(0, 0, width - 1, titleBarSize, COL_TITLEBAR);
 		
@@ -135,22 +135,22 @@ public abstract class Window extends Task implements IButtonListener
 		renderTarget.Blit(_btnClose.x, _btnClose.y, _btnClose.renderTarget, false);
 	}
 	
-	public boolean ContainsTitlebar(int x, int y)
+	public boolean containsTitlebar(int x, int y)
 	{
 		return x >= this.x && x <= this.x + width && y >= this.y && y <= this.y + titleBarSize;
 	}
 	
-	public boolean IsSelectable()
+	public boolean isSelectable()
 	{
 		return _isSelectable;
 	}
 	
-	public boolean IsDraggable()
+	public boolean isDraggable()
 	{
 		return _isDraggable;
 	}
 	
-	public void MoveBy(int dragDiffX, int dragDiffY)
+	public void moveBy(int dragDiffX, int dragDiffY)
 	{
 		x += dragDiffX;
 		y += dragDiffY;
@@ -216,10 +216,10 @@ public abstract class Window extends Task implements IButtonListener
 			Widget widget = (Widget) _widgets.get(i);
 			if (widget.contains(relX, relY))
 			{
-				Logger.Info("WM", "Clicked at ".append(widget.name));
+				Logger.info("WM", "Clicked at ".append(widget.name));
 				if (widget instanceof Button)
 				{
-					Logger.Info("WM", "Button clicked");
+					Logger.info("WM", "Button clicked");
 					Button button = (Button) widget;
 					button.click();
 				}

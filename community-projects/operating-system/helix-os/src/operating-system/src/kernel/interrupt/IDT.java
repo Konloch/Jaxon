@@ -22,85 +22,79 @@ public class IDT
 	private static final int REQUESTED_PRIV_LEVEL_OS = 0;
 	private static boolean _initialized = false;
 	
-	public static void Initialize()
+	public static void initialize()
 	{
 		PIC.Initialize();
 		
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("SystemInterrupts"));
-		WriteTableEntry(0, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "DivByZeroHandler")));
-		WriteTableEntry(1, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "DebugHandler")));
-		WriteTableEntry(2, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "NmiHandler")));
-		WriteTableEntry(3, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "BreakpointHandler")));
-		WriteTableEntry(4, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "OverflowHandler")));
-		WriteTableEntry(5, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "BoundRangeExceededHandler")));
-		WriteTableEntry(6, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "InvalidOpcodeHandler")));
-		WriteTableEntry(7, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "ReservedHandler")));
-		WriteTableEntry(8, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "DoubleFaultHandler")));
+		writeTableEntry(0, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "DivByZeroHandler")));
+		writeTableEntry(1, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "DebugHandler")));
+		writeTableEntry(2, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "NmiHandler")));
+		writeTableEntry(3, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "BreakpointHandler")));
+		writeTableEntry(4, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "OverflowHandler")));
+		writeTableEntry(5, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "BoundRangeExceededHandler")));
+		writeTableEntry(6, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "InvalidOpcodeHandler")));
+		writeTableEntry(7, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "ReservedHandler")));
+		writeTableEntry(8, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "DoubleFaultHandler")));
 		for (int j = 9; j < 13; j++)
-		{
-			WriteTableEntry(j, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "ReservedHandler")));
-		}
-		WriteTableEntry(13, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "GeneralProtectionFaultHandler")));
-		WriteTableEntry(14, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "PageFaultHandler")));
+			writeTableEntry(j, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "ReservedHandler")));
+		writeTableEntry(13, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "GeneralProtectionFaultHandler")));
+		writeTableEntry(14, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "PageFaultHandler")));
 		for (int j = 15; j < 32; j++)
-		{
-			WriteTableEntry(j, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "ReservedHandler")));
-		}
+			writeTableEntry(j, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "ReservedHandler")));
 		for (int j = 32; j < MemoryLayout.IDT_ENTRIES; j++)
-		{
-			WriteTableEntry(j, CodeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "IgnoreHandler"))); // IRQ 0-255
-		}
+			writeTableEntry(j, codeOffset(dscAddr, MAGIC.mthdOff("SystemInterrupts", "IgnoreHandler"))); // IRQ 0-255
 		
-		LoadTableProtectedMode();
+		loadTableProtectedMode();
 		_initialized = true;
 	}
 	
-	public static void RegisterIrqHandler(int irq, int handlerAddr)
+	public static void registerIrqHandler(int irq, int handlerAddr)
 	{
 		if (!_initialized)
 		{
 			Kernel.panic("IDT not initialized");
 			return;
 		}
-		Logger.Info("IDT", new StringBuilder(64).append("Registering IRQ handler for IRQ ").append(irq).append(" at 0x").append(handlerAddr, 16).toString());
-		WriteTableEntry(irq + 32, handlerAddr);
+		Logger.info("IDT", new StringBuilder(64).append("Registering IRQ handler for IRQ ").append(irq).append(" at 0x").append(handlerAddr, 16).toString());
+		writeTableEntry(irq + 32, handlerAddr);
 	}
 	
 	@SJC.Inline
-	public static void Enable()
+	public static void enable()
 	{
 		x86.sti();
 	}
 	
 	@SJC.Inline
-	public static void Disable()
+	public static void disable()
 	{
 		x86.cli();
 	}
 	
 	@SJC.Inline
-	public static void LoadTableProtectedMode()
+	public static void loadTableProtectedMode()
 	{
 		x86.ldit(MemoryLayout.IDT_BASE, MemoryLayout.IDT_SIZE - 1);
 	}
 	
 	@SJC.Inline
-	public static void LoadTableRealMode()
+	public static void loadTableRealMode()
 	{
 		x86.ldit(0, 1023);
 	}
 	
-	public static int CodeOffset(int classDesc, int mthdOff)
+	public static int codeOffset(int classDesc, int mthdOff)
 	{
 		int code = MAGIC.rMem32(classDesc + mthdOff) + MAGIC.getCodeOff();
 		return code;
 	}
 	
-	private static void WriteTableEntry(int i, int handlerAddr)
+	private static void writeTableEntry(int i, int handlerAddr)
 	{
 		IDTEntry entry = (IDTEntry) MAGIC.cast2Struct(MemoryLayout.IDT_BASE + i * 8);
 		entry.offsetLow = (short) BitHelper.getRange(handlerAddr, 0, 16);
-		entry.selector = GetSelector(SEGMENT_CODE, REQUESTED_PRIV_LEVEL_OS, false);
+		entry.selector = getSelector(SEGMENT_CODE, REQUESTED_PRIV_LEVEL_OS, false);
 		entry.zero = 0;
 		entry.typeAttr = (byte) 0x8E; // 10001110
 		entry.offsetHigh = (short) BitHelper.getRange(handlerAddr, 16, 16);
@@ -112,7 +106,7 @@ public class IDT
 	 * 2: Table indicator (0 = GDT, 1 = LDT)
 	 * 3-13: Index of the segment descriptor in the GDT or LDT
 	 */
-	private static short GetSelector(int segment, int privLevel, boolean tableLDT)
+	private static short getSelector(int segment, int privLevel, boolean tableLDT)
 	{
 		int selector = 0;
 		selector = BitHelper.setRange(selector, 0, 2, privLevel);

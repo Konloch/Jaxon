@@ -19,8 +19,8 @@ public class PIT
 	public static void Initialize()
 	{
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("PIT"));
-		int handlerOffset = IDT.CodeOffset(dscAddr, MAGIC.mthdOff("PIT", "TimerHandler"));
-		IDT.RegisterIrqHandler(IRQ_PIT, handlerOffset);
+		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("PIT", "TimerHandler"));
+		IDT.registerIrqHandler(IRQ_PIT, handlerOffset);
 	}
 	
 	@SJC.Interrupt

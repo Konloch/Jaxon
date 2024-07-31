@@ -39,8 +39,8 @@ public class MouseController
 		_packet = new byte[3];
 		_workingPacket = new byte[3];
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("MouseController"));
-		int handlerOffset = IDT.CodeOffset(dscAddr, MAGIC.mthdOff("MouseController", "MouseHandler"));
-		IDT.RegisterIrqHandler(IRQ_MOUSE, handlerOffset);
+		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("MouseController", "MouseHandler"));
+		IDT.registerIrqHandler(IRQ_MOUSE, handlerOffset);
 	}
 	
 	private static byte[] _workingPacket;
@@ -93,7 +93,7 @@ public class MouseController
 		
 		if (!BitHelper.getFlag(packetMetaData, BIT_ALWAYS_ONE) || BitHelper.getFlag(packetMetaData, BIT_Y_OVERFLOW) || BitHelper.getFlag(packetMetaData, BIT_X_OVERFLOW))
 		{
-			Logger.Warning("Mouse", "Bad packet received");
+			Logger.warning("Mouse", "Bad packet received");
 			return false;
 		}
 		
@@ -127,7 +127,7 @@ public class MouseController
 		
 		if (!BitHelper.getFlag(packetMetaData, BIT_ALWAYS_ONE) || BitHelper.getFlag(packetMetaData, BIT_Y_OVERFLOW) || BitHelper.getFlag(packetMetaData, BIT_X_OVERFLOW))
 		{
-			Logger.Warning("Mouse", "Bad packet received");
+			Logger.warning("Mouse", "Bad packet received");
 			return false;
 		}
 		
@@ -225,7 +225,7 @@ public class MouseController
 					return;
 				}
 			}
-			Logger.Warning("Mouse", "Mouse timeout");
+			Logger.warning("Mouse", "Mouse timeout");
 			return;
 		}
 		else
@@ -237,7 +237,7 @@ public class MouseController
 					return;
 				}
 			}
-			Logger.Warning("Mouse", "Mouse timeout");
+			Logger.warning("Mouse", "Mouse timeout");
 			return;
 		}
 	}

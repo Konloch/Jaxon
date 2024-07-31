@@ -313,7 +313,7 @@ public class TM3
 	{
 		for (int line = BUFFER_START; line < BUFFER_END; line += LINE_SIZE_BYTES)
 		{
-			Memory.Memcopy(line + LINE_SIZE_BYTES, line, LINE_SIZE_BYTES);
+			Memory.memcopy(line + LINE_SIZE_BYTES, line, LINE_SIZE_BYTES);
 		}
 		
 		byte clearColor = TM3Color.Set(TM3Color.GREY, TM3Color.BLACK);

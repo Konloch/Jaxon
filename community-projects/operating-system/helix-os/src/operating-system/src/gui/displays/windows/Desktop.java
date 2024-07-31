@@ -35,7 +35,8 @@ public class Desktop extends Window
 		
 	}
 	
-	public void DrawContent()
+	@Override
+	public void drawContent()
 	{
 		renderTarget.Blit(0, 0, _background, false);
 		drawWidgets();
@@ -55,7 +56,7 @@ public class Desktop extends Window
 		
 		if (event.buttonName == _btnLaunchSystemInfo)
 		{
-			Logger.Trace("Desktop", "Launch System Info");
+			Logger.trace("Desktop", "Launch System Info");
 			SystemInfo sysinfo = new SystemInfo("System Info", 40, 40, 400, 400, 8, 0, 2, Font7x8.Instance);
 			Kernel.WindowManager.AddWindow(sysinfo);
 			return true;

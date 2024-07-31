@@ -30,7 +30,7 @@ public class Bitmap
 	{
 		int from = MAGIC.addr(PixelData[0]);
 		int len = PixelData.length;
-		Memory.Memset(from, len * 4, (byte) 0);
+		Memory.memset(from, len * 4, (byte) 0);
 	}
 	
 	public int GetPixel(int x, int y)
@@ -127,7 +127,7 @@ public class Bitmap
 		{
 			int index = Index(x, y + i);
 			int addr = MAGIC.addr(PixelData[index]);
-			Memory.Memset32(addr, width, color);
+			Memory.memset32(addr, width, color);
 		}
 	}
 	
@@ -193,7 +193,7 @@ public class Bitmap
 				int addr = MAGIC.addr(PixelData[index]);
 				int bitmap_index = bitmap.Index(off_bitmap_x, off_bitmap_y + cur_y);
 				int bitmap_addr = MAGIC.addr(bitmap.PixelData[bitmap_index]);
-				Memory.Memcopy32(bitmap_addr, addr, up_to_x);
+				Memory.memcopy32(bitmap_addr, addr, up_to_x);
 			}
 		}
 		

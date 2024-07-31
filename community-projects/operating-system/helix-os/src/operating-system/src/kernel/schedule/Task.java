@@ -17,12 +17,12 @@ public abstract class Task
 	
 	public void register()
 	{
-		Scheduler.AddTask(this);
+		Scheduler.addTask(this);
 	}
 	
 	public void removeFromExec()
 	{
-		Scheduler.RemoveTask(this);
+		Scheduler.removeTask(this);
 	}
 	
 	public final void runTask()

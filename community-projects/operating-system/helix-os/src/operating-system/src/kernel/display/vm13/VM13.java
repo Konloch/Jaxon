@@ -28,12 +28,12 @@ public class VM13
 	 */
 	public static void Swap()
 	{
-		Memory.Memcopy(MAGIC.addr(_backBuffer[0]), MAGIC.addr(VidMem.Color[0]), WIDTH * HEIGHT);
+		Memory.memcopy(MAGIC.addr(_backBuffer[0]), MAGIC.addr(VidMem.Color[0]), WIDTH * HEIGHT);
 	}
 	
 	public static void ClearBackBuffer()
 	{
-		Memory.Memset(MAGIC.addr(_backBuffer[0]), SIZE, (byte) 0);
+		Memory.memset(MAGIC.addr(_backBuffer[0]), SIZE, (byte) 0);
 	}
 	
 	@SJC.Inline
@@ -81,7 +81,7 @@ public class VM13
 		MAGIC.wIOs8(PALETTE_DATA, (byte) 0x3F);
 		MAGIC.wIOs8(PALETTE_DATA, (byte) 0x3F);
 		MAGIC.wIOs8(PALETTE_DATA, (byte) 0x3F);
-		Logger.Info("VGA", "Set palette");
+		Logger.info("VGA", "Set palette");
 	}
 	
 	/*

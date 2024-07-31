@@ -23,7 +23,7 @@ public class SystemInterrupts
 		int ebp = 0;
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
-		Bluescreen.Show("PANIC", "Interrupt debugHandler", ebp, x86.eipForInterrupt(ebp, 0));
+		Bluescreen.show("PANIC", "Interrupt debugHandler", ebp, x86.eipForInterrupt(ebp, 0));
 		while (true)
 		{
 		}
@@ -35,7 +35,7 @@ public class SystemInterrupts
 		int ebp = 0;
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
-		Bluescreen.Show("PANIC", "Interrupt nmiHandler", ebp, x86.eipForInterrupt(ebp, 0));
+		Bluescreen.show("PANIC", "Interrupt nmiHandler", ebp, x86.eipForInterrupt(ebp, 0));
 		while (true)
 		{
 		}
@@ -61,7 +61,7 @@ public class SystemInterrupts
 		// Read old EIP from stack
 		// 4 bytes before first pushed register + parameters
 		int oldEip = x86.eipForInterrupt(ebp, 0);
-		Bluescreen.Show("Breakpoint", "Breakpoint hit", ebp, oldEip, edi, esi, ebp2, esp, ebx, edx, ecx, eax);
+		Bluescreen.show("Breakpoint", "Breakpoint hit", ebp, oldEip, edi, esi, ebp2, esp, ebx, edx, ecx, eax);
 		while (true)
 		{
 		}
@@ -73,7 +73,7 @@ public class SystemInterrupts
 		int ebp = 0;
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
-		Bluescreen.Show("PANIC", "Interrupt overflowHandler", ebp, x86.eipForInterrupt(ebp, 0));
+		Bluescreen.show("PANIC", "Interrupt overflowHandler", ebp, x86.eipForInterrupt(ebp, 0));
 		while (true)
 		{
 		}
@@ -85,7 +85,7 @@ public class SystemInterrupts
 		int ebp = 0;
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
-		Bluescreen.Show("PANIC", "Interrupt boundRangeExceededHandler", ebp, x86.eipForInterrupt(ebp, 0));
+		Bluescreen.show("PANIC", "Interrupt boundRangeExceededHandler", ebp, x86.eipForInterrupt(ebp, 0));
 		while (true)
 		{
 		}
@@ -97,7 +97,7 @@ public class SystemInterrupts
 		int ebp = 0;
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
-		Bluescreen.Show("PANIC", "Interrupt invalidOpcodeHandler", ebp, x86.eipForInterrupt(ebp, 0));
+		Bluescreen.show("PANIC", "Interrupt invalidOpcodeHandler", ebp, x86.eipForInterrupt(ebp, 0));
 		while (true)
 		{
 		}
@@ -109,7 +109,7 @@ public class SystemInterrupts
 		int ebp = 0;
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
-		Bluescreen.Show("PANIC", "Interrupt reservedHandler", ebp, x86.eipForInterrupt(ebp, 0));
+		Bluescreen.show("PANIC", "Interrupt reservedHandler", ebp, x86.eipForInterrupt(ebp, 0));
 		while (true)
 		{
 		}
@@ -121,7 +121,7 @@ public class SystemInterrupts
 		int ebp = 0;
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
-		Bluescreen.Show("PANIC", "Interrupt doubleFaultHandler", ebp, x86.eipForInterrupt(ebp, 1));
+		Bluescreen.show("PANIC", "Interrupt doubleFaultHandler", ebp, x86.eipForInterrupt(ebp, 1));
 		while (true)
 		{
 		}
@@ -133,7 +133,7 @@ public class SystemInterrupts
 		int ebp = 0;
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
-		Bluescreen.Show("PANIC", "Interrupt generalProtectionFaultHandler", ebp, x86.eipForInterrupt(ebp, 1));
+		Bluescreen.show("PANIC", "Interrupt generalProtectionFaultHandler", ebp, x86.eipForInterrupt(ebp, 1));
 		while (true)
 		{
 		}
@@ -146,9 +146,9 @@ public class SystemInterrupts
 		int ebp = 0;
 		MAGIC.inline(0x89, 0x6D);
 		MAGIC.inlineOffset(1, ebp);
-		int cr2 = VirtualMemory.GetCR2();
+		int cr2 = VirtualMemory.getCR2();
 		int eip = x86.eipForInterrupt(ebp, 1);
-		Bluescreen.Show("PANIC", "Page fault at address: ".append(Integer.toString(cr2)), ebp, eip);
+		Bluescreen.show("PANIC", "Page fault at address: ".append(Integer.toString(cr2)), ebp, eip);
 		while (true)
 		{
 		}
