@@ -191,23 +191,23 @@ public class WindowManager extends Task
 	
 	private void processMouseEvent(MouseEvent event)
 	{
-		if (event.X_Delta != 0 || event.Y_Delta != 0)
+		if (event.xDelta != 0 || event.yDelta != 0)
 		{
 			setDirtyAt(_lastMouseX, _lastMouseY);
 			setDirtyAt(_lastMouseX + _cursorCurrent.width / 2, _lastMouseY + _cursorCurrent.height / 2);
 			setDirtyAt(_lastMouseX + _cursorCurrent.width, _drawTicksAvgCycle + _cursorCurrent.height);
 			
-			_lastMouseX += event.X_Delta;
-			_lastMouseY -= event.Y_Delta;
+			_lastMouseX += event.xDelta;
+			_lastMouseY -= event.yDelta;
 			
 			_lastMouseX = Math.clamp(_lastMouseX, 0, _ctx.width());
 			_lastMouseY = Math.clamp(_lastMouseY, 0, _ctx.height());
 			
 			if (_is_dragging && _selectedWindow != null && _selectedWindow.isDraggable())
-				_selectedWindow.moveBy(event.X_Delta, -event.Y_Delta);
+				_selectedWindow.moveBy(event.xDelta, -event.yDelta);
 		}
 		
-		if (event.LeftButtonPressed())
+		if (event.leftButtonPressed())
 		{
 			if (_leftButtonAlreadyDown)
 			{
@@ -237,10 +237,10 @@ public class WindowManager extends Task
 			_leftButtonAlreadyDown = false;
 		}
 		
-		if (event.RightButtonPressed())
+		if (event.rightButtonPressed())
 			Logger.trace("WIN", "Mouse Right Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
 		
-		if (event.MiddleButtonPressed())
+		if (event.middleButtonPressed())
 			Logger.trace("WIN", "Mouse Middle Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
 	}
 	

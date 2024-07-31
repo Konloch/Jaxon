@@ -39,6 +39,7 @@ public class MemoryManager
 		_gcRunning = false;
 		
 		initEmptyObjects();
+		
 		if (_emptyObjectRoot == null)
 			Kernel.panic("No viable memory regions found");
 		

@@ -18,6 +18,7 @@ public class Vec
 	{
 		if (initialCapacity < 0)
 			Kernel.panic("Illegal Capacity");
+		
 		this.elements = new Object[initialCapacity];
 		this.size = 0;
 	}

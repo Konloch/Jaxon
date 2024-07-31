@@ -11,16 +11,16 @@ public class MouseEvent implements IDebug
 	
 	private static int _idCounter = 0;
 	
-	public int Id = _idCounter++;
-	public int X_Delta;
-	public int Y_Delta;
-	public int ButtonState;
+	public int id = _idCounter++;
+	public int xDelta;
+	public int yDelta;
+	public int buttonState;
 	
 	public MouseEvent(int xDelta, int yDelta, int buttonState)
 	{
-		X_Delta = xDelta;
-		Y_Delta = yDelta;
-		ButtonState = buttonState;
+		this.xDelta = xDelta;
+		this.yDelta = yDelta;
+		this.buttonState = buttonState;
 	}
 	
 	public MouseEvent()
@@ -28,25 +28,27 @@ public class MouseEvent implements IDebug
 		this(0, 0, 0);
 	}
 	
-	public boolean LeftButtonPressed()
+	public boolean leftButtonPressed()
 	{
-		return (ButtonState & LEFT_BUTTON) != 0;
+		return (buttonState & LEFT_BUTTON) != 0;
 	}
 	
-	public boolean RightButtonPressed()
+	public boolean rightButtonPressed()
 	{
-		return (ButtonState & RIGHT_BUTTON) != 0;
+		return (buttonState & RIGHT_BUTTON) != 0;
 	}
 	
-	public boolean MiddleButtonPressed()
+	public boolean middleButtonPressed()
 	{
-		return (ButtonState & MIDDLE_BUTTON) != 0;
+		return (buttonState & MIDDLE_BUTTON) != 0;
 	}
 	
 	@Override
 	public String debug()
 	{
-		return new StringBuilder(64).append("MouseEvent(").append("Id=").append(Id).append(", ").append("X_Delta=").append(X_Delta).append(", ").append("Y_Delta=").append(Y_Delta).append(", ").append("ButtonState=").append(ButtonState).append(")").toString();
-		
+		return new StringBuilder(64).append("MouseEvent(")
+				.append("Id=").append(id).append(", ").append("X_Delta=").append(xDelta).append(", ")
+				.append("Y_Delta=").append(yDelta).append(", ")
+				.append("ButtonState=").append(buttonState).append(")").toString();
 	}
 }

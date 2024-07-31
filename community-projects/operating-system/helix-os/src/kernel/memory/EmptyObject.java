@@ -49,6 +49,7 @@ public class EmptyObject extends Object
 	public void shrinkBy(int shrinkBy)
 	{
 		MAGIC.assign(_r_scalarSize, _r_scalarSize - shrinkBy);
+		
 		if (_r_scalarSize < 4)
 			Kernel.panic("EmptyObject::ShrinkBy: _r_scalarSize < 4");
 	}

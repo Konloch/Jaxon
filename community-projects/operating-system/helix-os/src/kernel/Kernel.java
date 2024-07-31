@@ -71,7 +71,7 @@ public class Kernel
 		KeyboardController.setLayout(new QWERTZ());
 		Logger.info("BOOT", "Set Keyboard Layout to QWERTZ");
 		
-		MouseController.Initialize();
+		MouseController.initialize();
 		Logger.info("BOOT", "Initialized PS2 Mouse Controller");
 		
 		IDT.enable();

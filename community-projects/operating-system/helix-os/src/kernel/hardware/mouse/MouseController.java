@@ -30,12 +30,13 @@ public class MouseController
 	// Commands
 	private static final int CMD_WRITE = 0xD4;
 	
-	public static void Initialize()
+	public static void initialize()
 	{
-		Install();
-		SetSampleRate(100);
-		SetResolution(4);
-		SetScaling(1);
+		install();
+		setSampleRate(100);
+		setResolution(4);
+		setScaling(1);
+		
 		_packet = new byte[3];
 		_workingPacket = new byte[3];
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("MouseController"));
@@ -71,7 +72,7 @@ public class MouseController
 						_packet[0] = _workingPacket[0];
 						_packet[1] = _workingPacket[1];
 						_packet[2] = _workingPacket[2];
-						BufferMovementEvents();
+						bufferMovementEvents();
 						cycle = 0;
 						break;
 				}
@@ -80,12 +81,10 @@ public class MouseController
 		PIC.acknowledge(IRQ_MOUSE);
 	}
 	
-	private static boolean BufferMovementEvents()
+	private static boolean bufferMovementEvents()
 	{
 		if (_packet[0] == 0)
-		{
 			return false;
-		}
 		
 		int packetMetaData = _packet[0];
 		int packetXMovement = _packet[1];
@@ -98,14 +97,10 @@ public class MouseController
 		}
 		
 		if (BitHelper.getFlag(packetMetaData, BIT_X_SIGN))
-		{
 			packetXMovement |= 0xFFFFFF00;
-		}
 		
 		if (BitHelper.getFlag(packetMetaData, BIT_Y_SIGN))
-		{
 			packetYMovement |= 0xFFFFFF00;
-		}
 		
 		_accumulatedX += packetXMovement;
 		_accumulatedY += packetYMovement;
@@ -115,9 +110,7 @@ public class MouseController
 	public static boolean ReadEvent(MouseEvent readInto)
 	{
 		if (_packet[0] == 0)
-		{
 			return false;
-		}
 		
 		int packetMetaData = _packet[0];
 		
@@ -133,21 +126,17 @@ public class MouseController
 		
 		int buttonState = 0;
 		if (BitHelper.getFlag(packetMetaData, BIT_LEFT_BTN))
-		{
 			buttonState |= MouseEvent.LEFT_BUTTON;
-		}
-		if (BitHelper.getFlag(packetMetaData, BIT_RIGHT_BTN))
-		{
-			buttonState |= MouseEvent.RIGHT_BUTTON;
-		}
-		if (BitHelper.getFlag(packetMetaData, BIT_MIDDLE_BTN))
-		{
-			buttonState |= MouseEvent.MIDDLE_BUTTON;
-		}
 		
-		readInto.X_Delta = _accumulatedX;
-		readInto.Y_Delta = _accumulatedY;
-		readInto.ButtonState = buttonState;
+		if (BitHelper.getFlag(packetMetaData, BIT_RIGHT_BTN))
+			buttonState |= MouseEvent.RIGHT_BUTTON;
+		
+		if (BitHelper.getFlag(packetMetaData, BIT_MIDDLE_BTN))
+			buttonState |= MouseEvent.MIDDLE_BUTTON;
+		
+		readInto.xDelta = _accumulatedX;
+		readInto.yDelta = _accumulatedY;
+		readInto.buttonState = buttonState;
 		
 		_accumulatedX = 0;
 		_accumulatedY = 0;
@@ -157,63 +146,63 @@ public class MouseController
 	private static int _accumulatedX = 0;
 	private static int _accumulatedY = 0;
 	
-	private static void Install()
+	private static void install()
 	{
-		Wait(1);
+		wait(1);
 		MAGIC.wIOs8(PORT_STATUS, (byte) 0xA8);
-		Wait(1);
+		wait(1);
 		MAGIC.wIOs8(PORT_STATUS, (byte) 0x20);
-		Wait(0);
+		wait(0);
 		int status = MAGIC.rIOs8(0x60) | 2;
-		Wait(1);
+		wait(1);
 		MAGIC.wIOs8(PORT_STATUS, (byte) 0x60);
-		Wait(1);
+		wait(1);
 		MAGIC.wIOs8(PORT_DATA, (byte) status);
 		Write(0xF6);
-		Read();
+		read();
 		Write(0xF4);
-		Read();
+		read();
 	}
 	
-	private static void SetSampleRate(int rate)
+	private static void setSampleRate(int rate)
 	{
 		Write(0xF3);
-		Read();
+		read();
 		Write(rate);
-		Read();
+		read();
 	}
 	
-	private static void SetResolution(int resolution)
+	private static void setResolution(int resolution)
 	{
 		Write(0xE8);
-		Read();
+		read();
 		Write(resolution);
-		Read();
+		read();
 	}
 	
-	private static void SetScaling(int scaling)
+	private static void setScaling(int scaling)
 	{
 		Write(0xE6);
-		Read();
+		read();
 		Write(scaling);
-		Read();
+		read();
 	}
 	
 	private static void Write(int data)
 	{
-		Wait(1);
+		wait(1);
 		MAGIC.wIOs8(PORT_STATUS, (byte) CMD_WRITE);
-		Wait(1);
+		wait(1);
 		MAGIC.wIOs8(PORT_DATA, (byte) data);
 	}
 	
-	private static int Read()
+	private static int read()
 	{
-		Wait(0);
+		wait(0);
 		return Integer.ubyte(MAGIC.rIOs8(PORT_DATA));
 	}
 	
-	private static void Wait(int type)
+	private static void wait(int type)
 	{
 		int timeout = 100000;
 		if (type == 0)
@@ -221,24 +210,20 @@ public class MouseController
 			while (--timeout > 0)
 			{
 				if (BitHelper.getFlag(MAGIC.rIOs8(PORT_STATUS), 0))
-				{
 					return;
-				}
 			}
+			
 			Logger.warning("Mouse", "Mouse timeout");
-			return;
 		}
 		else
 		{
 			while (--timeout > 0)
 			{
 				if (!BitHelper.getFlag(MAGIC.rIOs8(PORT_STATUS), 1))
-				{
 					return;
-				}
 			}
+			
 			Logger.warning("Mouse", "Mouse timeout");
-			return;
 		}
 	}
 	
