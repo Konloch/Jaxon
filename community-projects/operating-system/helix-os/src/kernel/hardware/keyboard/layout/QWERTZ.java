@@ -54,7 +54,7 @@ public class QWERTZ extends ALayout
 			case 0x14:
 				return Key(shift, alt, Key.t, Key.T);
 			case 0x15:
-				return Key(shift, alt, Key.z, Key.Z);
+				return Key(shift, alt, Key.y, Key.Y);
 			case 0x16:
 				return Key(shift, alt, Key.u, Key.U);
 			case 0x17:
@@ -104,7 +104,7 @@ public class QWERTZ extends ALayout
 			case 0x2B:
 				return Key(shift, alt, Key.POUND_KEY, Key.SINGLE_QUOTE);
 			case 0x2C:
-				return Key(shift, alt, Key.y, Key.Y);
+				return Key(shift, alt, Key.z, Key.Z);
 			case 0x2D:
 				return Key(shift, alt, Key.x, Key.X);
 			case 0x2E:
