@@ -26,58 +26,58 @@ public class VM13
 	/*
 	 * Swaps the back buffer with the video memory.
 	 */
-	public static void Swap()
+	public static void swap()
 	{
-		Memory.Memcopy(MAGIC.addr(_backBuffer[0]), MAGIC.addr(VidMem.Color[0]), WIDTH * HEIGHT);
+		Memory.Memcopy(MAGIC.addr(_backBuffer[0]), MAGIC.addr(VidMem.color[0]), WIDTH * HEIGHT);
 	}
 	
-	public static void ClearBackBuffer()
+	public static void clearBackBuffer()
 	{
 		Memory.Memset(MAGIC.addr(_backBuffer[0]), SIZE, (byte) 0);
 	}
 	
 	@SJC.Inline
-	public static void Pixel(int x, int y, byte color)
+	public static void pixel(int x, int y, byte color)
 	{
-		_backBuffer[Offset(x, y)] = color;
+		_backBuffer[offset(x, y)] = color;
 	}
 	
 	@SJC.Inline
-	public static int Offset(int x, int y)
+	public static int offset(int x, int y)
 	{
 		return WIDTH * y + x;
 	}
 	
-	public static void Rectangle(int x, int y, int width, int height, byte color)
+	public static void rectangle(int x, int y, int width, int height, byte color)
 	{
 		for (int i = 0; i < height; i++)
 		{
 			for (int j = 0; j < width; j++)
-			{
-				Pixel(x + j, y + i, color);
-			}
+				pixel(x + j, y + i, color);
 		}
 	}
 	
-	public static void ClearScreen(byte color)
+	public static void clearScreen(byte color)
 	{
-		Rectangle(0, 0, WIDTH, HEIGHT, color);
-		VM13.Swap();
+		rectangle(0, 0, WIDTH, HEIGHT, color);
+		VM13.swap();
 	}
 	
 	/*
 	 * Has to be called after activating graphics mode.
 	 */
-	public static void SetPalette()
+	public static void setPalette()
 	{
 		MAGIC.wIOs8(PALETTE_MASK, (byte) 0xFF);
 		MAGIC.wIOs8(PALETTE_WRITE, (byte) 0);
+		
 		for (int i = 0; i < 255; i++)
 		{
 			MAGIC.wIOs8(PALETTE_DATA, (byte) ((((i >> 5) & 0x7) * (256 / 8)) / 4));
 			MAGIC.wIOs8(PALETTE_DATA, (byte) ((((i >> 2) & 0x7) * (256 / 8)) / 4));
 			MAGIC.wIOs8(PALETTE_DATA, (byte) ((((i >> 0) & 0x3) * (256 / 4)) / 4));
 		}
+		
 		MAGIC.wIOs8(PALETTE_DATA, (byte) 0x3F);
 		MAGIC.wIOs8(PALETTE_DATA, (byte) 0x3F);
 		MAGIC.wIOs8(PALETTE_DATA, (byte) 0x3F);
@@ -88,7 +88,7 @@ public class VM13
 	 * Give rgb in the range of 0-255.
 	 * return the color in the format 0xRRRGGGBB.
 	 */
-	public static byte Rgb(int r, int g, int b)
+	public static byte rgb(int r, int g, int b)
 	{
 		int red = Math.compress(r, 0, 255, 0, 7);
 		int green = Math.compress(g, 0, 255, 0, 7);
@@ -105,7 +105,7 @@ public class VM13
 	 * Give rgb in the range of 0-1.
 	 * return the color in the format 0xRRRGGGBB.
 	 */
-	public static byte FRgb(double r, double g, double b)
+	public static byte rgbf(double r, double g, double b)
 	{
 		int red = (int) (7.0 * r);
 		int green = (int) (7.0 * g);
@@ -124,7 +124,7 @@ public class VM13
 	 * Give b in the range of 0-3.
 	 * return the color in the format 0xRRRGGGBB.
 	 */
-	public static byte DRgb(int r, int g, int b)
+	public static byte rgbd(int r, int g, int b)
 	{
 		int color = 0;
 		int red = Math.clamp(r, 0, 7);

@@ -44,7 +44,7 @@ public abstract class AFont
 				}
 				
 				if (bit == 1)
-					display.Pixel(posX, posY, color);
+					display.pixel(posX, posY, color);
 			}
 		}
 	}
@@ -75,7 +75,7 @@ public abstract class AFont
 				}
 				
 				if (bit == 1)
-					display.SetPixel(posX, posY, color);
+					display.setPixel(posX, posY, color);
 			}
 		}
 	}

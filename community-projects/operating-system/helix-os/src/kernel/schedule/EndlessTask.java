@@ -36,9 +36,9 @@ public class EndlessTask extends Task
 				d_b = -d_b;
 			}
 			
-			int x = Kernel.Display.Rgb(r, g, b);
-			Kernel.Display.Rectangle(r, r, b, b, x);
-			Kernel.Display.Swap();
+			int x = Kernel.Display.rgb(r, g, b);
+			Kernel.Display.rectangle(r, r, b, b, x);
+			Kernel.Display.swap();
 		}
 	}
 }

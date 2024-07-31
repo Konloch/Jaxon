@@ -16,14 +16,12 @@ public class VESAGraphics extends GraphicsContext
 	public VESAGraphics(VESAMode mode)
 	{
 		if (mode == null)
-		{
 			Kernel.panic("VESAGraphics.setMode: mode is null");
-		}
-		if (mode.ColorDepth != 32)
-		{
+		
+		if (mode.colorDepth != 32)
 			Kernel.panic("VESAGraphics.setMode: only 32 bit color depth is supported");
-		}
-		buffer = new Bitmap(mode.XRes, mode.YRes, false);
+		
+		buffer = new Bitmap(mode.xRes, mode.yRes, false);
 		needsRedraw = true;
 		curMode = mode;
 		
@@ -31,26 +29,26 @@ public class VESAGraphics extends GraphicsContext
 	}
 	
 	@Override
-	public void Activate()
+	public void activate()
 	{
 		Logger.info("VESA", "Activate VESA Graphics Mode");
-		DisplayModes.setVesaMode(curMode.ModeNr);
+		DisplayModes.setVesaMode(curMode.modeNr);
 	}
 	
 	@Override
-	public int Width()
+	public int width()
 	{
-		return this.curMode.XRes;
+		return this.curMode.xRes;
 	}
 	
 	@Override
-	public int Height()
+	public int height()
 	{
-		return this.curMode.YRes;
+		return this.curMode.yRes;
 	}
 	
 	@Override
-	public int Rgb(int r, int g, int b)
+	public int rgb(int r, int g, int b)
 	{
 		int red, green, blue;
 		red = Math.clamp(r, 0, 255);
@@ -60,7 +58,7 @@ public class VESAGraphics extends GraphicsContext
 	}
 	
 	@Override
-	public int Argb(int a, int r, int g, int b)
+	public int argb(int a, int r, int g, int b)
 	{
 		int red, green, blue, alpha;
 		red = Math.clamp(r, 0, 255);
@@ -71,58 +69,56 @@ public class VESAGraphics extends GraphicsContext
 	}
 	
 	@Override
-	public void Pixel(int x, int y, int col)
+	public void pixel(int x, int y, int col)
 	{
-		if (x < 0 || y < 0 || x >= curMode.XRes || y >= curMode.YRes)
-		{
+		if (x < 0 || y < 0 || x >= curMode.xRes || y >= curMode.yRes)
 			return;
-		}
-		buffer.SetPixel(x, y, col);
+		
+		buffer.setPixel(x, y, col);
 		needsRedraw = true;
 	}
 	
 	@Override
-	public void Bitmap(int x, int y, Bitmap bitmap, boolean transparent)
+	public void bitmap(int x, int y, Bitmap bitmap, boolean transparent)
 	{
 		if (curMode == null || bitmap == null)
-		{
 			Kernel.panic("VESAGraphics.setBitmap: mode or bitmap is null");
-			return;
-		}
-		buffer.Blit(x, y, bitmap, transparent);
+		
+		buffer.blit(x, y, bitmap, transparent);
 		needsRedraw = true;
 	}
 	
 	@Override
-	public void Swap()
+	public void swap()
 	{
 		if (needsRedraw)
 		{
-			int from = MAGIC.addr(buffer.PixelData[0]);
-			int to = curMode.LfbAddress;
-			int len = buffer.PixelData.length;
+			int from = MAGIC.addr(buffer.pixelData[0]);
+			int to = curMode.lfbAddress;
+			int len = buffer.pixelData.length;
 			Memory.Memcopy32(from, to, len);
 		}
+		
 		needsRedraw = false;
 	}
 	
 	@Override
-	public void ClearScreen()
+	public void clearScreen()
 	{
-		buffer.Clear();
+		buffer.clear();
 		needsRedraw = true;
 	}
 	
 	@Override
-	public boolean Contains(int x, int y)
+	public boolean contains(int x, int y)
 	{
-		return x >= 0 && y >= 0 && x < curMode.XRes && y < curMode.YRes;
+		return x >= 0 && y >= 0 && x < curMode.xRes && y < curMode.yRes;
 	}
 	
 	@Override
-	public void Rectangle(int x, int y, int width, int height, int color)
+	public void rectangle(int x, int y, int width, int height, int color)
 	{
-		buffer.Rectangle(x, y, width, height, color);
+		buffer.rectangle(x, y, width, height, color);
 		needsRedraw = true;
 	}
 }

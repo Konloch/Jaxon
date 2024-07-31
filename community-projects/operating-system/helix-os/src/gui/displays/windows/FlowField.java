@@ -35,8 +35,8 @@ public class FlowField extends Window
 		_flowFieldView = new FlowFieldView(0, 0, flowFieldWidth, contentHeight, _controls);
 		
 		int controlsStartX = flowFieldWidth;
-		int fg = Kernel.Display.Rgb(255, 255, 255);
-		int bg = Kernel.Display.Rgb(0, 0, 0);
+		int fg = Kernel.Display.rgb(255, 255, 255);
+		int bg = Kernel.Display.rgb(0, 0, 0);
 		Font9x16 font = Font9x16.INSTANCE;
 		int fontHeight = font.height();
 		
@@ -62,20 +62,20 @@ public class FlowField extends Window
 	@Override
 	public void drawContent()
 	{
-		renderTarget.Rectangle(contentRelativeX, contentRelativeY, contentWidth, contentHeight, 0);
+		renderTarget.rectangle(contentRelativeX, contentRelativeY, contentWidth, contentHeight, 0);
 		
 		_flowFieldView.draw();
-		renderTarget.Blit(contentRelativeX, contentRelativeY, _flowFieldView.renderTarget, false);
+		renderTarget.blit(contentRelativeX, contentRelativeY, _flowFieldView.renderTarget, false);
 		
 		_txtNoiseScale.ClearText();
 		_txtNoiseScale.Write("Noise Scale: ".append((int) _controls.noiseScale));
 		_txtNoiseScale.draw();
-		renderTarget.Blit(_txtNoiseScale.x, _txtNoiseScale.y, _txtNoiseScale.renderTarget, false);
+		renderTarget.blit(_txtNoiseScale.x, _txtNoiseScale.y, _txtNoiseScale.renderTarget, false);
 		
 		_txtParticlesCount.ClearText();
 		_txtParticlesCount.Write("Particles: ".append(_controls.particleAmount));
 		_txtParticlesCount.draw();
-		renderTarget.Blit(_txtParticlesCount.x, _txtParticlesCount.y, _txtParticlesCount.renderTarget, false);
+		renderTarget.blit(_txtParticlesCount.x, _txtParticlesCount.y, _txtParticlesCount.renderTarget, false);
 	}
 	
 	@Override

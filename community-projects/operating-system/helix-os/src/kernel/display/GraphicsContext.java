@@ -3,26 +3,26 @@ package kernel.display;
 public abstract class GraphicsContext
 {
 	
-	public abstract void Activate();
+	public abstract void activate();
 	
-	public abstract int Width();
+	public abstract int width();
 	
-	public abstract int Height();
+	public abstract int height();
 	
-	public abstract int Rgb(int r, int g, int b);
+	public abstract int rgb(int r, int g, int b);
 	
-	public abstract int Argb(int a, int r, int g, int b);
+	public abstract int argb(int a, int r, int g, int b);
 	
-	public abstract void Swap();
+	public abstract void swap();
 	
-	public abstract void ClearScreen();
+	public abstract void clearScreen();
 	
-	public abstract void Pixel(int x, int y, int col);
+	public abstract void pixel(int x, int y, int col);
 	
-	public abstract void Bitmap(int x, int y, Bitmap bitmap, boolean transparent);
+	public abstract void bitmap(int x, int y, Bitmap bitmap, boolean transparent);
 	
-	public abstract boolean Contains(int x, int y);
+	public abstract boolean contains(int x, int y);
 	
-	public abstract void Rectangle(int x, int y, int width, int height, int color);
+	public abstract void rectangle(int x, int y, int width, int height, int color);
 	
 }

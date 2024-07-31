@@ -50,8 +50,8 @@ public class WindowManager extends Task
 		_cursorModern = CursorModern.load();
 		_cursorHand = CursorHand.load();
 		_cursorCurrent = _cursorModern;
-		_lastMouseX = ctx.Width() / 2;
-		_lastMouseY = ctx.Height() / 2;
+		_lastMouseX = ctx.width() / 2;
+		_lastMouseY = ctx.height() / 2;
 		_desktop = new Desktop("Desktop");
 		_desktop.draw();
 	}
@@ -77,9 +77,9 @@ public class WindowManager extends Task
 			return;
 		
 		drawWindows();
-		_ctx.Swap();
+		_ctx.swap();
 		Timer.sleep(ms);
-		_ctx.ClearScreen();
+		_ctx.clearScreen();
 	}
 	
 	@Override
@@ -96,7 +96,7 @@ public class WindowManager extends Task
 		
 		drawWindows();
 		drawCursor();
-		_ctx.Swap();
+		_ctx.swap();
 		
 		int end = Timer.ticks();
 		int renderTime = Timer.ticksToMs(end - start);
@@ -121,8 +121,8 @@ public class WindowManager extends Task
 		if (_ctx == null)
 			return;
 		
-		_ctx.ClearScreen();
-		_ctx.Bitmap(0, 0, _desktop.renderTarget, false);
+		_ctx.clearScreen();
+		_ctx.bitmap(0, 0, _desktop.renderTarget, false);
 		for (int i = 0; i < _widgets.size(); i++)
 		{
 			Window window = _widgets.get(i);
@@ -134,7 +134,7 @@ public class WindowManager extends Task
 				window.draw();
 			
 			// but always blit the window
-			_ctx.Bitmap(window.x, window.y, window.renderTarget, false);
+			_ctx.bitmap(window.x, window.y, window.renderTarget, false);
 		}
 	}
 	
@@ -143,13 +143,13 @@ public class WindowManager extends Task
 		if (_ctx == null)
 			return;
 		
-		if (!_ctx.Contains(_lastMouseX, _lastMouseY))
+		if (!_ctx.contains(_lastMouseX, _lastMouseY))
 			return;
 		
-		if (!_ctx.Contains(_lastMouseX + _cursorCurrent.Width, _lastMouseY + _cursorCurrent.Height))
+		if (!_ctx.contains(_lastMouseX + _cursorCurrent.width, _lastMouseY + _cursorCurrent.height))
 			return;
 		
-		_ctx.Bitmap(_lastMouseX, _lastMouseY, _cursorCurrent, true);
+		_ctx.bitmap(_lastMouseX, _lastMouseY, _cursorCurrent, true);
 	}
 	
 	private void distributeKeyEvents()
@@ -194,14 +194,14 @@ public class WindowManager extends Task
 		if (event.X_Delta != 0 || event.Y_Delta != 0)
 		{
 			setDirtyAt(_lastMouseX, _lastMouseY);
-			setDirtyAt(_lastMouseX + _cursorCurrent.Width / 2, _lastMouseY + _cursorCurrent.Height / 2);
-			setDirtyAt(_lastMouseX + _cursorCurrent.Width, _drawTicksAvgCycle + _cursorCurrent.Height);
+			setDirtyAt(_lastMouseX + _cursorCurrent.width / 2, _lastMouseY + _cursorCurrent.height / 2);
+			setDirtyAt(_lastMouseX + _cursorCurrent.width, _drawTicksAvgCycle + _cursorCurrent.height);
 			
 			_lastMouseX += event.X_Delta;
 			_lastMouseY -= event.Y_Delta;
 			
-			_lastMouseX = Math.clamp(_lastMouseX, 0, _ctx.Width());
-			_lastMouseY = Math.clamp(_lastMouseY, 0, _ctx.Height());
+			_lastMouseX = Math.clamp(_lastMouseX, 0, _ctx.width());
+			_lastMouseY = Math.clamp(_lastMouseY, 0, _ctx.height());
 			
 			if (_is_dragging && _selectedWindow != null && _selectedWindow.isDraggable())
 				_selectedWindow.moveBy(event.X_Delta, -event.Y_Delta);

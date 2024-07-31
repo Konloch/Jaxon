@@ -55,7 +55,7 @@ public abstract class BinImage extends Image
 				int g = Integer.ubyte(data[pos++]);
 				int b = Integer.ubyte(data[pos++]);
 				int a = Integer.ubyte(data[pos++]);
-				int col = Kernel.Display.Argb(a, r, g, b);
+				int col = Kernel.Display.argb(a, r, g, b);
 				pixel_data[j + i * width] = col;
 			}
 		}

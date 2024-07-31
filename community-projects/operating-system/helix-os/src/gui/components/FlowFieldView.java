@@ -30,7 +30,7 @@ public class FlowFieldView extends Widget
 		particles = new Particle[amount];
 		for (int i = 0; i < _controls.particleAmount; i++)
 		{
-			particles[i] = new Particle(new Vec2f(random.range(0, width), random.range(0, height)), new Vec2f(random.nextFloat(), random.nextFloat()), random.range(3, 5), Kernel.Display.Rgb(255, 255, 255));
+			particles[i] = new Particle(new Vec2f(random.range(0, width), random.range(0, height)), new Vec2f(random.nextFloat(), random.nextFloat()), random.range(3, 5), Kernel.Display.rgb(255, 255, 255));
 		}
 	}
 	
@@ -50,11 +50,11 @@ public class FlowFieldView extends Widget
 	@Override
 	public void draw()
 	{
-		renderTarget.Darken(20);
+		renderTarget.darken(20);
 		
 		for (Particle p : particles)
 		{
-			renderTarget.SetPixel((int) p.loc.x, (int) p.loc.y, p.color);
+			renderTarget.setPixel((int) p.loc.x, (int) p.loc.y, p.color);
 		}
 	}
 	
@@ -86,7 +86,7 @@ public class FlowFieldView extends Widget
 			double fac_x = Math.abs(this.vel.x) / magn;
 			double fac_y = Math.abs(this.vel.y) / magn;
 			double avg = (fac_x + fac_y) / 2;
-			this.color = Kernel.Display.Rgb((int) (fac_x * 255), (int) (150 * avg), (int) (fac_y * 255));
+			this.color = Kernel.Display.rgb((int) (fac_x * 255), (int) (150 * avg), (int) (fac_y * 255));
 			
 		}
 		

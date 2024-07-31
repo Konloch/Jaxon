@@ -200,13 +200,13 @@ public class TextField extends Widget
 		int x = xOffset + _cursorX * xFactor;
 		int y = yOffset + _cursorY * yFactor;
 		
-		renderTarget.Rectangle(x, y, 2, Font.height(), _fg);
+		renderTarget.rectangle(x, y, 2, Font.height(), _fg);
 	}
 	
 	@Override
 	public void draw()
 	{
-		renderTarget.Rectangle(0, 0, width, height, _bg);
+		renderTarget.rectangle(0, 0, width, height, _bg);
 		
 		int xFactor = Font.width() + SpacingW;
 		int yFactor = Font.height() + SpacingH;

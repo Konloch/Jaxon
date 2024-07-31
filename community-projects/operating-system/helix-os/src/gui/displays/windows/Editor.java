@@ -15,8 +15,8 @@ public class Editor extends Window
 	{
 		super(title, x, y, width, height, true);
 		
-		int bg = Kernel.Display.Rgb(20, 20, 20);
-		int fg = Kernel.Display.Rgb(255, 255, 255);
+		int bg = Kernel.Display.rgb(20, 20, 20);
+		int fg = Kernel.Display.rgb(255, 255, 255);
 		_textField = new TextField(0, 0, contentWidth, contentHeight, border, charSpacing, lineSpacing, fg, bg, true, font);
 	}
 	
@@ -26,7 +26,7 @@ public class Editor extends Window
 		{
 			_textField.draw();
 		}
-		renderTarget.Blit(contentRelativeX, contentRelativeY, _textField.renderTarget, false);
+		renderTarget.blit(contentRelativeX, contentRelativeY, _textField.renderTarget, false);
 		clearDirty();
 	}
 	

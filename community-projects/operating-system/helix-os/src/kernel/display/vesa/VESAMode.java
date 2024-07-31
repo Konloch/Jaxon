@@ -6,34 +6,34 @@ import java.lang.StringBuilder;
 
 public class VESAMode implements IDebug
 {
-	public final boolean Graphical;
-	public final int ModeNr;
-	public final int LfbAddress;
-	public final int XRes;
-	public final int YRes;
-	public final int ColorDepth;
+	public final boolean graphical;
+	public final int modeNr;
+	public final int lfbAddress;
+	public final int xRes;
+	public final int yRes;
+	public final int colorDepth;
 	
 	public VESAMode(int modeNr, int xRes, int yRes, int colDepth, int lfbAddress, boolean graphical)
 	{
-		this.ModeNr = modeNr;
-		this.XRes = xRes;
-		this.YRes = yRes;
-		this.ColorDepth = colDepth;
-		this.LfbAddress = lfbAddress;
-		this.Graphical = graphical;
+		this.modeNr = modeNr;
+		this.xRes = xRes;
+		this.yRes = yRes;
+		this.colorDepth = colDepth;
+		this.lfbAddress = lfbAddress;
+		this.graphical = graphical;
 	}
 	
 	@Override
 	public String debug()
 	{
 		StringBuilder sb = new StringBuilder(30);
-		sb.append("VESA(").append(ModeNr).append("){").append(Graphical ? "Graphic" : "Text").append(", bbp=").append(ColorDepth).append(", x=").append(XRes).append(", y=").append(YRes).append("}");
+		sb.append("VESA(").append(modeNr).append("){").append(graphical ? "Graphic" : "Text").append(", bbp=").append(colorDepth).append(", x=").append(xRes).append(", y=").append(yRes).append("}");
 		return sb.toString();
 	}
 	
 	public int BytesPerColor()
 	{
-		switch (ColorDepth)
+		switch (colorDepth)
 		{
 			case 8:
 				return 1;

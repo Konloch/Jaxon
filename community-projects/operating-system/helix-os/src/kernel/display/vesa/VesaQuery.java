@@ -13,11 +13,12 @@ public class VesaQuery
 	private final static VESAControllerInfoStruct contrInfo = (VESAControllerInfoStruct) MAGIC.cast2Struct(MemoryLayout.BIOS_BUFFER_MEMMAP_START);
 	private final static VESAModeInfoStruct modeInfo = (VESAModeInfoStruct) MAGIC.cast2Struct(MemoryLayout.BIOS_BUFFER_MEMMAP_START);
 	
-	public static VecVesaMode AvailableModes()
+	public static VecVesaMode availableModes()
 	{
 		// get information through real mode interrupt
 		contrInfo.id = 0x32454256; // VBE2
 		BIOS.Registers.EAX = 0x4F00; // get controller information
+		
 		// BIOS.regs.DS=(short)(KernelConst.KM_SCRATCH>>>4);
 		BIOS.Registers.ES = (short) (MemoryLayout.BIOS_BUFFER_MEMMAP_START >>> 4);
 		BIOS.Registers.EDI = MemoryLayout.BIOS_BUFFER_MEMMAP_START & 0xF;
@@ -26,17 +27,20 @@ public class VesaQuery
 		// check signatures
 		if ((short) BIOS.Registers.EAX != (short) 0x004F)
 			return null;
+		
 		if (contrInfo.id != 0x41534556)
 			return null; // VESA
 		
 		// VESA detected, get information of controller info struct
 		if (contrInfo.version < (byte) 2)
 			return null; // at least version 1.2 required
+		
 		int modePtr = (((int) contrInfo.videoModePtrSeg & 0xFFFF) << 4) + ((int) contrInfo.videoModePtrOff & 0xFFFF);
 		
 		// get all available modi
 		VecInt modeNumbers = new VecInt();
 		int modeNr;
+		
 		while ((modeNr = (int) MAGIC.rMem16(modePtr) & 0xFFFF) != 0xFFFF)
 		{
 			modeNumbers.add(modeNr);
@@ -54,12 +58,16 @@ public class VesaQuery
 			BIOS.Registers.ES = (short) (MemoryLayout.BIOS_BUFFER_MEMMAP_START >>> 4);
 			BIOS.Registers.EDI = MemoryLayout.BIOS_BUFFER_MEMMAP_START & 0xF;
 			BIOS.rint(0x10);
+			
+			// no linear frame buffer
 			if ((modeInfo.attributes & VESAModeInfoStruct.ATTR_LINFRMBUF) == (short) 0)
-			{ // no linear frame buffer
+			{
 				// TO-DO remove mode from list
 			}
+			
+			// linear frame buffer supported
 			else
-			{ // linear frame buffer supported
+			{
 				boolean isGraphical = (modeInfo.attributes & VESAModeInfoStruct.ATTR_GRAPHICAL) != (short) 0;
 				int XRes = Integer.ushort(modeInfo.xRes);
 				int YRes = Integer.ushort(modeInfo.yRes);
@@ -74,27 +82,28 @@ public class VesaQuery
 		return modes;
 	}
 	
-	public static VESAMode GetMode(VecVesaMode modes, int xRes, int yRes, int colDepth, boolean graphical)
+	public static VESAMode getMode(VecVesaMode modes, int xRes, int yRes, int colDepth, boolean graphical)
 	{
 		for (int i = 0; i < modes.size(); i++)
 		{
 			VESAMode mode = modes.get(i);
-			if (mode.XRes == xRes && mode.YRes == yRes && mode.ColorDepth == colDepth && mode.Graphical == graphical)
-			{
+			if (mode.xRes == xRes && mode.yRes == yRes && mode.colorDepth == colDepth && mode.graphical == graphical)
 				return mode;
-			}
 		}
+		
 		return null;
 	}
 	
-	public static String ModesToStr(VecVesaMode modes)
+	public static String modesToStr(VecVesaMode modes)
 	{
 		StringBuilder sb = new StringBuilder();
+		
 		for (int i = 0; i < modes.size(); i++)
 		{
 			VESAMode mode = modes.get(i);
 			sb.appendLine(mode);
 		}
+		
 		return sb.toString();
 	}
 }

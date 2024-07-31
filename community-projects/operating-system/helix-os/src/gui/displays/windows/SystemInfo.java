@@ -29,8 +29,8 @@ public class SystemInfo extends Window
 	public SystemInfo(String title, int x, int y, int width, int height, int border, int charSpacing, int lineSpacing, AFont font)
 	{
 		super(title, x, y, width, height, true);
-		int bg = Kernel.Display.Rgb(100, 100, 100);
-		int fg = Kernel.Display.Rgb(255, 255, 255);
+		int bg = Kernel.Display.rgb(100, 100, 100);
+		int fg = Kernel.Display.rgb(255, 255, 255);
 		_textField = new TextField(0, 0, contentWidth, contentHeight, border, charSpacing, lineSpacing, fg, bg, false, font);
 		
 		_averageOver = 10;
@@ -47,7 +47,7 @@ public class SystemInfo extends Window
 		if (_textField.needsRedraw())
 			_textField.draw();
 		
-		renderTarget.Blit(contentRelativeX, contentRelativeY, _textField.renderTarget, false);
+		renderTarget.blit(contentRelativeX, contentRelativeY, _textField.renderTarget, false);
 	}
 	
 	@Override

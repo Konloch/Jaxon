@@ -80,16 +80,16 @@ public class Kernel
 		Scheduler.initialize();
 		Logger.info("BOOT", "Initialized Scheduler");
 		
-		VecVesaMode modes = VesaQuery.AvailableModes();
+		VecVesaMode modes = VesaQuery.availableModes();
 		PrintAllVesaModes(modes);
 		VESAMode mode;
 		switch (RESOLUTION)
 		{
 			case 0:
-				mode = VesaQuery.GetMode(modes, 1280, 800, 32, true);
+				mode = VesaQuery.getMode(modes, 1280, 800, 32, true);
 				break;
 			case 1:
-				mode = VesaQuery.GetMode(modes, 1440, 900, 32, true);
+				mode = VesaQuery.getMode(modes, 1440, 900, 32, true);
 				break;
 			default:
 				panic("Invalid Resolution value");
@@ -97,10 +97,10 @@ public class Kernel
 		}
 		
 		Display = new VESAGraphics(mode);
-		Display.Activate();
+		Display.activate();
 		Logger.info("BOOT", "Initialized Display");
 		
-		Display.ClearScreen();
+		Display.clearScreen();
 		
 		WindowManager = new WindowManager(Display);
 		WindowManager.register();

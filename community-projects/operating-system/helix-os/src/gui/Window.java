@@ -60,10 +60,10 @@ public abstract class Window extends Task implements IButtonListener
 		
 		renderTarget = new Bitmap(width, height, false);
 		
-		COL_BORDER = Kernel.Display.Rgb(180, 180, 180);
-		COL_TITLEBAR = Kernel.Display.Rgb(80, 80, 80);
-		COL_TITLEBAR_SELECTED = Kernel.Display.Rgb(170, 190, 250);
-		COL_TITLE = Kernel.Display.Rgb(255, 255, 255);
+		COL_BORDER = Kernel.Display.rgb(180, 180, 180);
+		COL_TITLEBAR = Kernel.Display.rgb(80, 80, 80);
+		COL_TITLEBAR_SELECTED = Kernel.Display.rgb(170, 190, 250);
+		COL_TITLE = Kernel.Display.rgb(255, 255, 255);
 		frameSize = 4;
 		titleBarSize = 20;
 		
@@ -121,18 +121,18 @@ public abstract class Window extends Task implements IButtonListener
 	public void drawFrame()
 	{
 		if (isSelected)
-			renderTarget.Rectangle(0, 0, width, height, COL_TITLEBAR_SELECTED);
+			renderTarget.rectangle(0, 0, width, height, COL_TITLEBAR_SELECTED);
 		else
-			renderTarget.Rectangle(0, 0, width, height, COL_BORDER);
+			renderTarget.rectangle(0, 0, width, height, COL_BORDER);
 	}
 	
 	public void drawTitleBar()
 	{
-		renderTarget.Rectangle(0, 0, width - 1, titleBarSize, COL_TITLEBAR);
+		renderTarget.rectangle(0, 0, width - 1, titleBarSize, COL_TITLEBAR);
 		
 		title.draw();
-		renderTarget.Blit(title.x, title.y, title.renderTarget, false);
-		renderTarget.Blit(_btnClose.x, _btnClose.y, _btnClose.renderTarget, false);
+		renderTarget.blit(title.x, title.y, title.renderTarget, false);
+		renderTarget.blit(_btnClose.x, _btnClose.y, _btnClose.renderTarget, false);
 	}
 	
 	public boolean containsTitlebar(int x, int y)
@@ -245,7 +245,7 @@ public abstract class Window extends Task implements IButtonListener
 		{
 			Widget widget = (Widget) _widgets.get(i);
 			widget.draw();
-			renderTarget.Blit(widget.x, widget.y, widget.renderTarget, false);
+			renderTarget.blit(widget.x, widget.y, widget.renderTarget, false);
 		}
 	}
 }

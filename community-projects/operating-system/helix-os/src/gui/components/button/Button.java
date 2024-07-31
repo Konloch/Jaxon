@@ -29,7 +29,7 @@ public class Button extends Widget
 	@Override
 	public void draw()
 	{
-		renderTarget.Rectangle(0, 0, width, height, _bg);
+		renderTarget.rectangle(0, 0, width, height, _bg);
 	}
 	
 	public void click()

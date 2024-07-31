@@ -23,9 +23,9 @@ public class Desktop extends Window
 	
 	public Desktop(String title)
 	{
-		super(title, 0, 0, Kernel.Display.Width(), Kernel.Display.Height(), false);
+		super(title, 0, 0, Kernel.Display.width(), Kernel.Display.height(), false);
 		_isDraggable = false;
-		_background = BackgroundBarn.load().Scale(Kernel.Display.Width(), Kernel.Display.Height());
+		_background = BackgroundBarn.load().scale(Kernel.Display.width(), Kernel.Display.height());
 		
 		addWidget(new BitmapButton(_btnLaunchEditor, 10, 10, 60, EditorIcon.load(), this));
 		
@@ -37,7 +37,7 @@ public class Desktop extends Window
 	
 	public void drawContent()
 	{
-		renderTarget.Blit(0, 0, _background, false);
+		renderTarget.blit(0, 0, _background, false);
 		drawWidgets();
 	}
 	
