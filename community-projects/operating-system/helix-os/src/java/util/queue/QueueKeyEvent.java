@@ -20,56 +20,56 @@ public class QueueKeyEvent
 	}
 	
 	@SJC.Inline
-	public int Capacity()
+	public int capacity()
 	{
 		return _capacity;
 	}
 	
-	public void Put(KeyEvent c)
+	public void put(KeyEvent c)
 	{
 		_buffer[_headIdx] = c;
-		IncHead();
+		incHead();
 	}
 	
-	public KeyEvent Peek()
+	public KeyEvent peek()
 	{
 		return _buffer[_tailIdx];
 	}
 	
-	public KeyEvent Get()
+	public KeyEvent get()
 	{
 		KeyEvent c = _buffer[_tailIdx];
-		IncTail();
+		incTail();
 		return c;
 	}
 	
 	@SJC.Inline
-	public int Count()
+	public int count()
 	{
 		return _count;
 	}
 	
 	@SJC.Inline
-	public boolean IsEmpty()
+	public boolean isEmpty()
 	{
 		return _count == 0;
 	}
 	
 	@SJC.Inline
-	public boolean ContainsNewElements()
+	public boolean containsNewElements()
 	{
 		return _headIdx != _tailIdx;
 	}
 	
 	@SJC.Inline
-	public void IncHead()
+	public void incHead()
 	{
 		_headIdx = (_headIdx + 1) % _capacity;
 		_count++;
 	}
 	
 	@SJC.Inline
-	private void IncTail()
+	private void incTail()
 	{
 		_tailIdx = (_tailIdx + 1) % _capacity;
 		_count--;

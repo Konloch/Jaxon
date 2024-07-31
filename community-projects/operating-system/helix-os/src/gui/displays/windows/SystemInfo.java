@@ -9,7 +9,7 @@ import kernel.memory.GarbageCollector;
 import kernel.memory.Memory;
 import kernel.memory.MemoryManager;
 import kernel.schedule.Scheduler;
-import java.util.StrBuilder;
+import java.lang.StringBuilder;
 import java.util.queue.QueueInt;
 
 public class SystemInfo extends Window
@@ -18,7 +18,7 @@ public class SystemInfo extends Window
 	private String _text;
 	private int _drawEveryNth = 1;
 	private int _drawCounter = 0;
-	private StrBuilder _sb;
+	private StringBuilder _sb;
 	
 	private QueueInt _gcExecTimes;
 	private QueueInt _gcObjectsCollected;
@@ -39,7 +39,7 @@ public class SystemInfo extends Window
 		_gcBytesCollected = new QueueInt(_averageOver);
 		_gcEmptyObjectsCompacted = new QueueInt(_averageOver);
 		
-		_sb = new StrBuilder(500);
+		_sb = new StringBuilder(500);
 	}
 	
 	public void drawContent()
@@ -79,10 +79,10 @@ public class SystemInfo extends Window
 		int gcBytesCollected = GarbageCollector.InfoLastRunCollectedBytes;
 		int gcEmptyObjectsCompacted = GarbageCollector.InfoLastRunCompactedEmptyObjects;
 		
-		_gcExecTimes.Put(gcExecTime);
-		_gcObjectsCollected.Put(gcObjectsCollected);
-		_gcBytesCollected.Put(gcBytesCollected);
-		_gcEmptyObjectsCompacted.Put(gcEmptyObjectsCompacted);
+		_gcExecTimes.put(gcExecTime);
+		_gcObjectsCollected.put(gcObjectsCollected);
+		_gcBytesCollected.put(gcBytesCollected);
+		_gcEmptyObjectsCompacted.put(gcEmptyObjectsCompacted);
 		
 		int consumedMemory = MemoryManager.GetUsedSpace();
 		int freeMemory = MemoryManager.GetFreeSpace();
@@ -91,18 +91,18 @@ public class SystemInfo extends Window
 		
 		int taskCount = Scheduler.getTaskCount();
 		
-		_sb.ClearKeepCapacity();
+		_sb.clearKeepCapacity();
 		
-		_sb.AppendLine("Window Manger:").Append("  ").Append("Average Draw Time ").Append(WindowManager.infoAvgRenderTimeMs).Append(" ms").AppendLine();
+		_sb.appendLine("Window Manger:").append("  ").append("Average Draw Time ").append(WindowManager.infoAvgRenderTimeMs).append(" ms").appendLine();
 		
-		_sb.AppendLine();
-		_sb.AppendLine("Memory:").Append("  ").Append("Consumed: ").Append(Memory.FormatBytesToKb(consumedMemory)).AppendLine().Append("  ").Append("Free: ").Append(Memory.FormatBytesToKb(freeMemory)).AppendLine().Append("  ").Append("Objects: ").Append(objectCount).AppendLine().Append("  ").Append("Empty Objects: ").Append(emptyObjectCount).AppendLine();
+		_sb.appendLine();
+		_sb.appendLine("Memory:").append("  ").append("Consumed: ").append(Memory.FormatBytesToKb(consumedMemory)).appendLine().append("  ").append("Free: ").append(Memory.FormatBytesToKb(freeMemory)).appendLine().append("  ").append("Objects: ").append(objectCount).appendLine().append("  ").append("Empty Objects: ").append(emptyObjectCount).appendLine();
 		
-		_sb.AppendLine();
-		_sb.AppendLine("GC:").Append("  ").Append("Last Run Time: ").Append(GarbageCollector.InfoLastRunTimeMs).Append(" ms").AppendLine().Append("  ").Append("Last Run Marked: ").Append(GarbageCollector.InfoLastRunCollectedObjects).AppendLine().Append("  ").Append("Last Run Collected: ").Append(Memory.FormatBytes(GarbageCollector.InfoLastRunCollectedBytes)).AppendLine().Append("  ").Append("Last Run Compacted: ").Append(GarbageCollector.InfoLastRunCompactedEmptyObjects).AppendLine();
+		_sb.appendLine();
+		_sb.appendLine("GC:").append("  ").append("Last Run Time: ").append(GarbageCollector.InfoLastRunTimeMs).append(" ms").appendLine().append("  ").append("Last Run Marked: ").append(GarbageCollector.InfoLastRunCollectedObjects).appendLine().append("  ").append("Last Run Collected: ").append(Memory.FormatBytes(GarbageCollector.InfoLastRunCollectedBytes)).appendLine().append("  ").append("Last Run Compacted: ").append(GarbageCollector.InfoLastRunCompactedEmptyObjects).appendLine();
 		
-		_sb.AppendLine();
-		_sb.AppendLine("Tasks:").Append("  ").Append("Count: ").Append(taskCount).AppendLine();
+		_sb.appendLine();
+		_sb.appendLine("Tasks:").append("  ").append("Count: ").append(taskCount).appendLine();
 		
 		_text = _sb.toString();
 		_textField.ClearText();

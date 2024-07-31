@@ -19,62 +19,59 @@ public class Object
 	public static final int FLAG_OTHER = 1 << 2;
 	
 	@SJC.Inline
-	public void MarkUnused()
+	public void markUnused()
 	{
 		_flags &= ~FLAG_USED;
 	}
 	
 	@SJC.Inline
-	public void MarkUsed()
+	public void markUsed()
 	{
 		_flags |= FLAG_USED;
 	}
 	
 	@SJC.Inline
-	public boolean IsMarked()
+	public boolean isMarked()
 	{
 		return (_flags & FLAG_USED) == 1;
 	}
 	
 	@SJC.Inline
-	public int RelocEntriesCount()
+	public int relocEntriesCount()
 	{
 		return _r_relocEntries;
 	}
 	
 	@SJC.Inline
-	public Object ReadRelocEntry(int relocIndex)
+	public Object readRelocEntry(int relocIndex)
 	{
-		if (relocIndex > RelocEntriesCount() || relocIndex < 0)
-		{
+		if (relocIndex > relocEntriesCount() || relocIndex < 0)
 			Kernel.panic("Requested Index out of range".append(Integer.toString(relocIndex).append(" ").append(Integer.toString(_r_relocEntries))));
-		}
+		
 		int baseAddr = MAGIC.cast2Ref(this);
 		baseAddr -= MAGIC.ptrSize;
 		int addr = MAGIC.rMem32(baseAddr - relocIndex * MAGIC.ptrSize);
 		if (addr == 0)
-		{
 			return null;
-		}
 		
 		return MAGIC.cast2Obj(addr);
 	}
 	
 	@SJC.Inline
-	public int AddressTop()
+	public int addressTop()
 	{
 		return MAGIC.cast2Ref(this) + _r_scalarSize;
 	}
 	
 	@SJC.Inline
-	public int AddressBottom()
+	public int addressBottom()
 	{
 		return MAGIC.cast2Ref(this) - _r_relocEntries * MAGIC.ptrSize;
 	}
 	
 	@SJC.Inline
-	public boolean ContainsAddress(int addr)
+	public boolean containsAddress(int addr)
 	{
-		return addr >= AddressBottom() && addr < AddressTop();
+		return addr >= addressBottom() && addr < addressTop();
 	}
 }

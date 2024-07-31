@@ -94,9 +94,9 @@ public class VM13
 		int green = Math.compress(g, 0, 255, 0, 7);
 		int blue = Math.compress(b, 0, 255, 0, 3);
 		int color = 0;
-		color = BitHelper.SetRange(color, 0, 2, blue);
-		color = BitHelper.SetRange(color, 2, 3, green);
-		color = BitHelper.SetRange(color, 5, 3, red);
+		color = BitHelper.setRange(color, 0, 2, blue);
+		color = BitHelper.setRange(color, 2, 3, green);
+		color = BitHelper.setRange(color, 5, 3, red);
 		return (byte) color;
 	}
 	
@@ -111,9 +111,9 @@ public class VM13
 		int green = (int) (7.0 * g);
 		int blue = (int) (3.0 * b);
 		int color = 0;
-		color = BitHelper.SetRange(color, 0, 2, blue);
-		color = BitHelper.SetRange(color, 2, 3, green);
-		color = BitHelper.SetRange(color, 5, 3, red);
+		color = BitHelper.setRange(color, 0, 2, blue);
+		color = BitHelper.setRange(color, 2, 3, green);
+		color = BitHelper.setRange(color, 5, 3, red);
 		return (byte) color;
 	}
 	
@@ -130,9 +130,9 @@ public class VM13
 		int red = Math.clamp(r, 0, 7);
 		int green = Math.clamp(g, 0, 7);
 		int blue = Math.clamp(b, 0, 3);
-		color = BitHelper.SetRange(color, 0, 2, blue);
-		color = BitHelper.SetRange(color, 2, 3, green);
-		color = BitHelper.SetRange(color, 5, 3, red);
+		color = BitHelper.setRange(color, 0, 2, blue);
+		color = BitHelper.setRange(color, 2, 3, green);
+		color = BitHelper.setRange(color, 5, 3, red);
 		return (byte) color;
 	}
 }

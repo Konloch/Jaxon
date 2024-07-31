@@ -34,18 +34,18 @@ public class PCI
 		MAGIC.wIOs32(CONFIG_ADDRESS, addrReg3);
 		int dataReg3 = MAGIC.rIOs32(CONFIG_DATA);
 		
-		int vendorId = BitHelper.GetRange(dataReg0, 0, 16);
-		int deviceId = BitHelper.GetRange(dataReg0, 16, 16);
-		int command = BitHelper.GetRange(dataReg1, 0, 16);
-		int status = BitHelper.GetRange(dataReg1, 16, 16);
-		int revision = BitHelper.GetRange(dataReg2, 0, 8);
-		int itf = BitHelper.GetRange(dataReg2, 8, 8);
-		int subclasscode = BitHelper.GetRange(dataReg2, 16, 8);
-		int baseclasscode = BitHelper.GetRange(dataReg2, 24, 8);
-		int cls = BitHelper.GetRange(dataReg3, 0, 8);
-		int latency = BitHelper.GetRange(dataReg3, 8, 8);
-		int header = BitHelper.GetRange(dataReg3, 16, 8);
-		int bist = BitHelper.GetRange(dataReg3, 24, 8);
+		int vendorId = BitHelper.getRange(dataReg0, 0, 16);
+		int deviceId = BitHelper.getRange(dataReg0, 16, 16);
+		int command = BitHelper.getRange(dataReg1, 0, 16);
+		int status = BitHelper.getRange(dataReg1, 16, 16);
+		int revision = BitHelper.getRange(dataReg2, 0, 8);
+		int itf = BitHelper.getRange(dataReg2, 8, 8);
+		int subclasscode = BitHelper.getRange(dataReg2, 16, 8);
+		int baseclasscode = BitHelper.getRange(dataReg2, 24, 8);
+		int cls = BitHelper.getRange(dataReg3, 0, 8);
+		int latency = BitHelper.getRange(dataReg3, 8, 8);
+		int header = BitHelper.getRange(dataReg3, 16, 8);
+		int bist = BitHelper.getRange(dataReg3, 24, 8);
 		
 		PciDevice device = new PciDevice(busIdx, deviceIdx, functionIdx, vendorId, deviceId, command, status, revision, itf, subclasscode, baseclasscode, cls, latency, header, bist);
 		return device;
@@ -59,12 +59,12 @@ public class PCI
 		}
 		
 		int addr = 0;
-		addr = BitHelper.SetRange(addr, 0, 2, 0);
-		addr = BitHelper.SetRange(addr, 2, 6, register);
-		addr = BitHelper.SetRange(addr, 8, 3, function);
-		addr = BitHelper.SetRange(addr, 11, 5, device);
-		addr = BitHelper.SetRange(addr, 16, 8, bus);
-		addr = BitHelper.SetRange(addr, 24, 8, 0x80);
+		addr = BitHelper.setRange(addr, 0, 2, 0);
+		addr = BitHelper.setRange(addr, 2, 6, register);
+		addr = BitHelper.setRange(addr, 8, 3, function);
+		addr = BitHelper.setRange(addr, 11, 5, device);
+		addr = BitHelper.setRange(addr, 16, 8, bus);
+		addr = BitHelper.setRange(addr, 24, 8, 0x80);
 		
 		return addr;
 	}

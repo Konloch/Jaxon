@@ -19,61 +19,61 @@ public class QueueLogEntry
 		_count = 0;
 	}
 	
-	public void Put(LogEntry c)
+	public void put(LogEntry c)
 	{
 		_buffer[_headIdx] = c;
-		IncHead();
+		incHead();
 	}
 	
-	public LogEntry Get()
+	public LogEntry get()
 	{
 		LogEntry c = _buffer[_tailIdx];
-		IncTail();
+		incTail();
 		return c;
 	}
 	
-	public LogEntry Peek()
+	public LogEntry peek()
 	{
 		return _buffer[_tailIdx];
 	}
 	
-	public LogEntry Peek(int offset)
+	public LogEntry peek(int offset)
 	{
 		return _buffer[(_tailIdx + offset) % _size];
 	}
 	
-	public LogEntry PeekBack(int i)
+	public LogEntry peekBack(int i)
 	{
 		return _buffer[(_headIdx - i + _size - 1) % _size];
 	}
 	
 	@SJC.Inline
-	public int Count()
+	public int count()
 	{
 		return _count;
 	}
 	
 	@SJC.Inline
-	public boolean IsEmpty()
+	public boolean isEmpty()
 	{
 		return _count == 0;
 	}
 	
 	@SJC.Inline
-	public boolean ContainsNewElements()
+	public boolean containsNewElements()
 	{
 		return _headIdx != _tailIdx;
 	}
 	
 	@SJC.Inline
-	private void IncHead()
+	private void incHead()
 	{
 		_headIdx = (_headIdx + 1) % _size;
 		_count++;
 	}
 	
 	@SJC.Inline
-	private void IncTail()
+	private void incTail()
 	{
 		_tailIdx = (_tailIdx + 1) % _size;
 		_count--;

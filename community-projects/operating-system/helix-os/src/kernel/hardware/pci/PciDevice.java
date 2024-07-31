@@ -1,7 +1,7 @@
 package kernel.hardware.pci;
 
 import java.util.IDebug;
-import java.util.StrBuilder;
+import java.lang.StringBuilder;
 
 public class PciDevice implements IDebug
 {
@@ -82,10 +82,10 @@ public class PciDevice implements IDebug
 	}
 	
 	@Override
-	public String Debug()
+	public String debug()
 	{
-		StrBuilder sb = new StrBuilder(512);
-		sb.Append("PCI(").Append(Bus).Append(':').Append(Device).Append(':').Append(Function).Append("){").Append("Vendor=").Append(VendorId).Append(", ").Append("Device=").Append(DeviceId).Append(", ").Append("Command=").Append(Command).Append(", ").Append("Status=").Append(Status).Append(", ").Append("Revision=").Append(Revision).Append(", ").Append("Itf=").Append(Itf).Append(", ").Append("SubClass=").Append(SubClassCode).Append(", ").Append("BaseClass=").Append(BaseClassCode).Append(" (").Append(BaseClassName()).Append("), ").Append("Cls=").Append(Cls).Append(", ").Append("Latency=").Append(Latency).Append(", ").Append("Header=").Append(Header).Append(", ").Append("Bist=").Append(Bist).Append("}");
+		StringBuilder sb = new StringBuilder(512);
+		sb.append("PCI(").append(Bus).append(':').append(Device).append(':').append(Function).append("){").append("Vendor=").append(VendorId).append(", ").append("Device=").append(DeviceId).append(", ").append("Command=").append(Command).append(", ").append("Status=").append(Status).append(", ").append("Revision=").append(Revision).append(", ").append("Itf=").append(Itf).append(", ").append("SubClass=").append(SubClassCode).append(", ").append("BaseClass=").append(BaseClassCode).append(" (").append(BaseClassName()).append("), ").append("Cls=").append(Cls).append(", ").append("Latency=").append(Latency).append(", ").append("Header=").append(Header).append(", ").append("Bist=").append(Bist).append("}");
 		return sb.toString();
 	}
 }

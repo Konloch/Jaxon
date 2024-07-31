@@ -6,32 +6,32 @@ public class BitHelper
 {
 	
 	@SJC.Inline
-	public static int GetBit(int value, int n)
+	public static int getBit(int value, int n)
 	{
 		return ((value >> n) & 1);
 	}
 	
 	@SJC.Inline
-	public static boolean GetFlag(int value, int n)
+	public static boolean getFlag(int value, int n)
 	{
-		int flag = BitHelper.GetBit(value, n);
+		int flag = BitHelper.getBit(value, n);
 		return flag == 1;
 	}
 	
 	@SJC.Inline
-	public static int SetFlag(int value, int n, boolean flag)
+	public static int setFlag(int value, int n, boolean flag)
 	{
 		return ((value & ~(1 << n)) | ((flag ? 1 : 0) << n));
 	}
 	
 	@SJC.Inline
-	public static int ClearFlag(int value, int n)
+	public static int clearFlag(int value, int n)
 	{
 		return value & ~(1 << n);
 	}
 	
 	@SJC.Inline
-	public static int SetRange(int base, int start, int length, int value)
+	public static int setRange(int base, int start, int length, int value)
 	{
 		int highBits = (1 << length) - 1;
 		int loadMask = highBits << start;
@@ -40,7 +40,7 @@ public class BitHelper
 	}
 	
 	@SJC.Inline
-	public static int GetRange(int value, int start, int length)
+	public static int getRange(int value, int start, int length)
 	{
 		return (value >> start) & ((1 << length) - 1);
 	}
@@ -53,12 +53,11 @@ public class BitHelper
 	 * @return the aligned value
 	 */
 	@SJC.Inline
-	public static int AlignUp(int base, int alignment)
+	public static int alignUp(int base, int alignment)
 	{
 		if (base % alignment != 0)
-		{
 			base += alignment - base % alignment;
-		}
+		
 		return base;
 		
 		// if the alignment is a power of 2, the following code could be used,
@@ -67,12 +66,11 @@ public class BitHelper
 	}
 	
 	@SJC.Inline
-	public static long AlignUp(long base, int alignment)
+	public static long alignUp(long base, int alignment)
 	{
 		if (base % alignment != 0)
-		{
 			base += alignment - base % alignment;
-		}
+		
 		return base;
 	}
 	
@@ -87,9 +85,8 @@ public class BitHelper
 	public static int AlignDown(int base, int alignment)
 	{
 		if (base % alignment != 0)
-		{
 			base -= alignment - base % alignment;
-		}
+		
 		return base;
 	}
 	
@@ -97,9 +94,8 @@ public class BitHelper
 	public static long AlignDown(long base, int alignment)
 	{
 		if (base % alignment != 0)
-		{
 			base -= alignment - base % alignment;
-		}
+		
 		return base;
 	}
 	
@@ -130,32 +126,33 @@ public class BitHelper
 	{
 		int result = 0;
 		int number_length = 0;
+		
 		while (b > 0)
 		{
 			long rightmost_bit = b % 10;
 			if (rightmost_bit > 1)
-			{
 				Kernel.panic("Invalid binary literal. Only 0 and 1 are allowed.");
-			}
+			
 			b /= 10;
 			result <<= 1;
 			result |= rightmost_bit;
 			number_length += 1;
 		}
-		result = BitHelper.Reverse32Bit(result);
-		result = BitHelper.RotateRight32Bit(result, 32 - number_length);
+		
+		result = BitHelper.reverse32Bit(result);
+		result = BitHelper.rotateRight32Bit(result, 32 - number_length);
 		return result;
 	}
 	
 	/// https://stackoverflow.com/a/5844096
 	@SJC.Inline
-	public static int RotateRight32Bit(int bits, int k)
+	public static int rotateRight32Bit(int bits, int k)
 	{
 		return (bits >>> k) | (bits << (32 - k));
 	}
 	
 	/// https://stackoverflow.com/a/9144870
-	public static int Reverse32Bit(int value)
+	public static int reverse32Bit(int value)
 	{
 		value = ((value >> 1) & 0x55555555) | ((value & 0x55555555) << 1);
 		value = ((value >> 2) & 0x33333333) | ((value & 0x33333333) << 2);

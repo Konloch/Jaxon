@@ -91,7 +91,7 @@ public abstract class Window extends Task implements IButtonListener
 	
 	public boolean onButtonClicked(ButtonClickedEventArgs button)
 	{
-		Logger.info("Window", "Button event: ".append(button.Debug()));
+		Logger.info("Window", "Button event: ".append(button.debug()));
 		if (button.buttonName == BTN_WINDOW_CLOSE)
 		{
 			Kernel.WindowManager.removeWindow(this);
@@ -211,9 +211,9 @@ public abstract class Window extends Task implements IButtonListener
 	
 	protected boolean handleWidgetClicks(int relX, int relY)
 	{
-		for (int i = 0; i < _widgets.Size(); i++)
+		for (int i = 0; i < _widgets.size(); i++)
 		{
-			Widget widget = (Widget) _widgets.Get(i);
+			Widget widget = (Widget) _widgets.get(i);
 			if (widget.contains(relX, relY))
 			{
 				Logger.info("WM", "Clicked at ".append(widget.name));
@@ -231,19 +231,19 @@ public abstract class Window extends Task implements IButtonListener
 	
 	protected void addWidget(Widget widget)
 	{
-		_widgets.Add(widget);
+		_widgets.add(widget);
 	}
 	
 	protected void removeWidget(Widget widget)
 	{
-		_widgets.Remove(widget);
+		_widgets.remove(widget);
 	}
 	
 	protected void drawWidgets()
 	{
-		for (int i = 0; i < _widgets.Size(); i++)
+		for (int i = 0; i < _widgets.size(); i++)
 		{
-			Widget widget = (Widget) _widgets.Get(i);
+			Widget widget = (Widget) _widgets.get(i);
 			widget.draw();
 			renderTarget.Blit(widget.x, widget.y, widget.renderTarget, false);
 		}

@@ -26,9 +26,7 @@ public class NoAllocConv
 	public static int iToA(int buffer, int byte_offset, int max_len, int n, int base)
 	{
 		if (base < 2 || base > 36)
-		{
 			Kernel.panic("ConversionHelper: requested base out of range");
-		}
 		
 		// Special case for 0
 		if (n == 0)
@@ -36,6 +34,7 @@ public class NoAllocConv
 			MAGIC.wMem8(buffer, (byte) '0');
 			return 1;
 		}
+		
 		n = Math.abs(n);
 		max_len = Math.clamp(max_len, 0, max_len);
 		
@@ -50,7 +49,7 @@ public class NoAllocConv
 			digit_count++;
 		}
 		
-		Array.ReverseByteBuffer(buffer, byte_offset, digit_count);
+		Array.reverseByteBuffer(buffer, byte_offset, digit_count);
 		return digit_count;
 	}
 	
@@ -61,28 +60,20 @@ public class NoAllocConv
 	 * Other values -> '\0'
 	 */
 	@SJC.Inline
-	public static char ItoC(int n)
+	public static char iToC(int n)
 	{
 		if (n >= 0 && n <= 9)
-		{
 			return (char) (n + '0');
-		}
 		else if (n >= 10 && n <= 36)
-		{
 			return (char) (n - 10 + 'A');
-		}
 		else
-		{
 			return '\0';
-		}
 	}
 	
 	public static int iToA(byte[] buffer, int max_len, long n, int base)
 	{
 		if (base < 2 || base > 36)
-		{
 			Kernel.panic("ConversionHelper: requested base out of range");
-		}
 		
 		// Special case for 0
 		if (n == 0)
@@ -90,6 +81,7 @@ public class NoAllocConv
 			buffer[0] = (byte) '0';
 			return 1;
 		}
+		
 		n = Math.abs(n);
 		max_len = Math.clamp(max_len, 0, max_len);
 		
@@ -104,7 +96,7 @@ public class NoAllocConv
 			digit_count++;
 		}
 		
-		Array.ReverseByteBuffer(buffer);
+		Array.reverseByteBuffer(buffer);
 		return digit_count;
 	}
 	

@@ -18,6 +18,7 @@ public class VecChar
 	{
 		if (initialCapacity < 0)
 			Kernel.panic("Illegal Capacity");
+		
 		this.elements = new char[initialCapacity];
 		this.size = 0;
 	}
@@ -25,9 +26,8 @@ public class VecChar
 	public void clearKeepCapacity()
 	{
 		for (int i = 0; i < size; i++)
-		{
 			elements[i] = 0;
-		}
+		
 		size = 0;
 	}
 	
@@ -42,9 +42,8 @@ public class VecChar
 	{
 		ensureCapacity(size + toAdd.length);
 		for (int i = 0; i < toAdd.length; i++)
-		{
 			this.elements[size + i] = toAdd[i];
-		}
+		
 		size += toAdd.length;
 	}
 	
@@ -53,6 +52,7 @@ public class VecChar
 	{
 		if (index < 0 || index >= size)
 			Kernel.panic("Index out of bounds for vector access");
+		
 		return elements[index];
 	}
 	
@@ -71,10 +71,10 @@ public class VecChar
 	public char[] toArray()
 	{
 		char[] array = new char[size];
+		
 		for (int i = 0; i < size; i++)
-		{
 			array[i] = elements[i];
-		}
+		
 		return array;
 	}
 	

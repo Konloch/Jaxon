@@ -34,10 +34,10 @@ public class String
 	public char[] toCharArray()
 	{
 		char[] copy = new char[count];
+		
 		for (int i = 0; i < count; i++)
-		{
 			copy[i] = (char) value[i];
-		}
+		
 		return copy;
 	}
 	
@@ -50,10 +50,10 @@ public class String
 	public byte[] toByteArray()
 	{
 		byte[] copy = new byte[count];
+		
 		for (int i = 0; i < count; i++)
-		{
 			copy[i] = (byte) value[i];
-		}
+		
 		return copy;
 	}
 	
@@ -61,18 +61,16 @@ public class String
 	{
 		int pad = length - count;
 		if (pad <= 0)
-		{
 			return this;
-		}
+		
 		byte[] padded = new byte[length];
+		
 		for (int i = 0; i < pad; i++)
-		{
 			padded[i] = (byte) c;
-		}
+		
 		for (int i = 0; i < count; i++)
-		{
 			padded[i + pad] = value[i];
-		}
+		
 		return new String(padded);
 	}
 	
@@ -80,13 +78,11 @@ public class String
 	{
 		byte[] appended = new byte[count + other.count];
 		for (int i = 0; i < count; i++)
-		{
 			appended[i] = value[i];
-		}
+		
 		for (int i = 0; i < other.count; i++)
-		{
 			appended[i + count] = other.value[i];
-		}
+		
 		return new String(appended);
 	}
 	
@@ -99,9 +95,8 @@ public class String
 	{
 		byte[] appended = new byte[count + 1];
 		for (int i = 0; i < count; i++)
-		{
 			appended[i] = value[i];
-		}
+		
 		appended[count] = (byte) c;
 		return new String(appended);
 	}

@@ -163,7 +163,7 @@ public class Math
 	}
 	
 	@SJC.Inline
-	public static float Sqrt(float nr)
+	public static float sqrt(float nr)
 	{
 		// fld dword [ebp+8]
 		MAGIC.inline(0xD9, 0x45);
@@ -238,7 +238,7 @@ public class Math
 	}
 	
 	@SJC.Inline
-	public static double Sin(double nr)
+	public static double sin(double nr)
 	{
 		// fld qword [ebp+8]
 		MAGIC.inline(0xDD, 0x45);
@@ -252,7 +252,7 @@ public class Math
 	}
 	
 	@SJC.Inline
-	public static float Sin(float nr)
+	public static float sin(float nr)
 	{
 		// fld dword [ebp+8]
 		MAGIC.inline(0xD9, 0x45);
@@ -266,7 +266,7 @@ public class Math
 	}
 	
 	@SJC.Inline
-	public static double Cos(double nr)
+	public static double cos(double nr)
 	{
 		// fld qword [ebp+8]
 		MAGIC.inline(0xDD, 0x45);
@@ -280,7 +280,7 @@ public class Math
 	}
 	
 	@SJC.Inline
-	public static float Cos(float nr)
+	public static float cos(float nr)
 	{
 		// fld dword [ebp+8]
 		MAGIC.inline(0xD9, 0x45);

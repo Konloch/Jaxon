@@ -162,7 +162,7 @@ public class WindowManager extends Task
 			KeyEvent keyEvent = KeyboardController.ReadEvent();
 			if (keyEvent != null)
 			{
-				Logger.trace("WIN", "Handling ".append(keyEvent.Debug()));
+				Logger.trace("WIN", "Handling ".append(keyEvent.debug()));
 				if (keyEvent.IsDown)
 				{
 					if (consumedInternalOnKeyPressed(keyEvent.Key))

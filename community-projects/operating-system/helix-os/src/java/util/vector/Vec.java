@@ -22,43 +22,44 @@ public class Vec
 		this.size = 0;
 	}
 	
-	public void Add(Object element)
+	public void add(Object element)
 	{
 		ensureCapacity(size + 1);
 		elements[size++] = element;
 	}
 	
-	public void Remove(Object element)
+	public void remove(Object element)
 	{
 		for (int i = 0; i < size; i++)
 		{
 			if (elements[i] == element)
 			{
-				Remove(i);
+				remove(i);
 				return;
 			}
 		}
 	}
 	
-	public void Remove(int index)
+	public void remove(int index)
 	{
 		if (index < 0 || index >= size)
 			Kernel.panic("Index out of bounds for vector removal");
+		
 		for (int i = index; i < size - 1; i++)
-		{
 			elements[i] = elements[i + 1];
-		}
+		
 		size--;
 	}
 	
-	public Object Get(int index)
+	public Object get(int index)
 	{
 		if (index < 0 || index >= size)
 			Kernel.panic("Index out of bounds for vector access");
+		
 		return elements[index];
 	}
 	
-	public int Size()
+	public int size()
 	{
 		return size;
 	}
@@ -69,15 +70,13 @@ public class Vec
 		{
 			int newCapacity = elements.length * 2;
 			if (newCapacity < minCapacity)
-			{
 				newCapacity = minCapacity;
-			}
 			
 			Object[] newElements = new Object[newCapacity];
+			
 			for (int i = 0; i < size; i++)
-			{
 				newElements[i] = elements[i];
-			}
+			
 			elements = newElements;
 		}
 	}

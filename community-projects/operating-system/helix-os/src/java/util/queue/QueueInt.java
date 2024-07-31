@@ -17,56 +17,56 @@ public class QueueInt
 		_count = 0;
 	}
 	
-	public void Put(int c)
+	public void put(int c)
 	{
 		_buffer[_headIdx] = c;
-		IncHead();
+		incHead();
 	}
 	
-	public int Get()
+	public int get()
 	{
 		int c = _buffer[_tailIdx];
-		IncTail();
+		incTail();
 		return c;
 	}
 	
-	public int Average()
+	public int average()
 	{
 		int sum = 0;
+		
 		for (int i = 0; i < _count; i++)
-		{
 			sum += _buffer[i];
-		}
+		
 		return sum / _count;
 	}
 	
 	@SJC.Inline
-	public int Count()
+	public int count()
 	{
 		return _count;
 	}
 	
 	@SJC.Inline
-	public boolean IsEmpty()
+	public boolean isEmpty()
 	{
 		return _count == 0;
 	}
 	
 	@SJC.Inline
-	public boolean ContainsNewElements()
+	public boolean containsNewElements()
 	{
 		return _headIdx != _tailIdx;
 	}
 	
 	@SJC.Inline
-	private void IncHead()
+	private void incHead()
 	{
 		_headIdx = (_headIdx + 1) % _size;
 		_count++;
 	}
 	
 	@SJC.Inline
-	private void IncTail()
+	private void incTail()
 	{
 		_tailIdx = (_tailIdx + 1) % _size;
 		_count--;

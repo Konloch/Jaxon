@@ -1,7 +1,7 @@
 package kernel.hardware.keyboard;
 
 import java.util.IDebug;
-import java.util.StrBuilder;
+import java.lang.StringBuilder;
 
 public class KeyEvent implements IDebug
 {
@@ -21,9 +21,9 @@ public class KeyEvent implements IDebug
 	}
 	
 	@Override
-	public String Debug()
+	public String debug()
 	{
-		return new StrBuilder().Append("KeyEvent {").Append("Key: ").Append(kernel.hardware.keyboard.Key.Name(Key)).Append(", IsDown: ").Append(IsDown).Append("}").toString();
+		return new StringBuilder().append("KeyEvent {").append("Key: ").append(kernel.hardware.keyboard.Key.Name(Key)).append(", IsDown: ").append(IsDown).append("}").toString();
 	}
 	
 }

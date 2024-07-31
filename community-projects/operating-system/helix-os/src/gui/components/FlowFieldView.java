@@ -94,8 +94,8 @@ public class FlowFieldView extends Widget
 		public void Move()
 		{
 			float angle = noise.noise(this.loc.x / _controls.noiseScale, this.loc.y / _controls.noiseScale, (frameCount * _controls.noiseChangeSpeed) / _controls.noiseScale) * Math.TWO_PI * _controls.noiseStrength;
-			this.vel.x = Math.Cos(angle);
-			this.vel.y = Math.Sin(angle);
+			this.vel.x = Math.cos(angle);
+			this.vel.y = Math.sin(angle);
 			this.vel.mult(speed);
 			this.loc.add(this.vel);
 		}
@@ -155,7 +155,7 @@ public class FlowFieldView extends Widget
 		@SJC.Inline
 		public float mag()
 		{
-			return Math.Sqrt(x * x + y * y);
+			return Math.sqrt(x * x + y * y);
 		}
 	}
 	

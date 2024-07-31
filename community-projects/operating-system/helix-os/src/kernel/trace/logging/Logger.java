@@ -1,7 +1,7 @@
 package kernel.trace.logging;
 
 import kernel.hardware.RTC;
-import java.util.StrBuilder;
+import java.lang.StringBuilder;
 import java.util.queue.QueueLogEntry;
 
 public class Logger
@@ -23,7 +23,7 @@ public class Logger
 	{
 		logBuffer = new QueueLogEntry(capactiy);
 		for (int i = 0; i < capactiy; i++)
-			logBuffer.Put(new LogEntry("", "", NONE, ""));
+			logBuffer.put(new LogEntry("", "", NONE, ""));
 		
 		initialized = true;
 		minimumLogLevel = logLevel;
@@ -65,14 +65,14 @@ public class Logger
 		if (priority < minimumLogLevel || !initialized)
 			return;
 		
-		LogEntry log = logBuffer.Get();
+		LogEntry log = logBuffer.get();
 		log.SetCategory(category);
 		log.SetMessage(message);
 		log.SetPriority(priority);
 		if (_logTime)
 			log.SetTimeHMS(getTimeHMS());
 		logSerial(log);
-		logBuffer.Put(log);
+		logBuffer.put(log);
 		logTicks++;
 	}
 	
@@ -109,7 +109,7 @@ public class Logger
 	@SJC.Inline
 	public static LogEntry getChronologicalLog(int i)
 	{
-		return logBuffer.PeekBack(i);
+		return logBuffer.peekBack(i);
 	}
 	
 	@SJC.Inline
@@ -126,24 +126,24 @@ public class Logger
 		boolean hoursIsTwoDigits = hours >= 10;
 		boolean minutesIsTwoDigits = minutes >= 10;
 		boolean secondsIsTwoDigits = seconds >= 10;
-		StrBuilder sb = new StrBuilder(10);
+		StringBuilder sb = new StringBuilder(10);
 		
 		if (!hoursIsTwoDigits)
-			sb.Append('0');
+			sb.append('0');
 		
-		sb.Append(hours);
-		sb.Append(':');
+		sb.append(hours);
+		sb.append(':');
 		
 		if (!minutesIsTwoDigits)
-			sb.Append('0');
+			sb.append('0');
 		
-		sb.Append(minutes);
-		sb.Append(':');
+		sb.append(minutes);
+		sb.append(':');
 		
 		if (!secondsIsTwoDigits)
-			sb.Append('0');
+			sb.append('0');
 		
-		sb.Append(seconds);
+		sb.append(seconds);
 		return sb.toString();
 	}
 }

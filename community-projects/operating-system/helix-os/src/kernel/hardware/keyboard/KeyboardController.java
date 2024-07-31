@@ -34,9 +34,9 @@ public class KeyboardController
 		_layout = null;
 		packet = new int[3];
 		_eventBuffer = new QueueKeyEvent(32);
-		for (int i = 0; i < _eventBuffer.Capacity(); i++)
+		for (int i = 0; i < _eventBuffer.capacity(); i++)
 		{
-			_eventBuffer.Put(new KeyEvent());
+			_eventBuffer.put(new KeyEvent());
 		}
 		
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("KeyboardController"));
@@ -59,7 +59,7 @@ public class KeyboardController
 	@SJC.Inline
 	public static boolean HasNewEvent()
 	{
-		return _eventBuffer.ContainsNewElements();
+		return _eventBuffer.containsNewElements();
 	}
 	
 	static int expectedLength = -1;
@@ -97,9 +97,9 @@ public class KeyboardController
 		{
 			cycle = 0;
 			expectedLength = 0;
-			KeyEvent event = _eventBuffer.Peek();
+			KeyEvent event = _eventBuffer.peek();
 			ReadPacket(event);
-			_eventBuffer.IncHead();
+			_eventBuffer.incHead();
 			
 			packet[0] = 0;
 			packet[1] = 0;
@@ -115,7 +115,7 @@ public class KeyboardController
 	
 	public static KeyEvent ReadEvent()
 	{
-		return _eventBuffer.Get();
+		return _eventBuffer.get();
 	}
 	
 	private static void ReadPacket(KeyEvent readInto)
@@ -192,8 +192,8 @@ public class KeyboardController
 			int c1 = Integer.ubyte(packet[1]);
 			
 			// 0xE0_2A
-			keyCode = BitHelper.SetRange(keyCode, 8, 8, c0);
-			keyCode = BitHelper.SetRange(keyCode, 0, 8, c1);
+			keyCode = BitHelper.setRange(keyCode, 8, 8, c0);
+			keyCode = BitHelper.setRange(keyCode, 0, 8, c1);
 		}
 		else if (c0 == KEYCODE_EXTEND2)
 		{
@@ -201,9 +201,9 @@ public class KeyboardController
 			int c2 = Integer.ubyte(packet[2]);
 			
 			// 0xE1_2A_2A
-			keyCode = BitHelper.SetRange(keyCode, 16, 8, c0);
-			keyCode = BitHelper.SetRange(keyCode, 8, 8, c1);
-			keyCode = BitHelper.SetRange(keyCode, 0, 8, c2);
+			keyCode = BitHelper.setRange(keyCode, 16, 8, c0);
+			keyCode = BitHelper.setRange(keyCode, 8, 8, c1);
+			keyCode = BitHelper.setRange(keyCode, 0, 8, c2);
 		}
 		else
 		{

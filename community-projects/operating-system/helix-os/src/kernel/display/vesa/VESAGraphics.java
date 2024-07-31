@@ -27,7 +27,7 @@ public class VESAGraphics extends GraphicsContext
 		needsRedraw = true;
 		curMode = mode;
 		
-		Logger.info("VESA", "SetMode to ".append(curMode.Debug()));
+		Logger.info("VESA", "SetMode to ".append(curMode.debug()));
 	}
 	
 	@Override

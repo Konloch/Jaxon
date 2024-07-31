@@ -2,7 +2,7 @@ package kernel.display.vesa;
 
 import kernel.Kernel;
 import java.util.IDebug;
-import java.util.StrBuilder;
+import java.lang.StringBuilder;
 
 public class VESAMode implements IDebug
 {
@@ -24,10 +24,10 @@ public class VESAMode implements IDebug
 	}
 	
 	@Override
-	public String Debug()
+	public String debug()
 	{
-		StrBuilder sb = new StrBuilder(30);
-		sb.Append("VESA(").Append(ModeNr).Append("){").Append(Graphical ? "Graphic" : "Text").Append(", bbp=").Append(ColorDepth).Append(", x=").Append(XRes).Append(", y=").Append(YRes).Append("}");
+		StringBuilder sb = new StringBuilder(30);
+		sb.append("VESA(").append(ModeNr).append("){").append(Graphical ? "Graphic" : "Text").append(", bbp=").append(ColorDepth).append(", x=").append(XRes).append(", y=").append(YRes).append("}");
 		return sb.toString();
 	}
 	

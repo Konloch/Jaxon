@@ -118,16 +118,16 @@ public class Kernel
 			PciDevice device = reader.Next();
 			if (device == null)
 				continue;
-			Logger.info("BOOT", "Found Device ".append(device.Debug()));
+			Logger.info("BOOT", "Found Device ".append(device.debug()));
 		}
 	}
 	
 	private static void PrintAllVesaModes(VecVesaMode modes)
 	{
-		for (int i = 0; i < modes.Size(); i++)
+		for (int i = 0; i < modes.size(); i++)
 		{
-			VESAMode mode = modes.Get(i);
-			Logger.info("BOOT", "Mode ".append(i).append(": ").append(mode.Debug()));
+			VESAMode mode = modes.get(i);
+			Logger.info("BOOT", "Mode ".append(i).append(": ").append(mode.debug()));
 		}
 	}
 	

@@ -5,7 +5,7 @@ import kernel.Kernel;
 import kernel.MemoryLayout;
 import kernel.trace.logging.Logger;
 import java.util.BitHelper;
-import java.util.StrBuilder;
+import java.lang.StringBuilder;
 
 /**
  * The Interrupt Descriptor Table
@@ -62,7 +62,7 @@ public class IDT
 			Kernel.panic("IDT not initialized");
 			return;
 		}
-		Logger.info("IDT", new StrBuilder(64).Append("Registering IRQ handler for IRQ ").Append(irq).Append(" at 0x").Append(handlerAddr, 16).toString());
+		Logger.info("IDT", new StringBuilder(64).append("Registering IRQ handler for IRQ ").append(irq).append(" at 0x").append(handlerAddr, 16).toString());
 		WriteTableEntry(irq + 32, handlerAddr);
 	}
 	
@@ -99,11 +99,11 @@ public class IDT
 	private static void WriteTableEntry(int i, int handlerAddr)
 	{
 		IDTEntry entry = (IDTEntry) MAGIC.cast2Struct(MemoryLayout.IDT_BASE + i * 8);
-		entry.offsetLow = (short) BitHelper.GetRange(handlerAddr, 0, 16);
+		entry.offsetLow = (short) BitHelper.getRange(handlerAddr, 0, 16);
 		entry.selector = GetSelector(SEGMENT_CODE, REQUESTED_PRIV_LEVEL_OS, false);
 		entry.zero = 0;
 		entry.typeAttr = (byte) 0x8E; // 10001110
-		entry.offsetHigh = (short) BitHelper.GetRange(handlerAddr, 16, 16);
+		entry.offsetHigh = (short) BitHelper.getRange(handlerAddr, 16, 16);
 	}
 	
 	/*
@@ -115,9 +115,9 @@ public class IDT
 	private static short GetSelector(int segment, int privLevel, boolean tableLDT)
 	{
 		int selector = 0;
-		selector = BitHelper.SetRange(selector, 0, 2, privLevel);
-		selector = BitHelper.SetFlag(selector, 2, tableLDT);
-		selector = BitHelper.SetRange(selector, 3, 13, segment);
+		selector = BitHelper.setRange(selector, 0, 2, privLevel);
+		selector = BitHelper.setFlag(selector, 2, tableLDT);
+		selector = BitHelper.setRange(selector, 3, 13, segment);
 		return (short) selector;
 	}
 }

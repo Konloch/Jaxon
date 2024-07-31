@@ -1,6 +1,6 @@
 package kernel.memory;
 
-import java.util.StrBuilder;
+import java.lang.StringBuilder;
 
 public class Memory
 {
@@ -69,34 +69,34 @@ public class Memory
 	
 	public static String FormatBytes(int bytes)
 	{
-		StrBuilder sb = new StrBuilder();
+		StringBuilder sb = new StringBuilder();
 		if (bytes < 1024)
 		{
-			sb.Append(bytes).Append(" B");
+			sb.append(bytes).append(" B");
 		}
 		else if (bytes < 1024 * 1024)
 		{
-			sb.Append(bytes / 1024).Append(" KB");
+			sb.append(bytes / 1024).append(" KB");
 		}
 		else if (bytes < 1024 * 1024 * 1024)
 		{
-			sb.Append(bytes / 1024 / 1024).Append(" MB");
+			sb.append(bytes / 1024 / 1024).append(" MB");
 		}
 		else if (bytes < 1024 * 1024 * 1024 * 1024)
 		{
-			sb.Append(bytes / 1024 / 1024 / 1024).Append(" GB");
+			sb.append(bytes / 1024 / 1024 / 1024).append(" GB");
 		}
 		else
 		{
-			sb.Append(bytes / 1024 / 1024 / 1024 / 1024).Append(" TB");
+			sb.append(bytes / 1024 / 1024 / 1024 / 1024).append(" TB");
 		}
 		return sb.toString();
 	}
 	
 	public static String FormatBytesToKb(int bytes)
 	{
-		StrBuilder sb = new StrBuilder();
-		sb.Append(bytes / 1024).Append(" KB");
+		StringBuilder sb = new StringBuilder();
+		sb.append(bytes / 1024).append(" KB");
 		return sb.toString();
 	}
 }

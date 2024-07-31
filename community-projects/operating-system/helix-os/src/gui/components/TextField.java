@@ -3,7 +3,7 @@ package gui.components;
 import formats.fonts.AFont;
 import gui.Widget;
 import kernel.hardware.keyboard.Key;
-import java.util.StrBuilder;
+import java.lang.StringBuilder;
 
 public class TextField extends Widget
 {
@@ -138,14 +138,14 @@ public class TextField extends Widget
 	
 	public String toString()
 	{
-		StrBuilder sb = new StrBuilder();
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < LineCount; i++)
 		{
 			for (int j = 0; j < LineLength; j++)
 			{
-				sb.Append((char) _characters[i][j]);
+				sb.append((char) _characters[i][j]);
 			}
-			sb.Append('\n');
+			sb.append('\n');
 		}
 		return sb.toString();
 	}

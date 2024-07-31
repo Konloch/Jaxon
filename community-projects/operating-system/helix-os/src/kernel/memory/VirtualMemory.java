@@ -54,7 +54,7 @@ public class VirtualMemory
 		_pageDirectory = MemoryManager.AllocateObject(MAGIC.getInstScalarSize("Object") + FOUR_MB * 2, MAGIC.getInstRelocEntries("Object"), MAGIC.clssDesc("Object"));
 		
 		int reservedSpaceStartPageDirectory = MAGIC.cast2Ref(_pageDirectory) + MAGIC.getInstScalarSize("Object");
-		_pageDirectoryAddr = BitHelper.AlignUp(reservedSpaceStartPageDirectory, 4096);
+		_pageDirectoryAddr = BitHelper.alignUp(reservedSpaceStartPageDirectory, 4096);
 		
 		if (_pageDirectory == null || _pageDirectoryAddr % 4096 != 0)
 		{
@@ -82,7 +82,7 @@ public class VirtualMemory
 		_pageTable = MemoryManager.AllocateObject(MAGIC.getInstScalarSize("Object") + FOUR_MB * 2, MAGIC.getInstRelocEntries("Object"), MAGIC.clssDesc("Object"));
 		
 		int reservedSpaceStartMemPageTable = MAGIC.cast2Ref(_pageTable) + MAGIC.getInstScalarSize("Object");
-		_pageTableAddr = BitHelper.AlignUp(reservedSpaceStartMemPageTable, 4096);
+		_pageTableAddr = BitHelper.alignUp(reservedSpaceStartMemPageTable, 4096);
 		
 		if (_pageTable == null || _pageTableAddr % 4096 != 0)
 		{

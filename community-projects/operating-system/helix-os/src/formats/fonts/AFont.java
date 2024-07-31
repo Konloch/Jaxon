@@ -29,7 +29,7 @@ public abstract class AFont
 			int b = characterBitmapLine(ch, charLine);
 			for (int lineBit = 0; lineBit < fontHeight; lineBit++)
 			{
-				int bit = BitHelper.GetBit(b, lineBit);
+				int bit = BitHelper.getBit(b, lineBit);
 				int posX = x;
 				int posY = y;
 				if (fontVertical)
@@ -60,7 +60,7 @@ public abstract class AFont
 			int b = characterBitmapLine(ch, charLine);
 			for (int lineBit = 0; lineBit < fontHeight; lineBit++)
 			{
-				int bit = BitHelper.GetBit(b, lineBit);
+				int bit = BitHelper.getBit(b, lineBit);
 				int posX = x;
 				int posY = y;
 				if (fontVertical)

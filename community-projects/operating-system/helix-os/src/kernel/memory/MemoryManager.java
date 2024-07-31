@@ -239,13 +239,13 @@ public class MemoryManager
 			// We can replace the empty object with the new object
 			RemoveFromEmptyObjectChain(emptyObj);
 			// The empty object will be overwritten
-			newObjectBottom = emptyObj.AddressBottom();
+			newObjectBottom = emptyObj.addressBottom();
 		}
 		else if (emptyObj.UnreservedScalarSize() >= newObjectTotalSize)
 		{
 			// The new object does not fit exactly into the empty object
 			// We need to split the empty object
-			newObjectBottom = emptyObj.AddressTop() - newObjectTotalSize;
+			newObjectBottom = emptyObj.addressTop() - newObjectTotalSize;
 			emptyObj.ShrinkBy(newObjectTotalSize);
 		}
 		else
@@ -266,8 +266,8 @@ public class MemoryManager
 			return null;
 		}
 		
-		int startOfObject = o.AddressBottom();
-		int endOfObject = o.AddressTop();
+		int startOfObject = o.addressBottom();
+		int endOfObject = o.addressTop();
 		
 		return FillRegionWithEmptyObject(startOfObject, endOfObject);
 	}
@@ -296,7 +296,7 @@ public class MemoryManager
 			
 			if (base < BOOT_IMAGE.memoryStart + BOOT_IMAGE.memorySize)
 			{
-				base = BitHelper.AlignUp(BOOT_IMAGE.memoryStart + BOOT_IMAGE.memorySize + 1, 4);
+				base = BitHelper.alignUp(BOOT_IMAGE.memoryStart + BOOT_IMAGE.memorySize + 1, 4);
 			}
 			
 			if (!isFree || base >= end || length <= EmptyObject.MinimumClassSize())
@@ -418,26 +418,26 @@ public class MemoryManager
 		Object eo = _emptyObjectRoot;
 		while (eo != null)
 		{
-			int prevTop = eo.AddressTop();
+			int prevTop = eo.addressTop();
 			Object next = eo._r_next;
 			while (next != null)
 			{
-				int distance = next.AddressBottom() - prevTop;
+				int distance = next.addressBottom() - prevTop;
 				if (distance > 4)
 				{
 					break;
 				}
-				prevTop = next.AddressTop();
+				prevTop = next.addressTop();
 				EmptyObject nextEO = (EmptyObject) next;
 				next = next._r_next;
-				Memory.Memset32(nextEO.AddressBottom(), 12 / 4, 0);
+				Memory.Memset32(nextEO.addressBottom(), 12 / 4, 0);
 				
 				compactedObjects++;
 			}
 			
 			if (next != null)
 			{
-				int expandBy = prevTop - eo.AddressTop();
+				int expandBy = prevTop - eo.addressTop();
 				if (expandBy > 4)
 				{
 					MAGIC.assign(eo._r_next, next);
