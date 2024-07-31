@@ -36,15 +36,14 @@ public class Integer
 		
 		int newLength = digitCount;
 		if (i < 0)
-		{
 			newLength += 1;
-		}
 		
 		int offest = BUFFER.length - digitCount;
 		byte[] chars = new byte[newLength];
 		if (i < 0)
 		{
 			chars[0] = (byte) '-';
+			
 			for (int j = 0; j < digitCount; j++)
 				chars[j + 1] = BUFFER[j + offest];
 		}
@@ -62,4 +61,5 @@ public class Integer
 	{
 		return toString(i, 10);
 	}
+	
 }

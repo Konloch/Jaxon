@@ -1,7 +1,7 @@
 package kernel.hardware.mouse;
 
 import java.util.IDebug;
-import java.lang.StringBuilder;
+import java.util.StrBuilder;
 
 public class MouseEvent implements IDebug
 {
@@ -44,9 +44,9 @@ public class MouseEvent implements IDebug
 	}
 	
 	@Override
-	public String debug()
+	public String Debug()
 	{
-		return new StringBuilder(64).append("MouseEvent(").append("Id=").append(Id).append(", ").append("X_Delta=").append(X_Delta).append(", ").append("Y_Delta=").append(Y_Delta).append(", ").append("ButtonState=").append(ButtonState).append(")").toString();
+		return new StrBuilder(64).Append("MouseEvent(").Append("Id=").Append(Id).Append(", ").Append("X_Delta=").Append(X_Delta).Append(", ").Append("Y_Delta=").Append(Y_Delta).Append(", ").Append("ButtonState=").Append(ButtonState).Append(")").toString();
 		
 	}
 }

@@ -46,13 +46,16 @@ public class Object
 	public Object ReadRelocEntry(int relocIndex)
 	{
 		if (relocIndex > RelocEntriesCount() || relocIndex < 0)
+		{
 			Kernel.panic("Requested Index out of range".append(Integer.toString(relocIndex).append(" ").append(Integer.toString(_r_relocEntries))));
-		
+		}
 		int baseAddr = MAGIC.cast2Ref(this);
 		baseAddr -= MAGIC.ptrSize;
 		int addr = MAGIC.rMem32(baseAddr - relocIndex * MAGIC.ptrSize);
 		if (addr == 0)
+		{
 			return null;
+		}
 		
 		return MAGIC.cast2Obj(addr);
 	}

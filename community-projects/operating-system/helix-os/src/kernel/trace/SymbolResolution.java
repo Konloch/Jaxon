@@ -10,7 +10,7 @@ public class SymbolResolution
 	private static SClassDesc bootloaderClassDesc;
 	private static SMthdBlock bootloaderMethod;
 	
-	public static void initialize()
+	public static void Initialize()
 	{
 		bootloaderClassDesc = new SClassDesc();
 		bootloaderClassDesc.name = "Bootloader";
@@ -20,61 +20,61 @@ public class SymbolResolution
 		bootloaderMethod.nextMthd = null;
 	}
 	
-	public static SMthdBlock resolve(int addr)
+	public static SMthdBlock Resolve(int addr)
 	{
 		if (MemoryLayout.BOOTLOADER_START <= addr && addr <= MemoryLayout.BOOTLOADER_END)
+		{
 			return bootloaderMethod;
-		
-		return resolveInPackage(addr, SPackage.root);
+		}
+		return ResolveInPackage(addr, SPackage.root);
 	}
 	
-	private static SMthdBlock resolveInPackage(int addr, SPackage pkg)
+	private static SMthdBlock ResolveInPackage(int addr, SPackage pkg)
 	{
 		while (pkg != null)
 		{
-			SMthdBlock found = resolveInPackage(addr, pkg.subPacks);
+			SMthdBlock found = ResolveInPackage(addr, pkg.subPacks);
 			if (found != null)
+			{
 				return found;
+			}
 			
-			found = resolveInClass(addr, pkg.units);
-			
+			found = ResolveInClass(addr, pkg.units);
 			if (found != null)
+			{
 				return found;
-			
+			}
 			pkg = pkg.nextPack;
 		}
-		
 		return null;
 	}
 	
-	private static SMthdBlock resolveInClass(int addr, SClassDesc cls)
+	private static SMthdBlock ResolveInClass(int addr, SClassDesc cls)
 	{
 		while (cls != null)
 		{
-			SMthdBlock found = resolveInMethodBlock(addr, cls.mthds);
-			
+			SMthdBlock found = ResolveInMethodBlock(addr, cls.mthds);
 			if (found != null)
+			{
 				return found;
-			
+			}
 			cls = cls.nextUnit;
 		}
-		
 		return null;
 	}
 	
-	private static SMthdBlock resolveInMethodBlock(int addr, SMthdBlock mths)
+	private static SMthdBlock ResolveInMethodBlock(int addr, SMthdBlock mths)
 	{
 		while (mths != null)
 		{
 			int start = MAGIC.cast2Ref(mths);
 			int end = start + mths._r_scalarSize;
-			
 			if (start <= addr && addr <= end)
+			{
 				return mths;
-			
+			}
 			mths = mths.nextMthd;
 		}
-		
 		return null;
 	}
 }

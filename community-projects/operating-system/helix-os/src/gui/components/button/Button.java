@@ -23,6 +23,7 @@ public class Button extends Widget
 		EventListener = listener;
 		_text = text;
 		_name = name;
+		
 	}
 	
 	@Override

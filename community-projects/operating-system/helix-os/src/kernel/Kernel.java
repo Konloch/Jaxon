@@ -33,28 +33,28 @@ public class Kernel
 	{
 		Logger.logSerial("Initializing Kernel..\n");
 		
-		MemoryManager.initialize();
+		MemoryManager.Initialize();
 		Logger.logSerial("Initialized Memory Manager\n");
 		
 		Logger.initialize(Logger.TRACE, 100, false);
 		Logger.info("BOOT", "Initialized Logger");
 		
-		SymbolResolution.initialize();
+		SymbolResolution.Initialize();
 		Logger.info("BOOT", "Initialized Symbol Resolution");
 		
-		IDT.initialize();
+		IDT.Initialize();
 		Logger.info("BOOT", "Initialized Interrupt Descriptor Table");
 		
 		MAGIC.doStaticInit();
 		Logger.info("BOOT", "Initialized Static Initializers");
 		
-		GarbageCollector.initialize();
+		GarbageCollector.Initialize();
 		Logger.info("BOOT", "Initialized Garbage Collector");
 		
-		MemoryManager.disableGarbageCollection();
+		MemoryManager.DisableGarbageCollection();
 		Logger.info("BOOT", "Disabled Garbage Collection");
 		
-		VirtualMemory.enableVirtualMemory();
+		VirtualMemory.EnableVirtualMemory();
 		Logger.info("BOOT", "Enabled Virtual Memory");
 		
 		PrintAllPciDevices();
@@ -65,7 +65,7 @@ public class Kernel
 		PIT.SetRate(1000);
 		Logger.info("BOOT", "Set PIT Rate to 1000Hz");
 		
-		KeyboardController.initialize();
+		KeyboardController.Initialize();
 		Logger.info("BOOT", "Initialized PS2 Keyboard Controller");
 		
 		KeyboardController.SetLayout(new QWERTZ());
@@ -74,7 +74,7 @@ public class Kernel
 		MouseController.Initialize();
 		Logger.info("BOOT", "Initialized PS2 Mouse Controller");
 		
-		IDT.enable();
+		IDT.Enable();
 		Logger.info("BOOT", "Enabled Interrupts");
 		
 		Scheduler.initialize();
@@ -118,7 +118,7 @@ public class Kernel
 			PciDevice device = reader.Next();
 			if (device == null)
 				continue;
-			Logger.info("BOOT", "Found Device ".append(device.debug()));
+			Logger.info("BOOT", "Found Device ".append(device.Debug()));
 		}
 	}
 	
@@ -127,7 +127,7 @@ public class Kernel
 		for (int i = 0; i < modes.Size(); i++)
 		{
 			VESAMode mode = modes.Get(i);
-			Logger.info("BOOT", "Mode ".append(i).append(": ").append(mode.debug()));
+			Logger.info("BOOT", "Mode ".append(i).append(": ").append(mode.Debug()));
 		}
 	}
 	

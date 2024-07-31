@@ -13,7 +13,7 @@ public class Font7x8 extends AFont
 	public static final int FONT_CHARACHTERS = FONT_CHARACHTERS_LAST - FONT_CHARACHTERS_START + 1;
 	public static final int BYTES_PER_CHAR = 7;
 	
-	public static final Font7x8 Instance = new Font7x8();
+	public static final Font7x8 INSTANCE = new Font7x8();
 	
 	@Override
 	public int width()

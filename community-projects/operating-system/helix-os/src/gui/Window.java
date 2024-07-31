@@ -69,7 +69,7 @@ public abstract class Window extends Task implements IButtonListener
 		
 		if (_withFrame)
 		{
-			_btnClose = new BitmapButton(BTN_WINDOW_CLOSE, width - titleBarSize, 2, titleBarSize - 4, CloseIcon.Load(), this);
+			_btnClose = new BitmapButton(BTN_WINDOW_CLOSE, width - titleBarSize, 2, titleBarSize - 4, CloseIcon.load(), this);
 			addWidget(_btnClose);
 		}
 		
@@ -77,10 +77,10 @@ public abstract class Window extends Task implements IButtonListener
 		contentRelativeY = frameSize + titleBarSize;
 		contentWidth = this.width - frameSize * 2;
 		contentHeight = this.height - frameSize * 2 - titleBarSize;
-		AFont font = Font9x16.Instance;
+		AFont font = Font9x16.INSTANCE;
 		int shiftRight = 5;
 		this.title = new TextField(2, (titleBarSize - font.height()) / 2, this.width - shiftRight, font.height(), 0, 0, 0, COL_TITLE, COL_TITLEBAR, false, font);
-		this.title.write(title);
+		this.title.Write(title);
 	}
 	
 	@Override
@@ -91,10 +91,10 @@ public abstract class Window extends Task implements IButtonListener
 	
 	public boolean onButtonClicked(ButtonClickedEventArgs button)
 	{
-		Logger.info("Window", "Button event: ".append(button.debug()));
+		Logger.info("Window", "Button event: ".append(button.Debug()));
 		if (button.buttonName == BTN_WINDOW_CLOSE)
 		{
-			Kernel.WindowManager.RemoveWindow(this);
+			Kernel.WindowManager.removeWindow(this);
 			return true;
 		}
 		
@@ -211,9 +211,9 @@ public abstract class Window extends Task implements IButtonListener
 	
 	protected boolean handleWidgetClicks(int relX, int relY)
 	{
-		for (int i = 0; i < _widgets.size(); i++)
+		for (int i = 0; i < _widgets.Size(); i++)
 		{
-			Widget widget = (Widget) _widgets.get(i);
+			Widget widget = (Widget) _widgets.Get(i);
 			if (widget.contains(relX, relY))
 			{
 				Logger.info("WM", "Clicked at ".append(widget.name));
@@ -231,19 +231,19 @@ public abstract class Window extends Task implements IButtonListener
 	
 	protected void addWidget(Widget widget)
 	{
-		_widgets.add(widget);
+		_widgets.Add(widget);
 	}
 	
 	protected void removeWidget(Widget widget)
 	{
-		_widgets.remove(widget);
+		_widgets.Remove(widget);
 	}
 	
 	protected void drawWidgets()
 	{
-		for (int i = 0; i < _widgets.size(); i++)
+		for (int i = 0; i < _widgets.Size(); i++)
 		{
-			Widget widget = (Widget) _widgets.get(i);
+			Widget widget = (Widget) _widgets.Get(i);
 			widget.draw();
 			renderTarget.Blit(widget.x, widget.y, widget.renderTarget, false);
 		}

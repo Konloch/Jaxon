@@ -27,7 +27,7 @@ public class VESAGraphics extends GraphicsContext
 		needsRedraw = true;
 		curMode = mode;
 		
-		Logger.info("VESA", "SetMode to ".append(curMode.debug()));
+		Logger.info("VESA", "SetMode to ".append(curMode.Debug()));
 	}
 	
 	@Override
@@ -53,9 +53,9 @@ public class VESAGraphics extends GraphicsContext
 	public int Rgb(int r, int g, int b)
 	{
 		int red, green, blue;
-		red = Math.Clamp(r, 0, 255);
-		green = Math.Clamp(g, 0, 255);
-		blue = Math.Clamp(b, 0, 255);
+		red = Math.clamp(r, 0, 255);
+		green = Math.clamp(g, 0, 255);
+		blue = Math.clamp(b, 0, 255);
 		return (blue << 0) | (green << 8) | (red << 16) | (255 << 24);
 	}
 	
@@ -63,10 +63,10 @@ public class VESAGraphics extends GraphicsContext
 	public int Argb(int a, int r, int g, int b)
 	{
 		int red, green, blue, alpha;
-		red = Math.Clamp(r, 0, 255);
-		green = Math.Clamp(g, 0, 255);
-		blue = Math.Clamp(b, 0, 255);
-		alpha = Math.Clamp(a, 0, 255);
+		red = Math.clamp(r, 0, 255);
+		green = Math.clamp(g, 0, 255);
+		blue = Math.clamp(b, 0, 255);
+		alpha = Math.clamp(a, 0, 255);
 		return (blue << 0) | (green << 8) | (red << 16) | (alpha << 24);
 	}
 	
@@ -101,7 +101,7 @@ public class VESAGraphics extends GraphicsContext
 			int from = MAGIC.addr(buffer.PixelData[0]);
 			int to = curMode.LfbAddress;
 			int len = buffer.PixelData.length;
-			Memory.memcopy32(from, to, len);
+			Memory.Memcopy32(from, to, len);
 		}
 		needsRedraw = false;
 	}

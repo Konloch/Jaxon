@@ -19,7 +19,6 @@ public class VecWindow
 	{
 		if (initialCapacity < 0)
 			Kernel.panic("Illegal Capacity");
-		
 		this.elements = new Window[initialCapacity];
 		this.size = 0;
 	}
@@ -46,9 +45,10 @@ public class VecWindow
 	{
 		if (index < 0 || index >= size)
 			Kernel.panic("Index out of bounds for vector removal");
-		
 		for (int i = index; i < size - 1; i++)
+		{
 			elements[i] = elements[i + 1];
+		}
 		size--;
 	}
 	
@@ -56,7 +56,6 @@ public class VecWindow
 	{
 		if (index < 0 || index >= size)
 			Kernel.panic("Index out of bounds for vector access");
-		
 		return elements[index];
 	}
 	
@@ -71,41 +70,53 @@ public class VecWindow
 		{
 			int newCapacity = elements.length * 2;
 			if (newCapacity < minCapacity)
+			{
 				newCapacity = minCapacity;
+			}
 			
 			Window[] newElements = new Window[newCapacity];
 			for (int i = 0; i < size; i++)
+			{
 				newElements[i] = elements[i];
+			}
 			elements = newElements;
 		}
 	}
 	
-	public Window maxSelectable()
+	public Window MaxSelectable()
 	{
 		for (int i = size - 1; i >= 0; i--)
 		{
 			if (elements[i].isSelectable())
+			{
 				return elements[i];
+			}
 		}
 		
 		return null;
 	}
 	
-	public Window nextSelectable(Window current)
+	public Window NextSelectable(Window current)
 	{
 		if (current == null)
-			return null;
-		
-		for (int i = 0; i < size; i++)
 		{
-			if (elements[i] == current)
+			return null;
+		}
+		else
+		{
+			for (int i = 0; i < size; i++)
 			{
-				for (int j = 1; j < size; j++)
+				if (elements[i] == current)
 				{
-					int next = (i + j) % (size);
-					Window widget = elements[next];
-					if (widget.isSelectable())
-						return elements[next];
+					for (int j = 1; j < size; j++)
+					{
+						int next = (i + j) % (size);
+						Window widget = elements[next];
+						if (widget.isSelectable())
+						{
+							return elements[next];
+						}
+					}
 				}
 			}
 		}

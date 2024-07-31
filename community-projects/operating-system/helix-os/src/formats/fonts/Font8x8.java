@@ -13,7 +13,7 @@ public class Font8x8 extends AFont
 	public static final int FONT_CHARACHTERS = 128;
 	public static final int BYTES_PER_CHAR = 8;
 	
-	public static final Font8x8 Instance = new Font8x8();
+	public static final Font8x8 INSTANCE = new Font8x8();
 	
 	@Override
 	public int width()
@@ -50,7 +50,7 @@ public class Font8x8 extends AFont
 	{
 		if (ch < FONT_CHARACHTERS_START || ch > FONT_CHARACHTERS_LAST)
 			return 0;
-
+		
 		if (offset >= FONT_HEIGHT)
 			return 0;
 		

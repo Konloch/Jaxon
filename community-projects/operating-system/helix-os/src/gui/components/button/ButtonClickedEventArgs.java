@@ -12,7 +12,7 @@ public class ButtonClickedEventArgs implements IDebug
 	}
 	
 	@Override
-	public String debug()
+	public String Debug()
 	{
 		return "ButtonClickedEventArgs: ".append(buttonName);
 	}

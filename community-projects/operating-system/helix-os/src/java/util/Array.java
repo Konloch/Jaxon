@@ -2,16 +2,18 @@ package java.util;
 
 public class Array
 {
-	public static byte[] copyOf(byte[] original, int newLength)
+	
+	public static byte[] CopyOf(byte[] original, int newLength)
 	{
 		byte[] copy = new byte[newLength];
-		for (int i = 0; i < Math.Min(original.length, newLength); i++)
+		for (int i = 0; i < Math.min(original.length, newLength); i++)
+		{
 			copy[i] = original[i];
-		
+		}
 		return copy;
 	}
 	
-	public static void reverse(char[] a)
+	public static void Reverse(char[] a)
 	{
 		int i = a.length - 1;
 		int j = 0;
@@ -25,7 +27,7 @@ public class Array
 		}
 	}
 	
-	public static void reverseByteBuffer(int buffer, int byte_offset, int len)
+	public static void ReverseByteBuffer(int buffer, int byte_offset, int len)
 	{
 		int i = len - 1;
 		int j = 0;
@@ -39,7 +41,7 @@ public class Array
 		}
 	}
 	
-	public static void reverseByteBuffer(byte[] buffer)
+	public static void ReverseByteBuffer(byte[] buffer)
 	{
 		int i = buffer.length - 1;
 		int j = 0;

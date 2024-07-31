@@ -10,8 +10,9 @@ public class EmptyObject extends Object
 	public EmptyObject Next()
 	{
 		if (_r_next == null)
+		{
 			return null;
-
+		}
 		return (EmptyObject) _r_next;
 	}
 	
@@ -49,17 +50,19 @@ public class EmptyObject extends Object
 	public void ShrinkBy(int shrinkBy)
 	{
 		MAGIC.assign(_r_scalarSize, _r_scalarSize - shrinkBy);
-		
 		if (_r_scalarSize < 4)
+		{
 			Kernel.panic("EmptyObject::ShrinkBy: _r_scalarSize < 4");
+		}
 	}
 	
 	@SJC.Inline
 	public void ExpandBy(int expandBy)
 	{
 		if (expandBy < 0)
+		{
 			Kernel.panic("EmptyObject::ExpandBy: expandBy < 0");
-		
+		}
 		MAGIC.assign(_r_scalarSize, _r_scalarSize + expandBy);
 	}
 	

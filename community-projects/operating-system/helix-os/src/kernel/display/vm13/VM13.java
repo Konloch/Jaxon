@@ -28,12 +28,12 @@ public class VM13
 	 */
 	public static void Swap()
 	{
-		Memory.memcopy(MAGIC.addr(_backBuffer[0]), MAGIC.addr(VidMem.Color[0]), WIDTH * HEIGHT);
+		Memory.Memcopy(MAGIC.addr(_backBuffer[0]), MAGIC.addr(VidMem.Color[0]), WIDTH * HEIGHT);
 	}
 	
 	public static void ClearBackBuffer()
 	{
-		Memory.memset(MAGIC.addr(_backBuffer[0]), SIZE, (byte) 0);
+		Memory.Memset(MAGIC.addr(_backBuffer[0]), SIZE, (byte) 0);
 	}
 	
 	@SJC.Inline
@@ -90,13 +90,13 @@ public class VM13
 	 */
 	public static byte Rgb(int r, int g, int b)
 	{
-		int red = Math.Compress(r, 0, 255, 0, 7);
-		int green = Math.Compress(g, 0, 255, 0, 7);
-		int blue = Math.Compress(b, 0, 255, 0, 3);
+		int red = Math.compress(r, 0, 255, 0, 7);
+		int green = Math.compress(g, 0, 255, 0, 7);
+		int blue = Math.compress(b, 0, 255, 0, 3);
 		int color = 0;
-		color = BitHelper.setRange(color, 0, 2, blue);
-		color = BitHelper.setRange(color, 2, 3, green);
-		color = BitHelper.setRange(color, 5, 3, red);
+		color = BitHelper.SetRange(color, 0, 2, blue);
+		color = BitHelper.SetRange(color, 2, 3, green);
+		color = BitHelper.SetRange(color, 5, 3, red);
 		return (byte) color;
 	}
 	
@@ -111,9 +111,9 @@ public class VM13
 		int green = (int) (7.0 * g);
 		int blue = (int) (3.0 * b);
 		int color = 0;
-		color = BitHelper.setRange(color, 0, 2, blue);
-		color = BitHelper.setRange(color, 2, 3, green);
-		color = BitHelper.setRange(color, 5, 3, red);
+		color = BitHelper.SetRange(color, 0, 2, blue);
+		color = BitHelper.SetRange(color, 2, 3, green);
+		color = BitHelper.SetRange(color, 5, 3, red);
 		return (byte) color;
 	}
 	
@@ -127,12 +127,12 @@ public class VM13
 	public static byte DRgb(int r, int g, int b)
 	{
 		int color = 0;
-		int red = Math.Clamp(r, 0, 7);
-		int green = Math.Clamp(g, 0, 7);
-		int blue = Math.Clamp(b, 0, 3);
-		color = BitHelper.setRange(color, 0, 2, blue);
-		color = BitHelper.setRange(color, 2, 3, green);
-		color = BitHelper.setRange(color, 5, 3, red);
+		int red = Math.clamp(r, 0, 7);
+		int green = Math.clamp(g, 0, 7);
+		int blue = Math.clamp(b, 0, 3);
+		color = BitHelper.SetRange(color, 0, 2, blue);
+		color = BitHelper.SetRange(color, 2, 3, green);
+		color = BitHelper.SetRange(color, 5, 3, red);
 		return (byte) color;
 	}
 }

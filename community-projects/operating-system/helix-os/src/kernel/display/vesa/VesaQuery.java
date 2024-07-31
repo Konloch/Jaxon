@@ -4,7 +4,7 @@ import kernel.MemoryLayout;
 import kernel.bios.BIOS;
 import kernel.display.vesa.layout.VESAControllerInfoStruct;
 import kernel.display.vesa.layout.VESAModeInfoStruct;
-import java.lang.StringBuilder;
+import java.util.StrBuilder;
 import java.util.vector.VecInt;
 import java.util.vector.VecVesaMode;
 
@@ -89,11 +89,11 @@ public class VesaQuery
 	
 	public static String ModesToStr(VecVesaMode modes)
 	{
-		StringBuilder sb = new StringBuilder();
+		StrBuilder sb = new StrBuilder();
 		for (int i = 0; i < modes.Size(); i++)
 		{
 			VESAMode mode = modes.Get(i);
-			sb.appendLine(mode);
+			sb.AppendLine(mode);
 		}
 		return sb.toString();
 	}

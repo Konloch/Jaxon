@@ -9,47 +9,47 @@ public @interface SJC
 	
 	int count() default 0;
 	
-	@interface Ref{}
+	@interface Ref {}
 	
-	@interface Flash{}
+	@interface Flash {}
 	
-	@interface RefToFlash{}
+	@interface RefToFlash {}
 	
-	@interface Interrupt{}
+	@interface Interrupt {}
 	
-	@interface Inline{}
+	@interface Inline {}
 	
-	@interface NoInline{}
+	@interface NoInline {}
 	
-	@interface Head{}
+	@interface Head {}
 	
-	@interface Debug{}
+	@interface Debug {}
 	
-	@interface Profile{}
+	@interface Profile {}
 	
-	@interface NoProfile{}
+	@interface NoProfile {}
 	
-	@interface StackExtreme{}
+	@interface StackExtreme {}
 	
-	@interface NoStackExtreme{}
+	@interface NoStackExtreme {}
 	
-	@interface PrintCode{}
+	@interface PrintCode {}
 	
-	@interface NoOptimization{}
+	@interface NoOptimization {}
 	
-	@interface GenCode{}
+	@interface GenCode {}
 	
-	@interface GenDesc{}
+	@interface GenDesc {}
 	
-	@interface SourceLines{}
+	@interface SourceLines {}
 	
-	@interface ExplicitConversion{}
+	@interface ExplicitConversion {}
 	
-	@interface WinDLL{}
+	@interface WinDLL {}
 	
-	@interface IgnoreUnit{}
+	@interface IgnoreUnit {}
 	
-	@interface InlineArrayVar{}
+	@interface InlineArrayVar {}
 	
-	@interface InlineArrayCount{}
+	@interface InlineArrayCount {}
 }

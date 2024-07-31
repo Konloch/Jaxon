@@ -52,24 +52,24 @@ public class TM3Color
 	@SJC.Inline
 	public static byte SetFg(byte color, byte fg)
 	{
-		return (byte) BitHelper.setRange(color, 0, 4, fg);
+		return (byte) BitHelper.SetRange(color, 0, 4, fg);
 	}
 	
 	@SJC.Inline
 	public static byte SetBg(byte color, byte bg)
 	{
-		return (byte) BitHelper.setRange(color, 4, 4, bg);
+		return (byte) BitHelper.SetRange(color, 4, 4, bg);
 	}
 	
 	@SJC.Inline
 	public static byte SetFgBright(byte color, boolean isBright)
 	{
-		return (byte) BitHelper.setFlag(color, 3, isBright);
+		return (byte) BitHelper.SetFlag(color, 3, isBright);
 	}
 	
 	@SJC.Inline
 	public static byte SetBgBright(byte color, boolean isBright)
 	{
-		return (byte) BitHelper.setFlag(color, 7, isBright);
+		return (byte) BitHelper.SetFlag(color, 7, isBright);
 	}
 }

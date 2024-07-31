@@ -13,6 +13,7 @@ import kernel.Kernel;
 
 public class FlowField extends Window
 {
+	
 	FlowFieldView _flowFieldView;
 	FlowFieldControls _controls;
 	
@@ -36,7 +37,7 @@ public class FlowField extends Window
 		int controlsStartX = flowFieldWidth;
 		int fg = Kernel.Display.Rgb(255, 255, 255);
 		int bg = Kernel.Display.Rgb(0, 0, 0);
-		Font9x16 font = Font9x16.Instance;
+		Font9x16 font = Font9x16.INSTANCE;
 		int fontHeight = font.height();
 		
 		int buttonLeftX = controlsStartX + 10;
@@ -47,15 +48,15 @@ public class FlowField extends Window
 		
 		_txtNoiseScale = new TextField(textFieldStartX, 30, 200, fontHeight, 0, 1, 0, fg, bg, false, font);
 		
-		addWidget(new BitmapButton(BTN_DEC_SCALE, buttonLeftX, _txtNoiseScale.y - 3, buttonsSize, ArrowLeftIcon.Load(), this));
+		addWidget(new BitmapButton(BTN_DEC_SCALE, buttonLeftX, _txtNoiseScale.y - 3, buttonsSize, ArrowLeftIcon.load(), this));
 		
-		addWidget(new BitmapButton(BTN_INC_SCALE, buttonRightX, _txtNoiseScale.y - 3, buttonsSize, ArrowRightIcon.Load(), this));
+		addWidget(new BitmapButton(BTN_INC_SCALE, buttonRightX, _txtNoiseScale.y - 3, buttonsSize, ArrowRightIcon.load(), this));
 		
 		_txtParticlesCount = new TextField(textFieldStartX, 30 * 2, 200, fontHeight, 0, 1, 0, fg, bg, false, font);
 		
-		addWidget(new BitmapButton(BTN_DEC_PARTICLES, buttonLeftX, _txtNoiseScale.y - 3 + 30, buttonsSize, ArrowLeftIcon.Load(), this));
+		addWidget(new BitmapButton(BTN_DEC_PARTICLES, buttonLeftX, _txtNoiseScale.y - 3 + 30, buttonsSize, ArrowLeftIcon.load(), this));
 		
-		addWidget(new BitmapButton(BTN_INC_PARTICLES, buttonRightX, _txtNoiseScale.y - 3 + 30, buttonsSize, ArrowRightIcon.Load(), this));
+		addWidget(new BitmapButton(BTN_INC_PARTICLES, buttonRightX, _txtNoiseScale.y - 3 + 30, buttonsSize, ArrowRightIcon.load(), this));
 	}
 	
 	@Override
@@ -66,13 +67,13 @@ public class FlowField extends Window
 		_flowFieldView.draw();
 		renderTarget.Blit(contentRelativeX, contentRelativeY, _flowFieldView.renderTarget, false);
 		
-		_txtNoiseScale.clearText();
-		_txtNoiseScale.write("Noise Scale: ".append((int) _controls.noiseScale));
+		_txtNoiseScale.ClearText();
+		_txtNoiseScale.Write("Noise Scale: ".append((int) _controls.noiseScale));
 		_txtNoiseScale.draw();
 		renderTarget.Blit(_txtNoiseScale.x, _txtNoiseScale.y, _txtNoiseScale.renderTarget, false);
 		
-		_txtParticlesCount.clearText();
-		_txtParticlesCount.write("Particles: ".append(_controls.particleAmount));
+		_txtParticlesCount.ClearText();
+		_txtParticlesCount.Write("Particles: ".append(_controls.particleAmount));
 		_txtParticlesCount.draw();
 		renderTarget.Blit(_txtParticlesCount.x, _txtParticlesCount.y, _txtParticlesCount.renderTarget, false);
 	}
@@ -80,7 +81,7 @@ public class FlowField extends Window
 	@Override
 	public void update()
 	{
-		_flowFieldView.update();
+		_flowFieldView.Update();
 		_needsRedraw = true;
 	}
 	

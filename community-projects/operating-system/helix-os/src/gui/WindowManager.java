@@ -19,7 +19,7 @@ import java.util.vector.VecWindow;
 
 public class WindowManager extends Task
 {
-	static public int InfoAvgRenderTimeMs = 0;
+	static public int infoAvgRenderTimeMs = 0;
 	private int _drawTicksAvgN = 50;
 	private int _drawTicksAvgCycle = 0;
 	private int _drawTicksAvgSum = 0;
@@ -38,7 +38,6 @@ public class WindowManager extends Task
 	private boolean _leftButtonAlreadyDown = false;
 	private boolean _is_dragging = false;
 	
-	@SuppressWarnings("unused")
 	private boolean _ctrlDown = false;
 	
 	private Desktop _desktop;
@@ -48,8 +47,8 @@ public class WindowManager extends Task
 		super("_win_window_manager");
 		_widgets = new VecWindow();
 		this._ctx = ctx;
-		_cursorModern = CursorModern.Load();
-		_cursorHand = CursorHand.Load();
+		_cursorModern = CursorModern.load();
+		_cursorHand = CursorHand.load();
 		_cursorCurrent = _cursorModern;
 		_lastMouseX = ctx.Width() / 2;
 		_lastMouseY = ctx.Height() / 2;
@@ -57,77 +56,70 @@ public class WindowManager extends Task
 		_desktop.draw();
 	}
 	
-	public void AddWindow(Window window)
+	public void addWindow(Window window)
 	{
 		_widgets.add(window);
 		Scheduler.addTask(window);
 		
 		if (_selectedWindow == null && window.isSelectable())
-		{
-			SetSelectedTo(window);
-		}
+			setSelectedTo(window);
 	}
 	
-	public void RemoveWindow(Window window)
+	public void removeWindow(Window window)
 	{
 		_widgets.remove(window);
 		Scheduler.removeTask(window);
 	}
 	
-	public void StaticDisplayFor(int ms)
+	public void staticDisplayFor(int ms)
 	{
 		if (ms == 0)
-		{
 			return;
-		}
-		DrawWindows();
+		
+		drawWindows();
 		_ctx.Swap();
-		Timer.Sleep(ms);
+		Timer.sleep(ms);
 		_ctx.ClearScreen();
 	}
 	
 	@Override
 	public void run()
 	{
-		DistributeKeyEvents();
-		DistributeMouseEvents();
-		int start = Timer.Ticks();
+		distributeKeyEvents();
+		distributeMouseEvents();
+		int start = Timer.ticks();
 		
-		if (!IsUpdateTime())
-		{
+		if (!isUpdateTime())
 			return;
-		}
 		
-		_lastUpdate = Timer.Ticks();
+		_lastUpdate = Timer.ticks();
 		
-		DrawWindows();
-		DrawCursor();
+		drawWindows();
+		drawCursor();
 		_ctx.Swap();
 		
-		int end = Timer.Ticks();
-		int renderTime = Timer.TicksToMs(end - start);
+		int end = Timer.ticks();
+		int renderTime = Timer.ticksToMs(end - start);
 		_drawTicksAvgSum += renderTime;
 		if (_drawTicksAvgCycle >= _drawTicksAvgN)
 		{
-			InfoAvgRenderTimeMs = _drawTicksAvgSum / _drawTicksAvgN;
+			infoAvgRenderTimeMs = _drawTicksAvgSum / _drawTicksAvgN;
 			_drawTicksAvgSum = 0;
 			_drawTicksAvgCycle = 0;
 		}
 		_drawTicksAvgCycle++;
 	}
 	
-	private boolean IsUpdateTime()
+	private boolean isUpdateTime()
 	{
-		int now = Timer.Ticks();
-		return Timer.TicksToMs(now - _lastUpdate) >= 1000 / 60;
+		int now = Timer.ticks();
+		return Timer.ticksToMs(now - _lastUpdate) >= 1000 / 60;
 	}
 	
-	private void DrawWindows()
+	private void drawWindows()
 	{
 		if (_ctx == null)
-		{
 			return;
-		}
 		
 		_ctx.ClearScreen();
 		_ctx.Bitmap(0, 0, _desktop.renderTarget, false);
@@ -135,62 +127,54 @@ public class WindowManager extends Task
 		{
 			Window window = _widgets.get(i);
 			if (window == null)
-			{
 				continue;
-			}
 			
 			// redraw window content only if needed
 			if (window.needsRedraw())
-			{
 				window.draw();
-			}
+			
 			// but always blit the window
 			_ctx.Bitmap(window.x, window.y, window.renderTarget, false);
 		}
 	}
 	
-	private void DrawCursor()
+	private void drawCursor()
 	{
 		if (_ctx == null)
-		{
 			return;
-		}
 		
 		if (!_ctx.Contains(_lastMouseX, _lastMouseY))
 			return;
+		
 		if (!_ctx.Contains(_lastMouseX + _cursorCurrent.Width, _lastMouseY + _cursorCurrent.Height))
 			return;
 		
 		_ctx.Bitmap(_lastMouseX, _lastMouseY, _cursorCurrent, true);
 	}
 	
-	private void DistributeKeyEvents()
+	private void distributeKeyEvents()
 	{
 		if (_selectedWindow == null)
-		{
 			return;
-		}
 		
 		while (KeyboardController.HasNewEvent())
 		{
 			KeyEvent keyEvent = KeyboardController.ReadEvent();
 			if (keyEvent != null)
 			{
-				Logger.trace("WIN", "Handling ".append(keyEvent.debug()));
+				Logger.trace("WIN", "Handling ".append(keyEvent.Debug()));
 				if (keyEvent.IsDown)
 				{
-					if (ConsumedInternalOnKeyPressed(keyEvent.Key))
-					{
+					if (consumedInternalOnKeyPressed(keyEvent.Key))
 						continue;
-					}
+					
 					_selectedWindow.onKeyPressed(keyEvent.Key);
 				}
 				else
 				{
-					if (ConsumedInternalOnKeyReleased(keyEvent.Key))
-					{
+					if (consumedInternalOnKeyReleased(keyEvent.Key))
 						continue;
-					}
+					
 					_selectedWindow.onKeyReleased(keyEvent.Key);
 				}
 			}
@@ -199,32 +183,28 @@ public class WindowManager extends Task
 	
 	private MouseEvent _mouseEvent = new MouseEvent();
 	
-	public void DistributeMouseEvents()
+	public void distributeMouseEvents()
 	{
 		if (MouseController.ReadEvent(_mouseEvent))
-		{
-			ProcessMouseEvent(_mouseEvent);
-		}
+			processMouseEvent(_mouseEvent);
 	}
 	
-	private void ProcessMouseEvent(MouseEvent event)
+	private void processMouseEvent(MouseEvent event)
 	{
 		if (event.X_Delta != 0 || event.Y_Delta != 0)
 		{
-			SetDirtyAt(_lastMouseX, _lastMouseY);
-			SetDirtyAt(_lastMouseX + _cursorCurrent.Width / 2, _lastMouseY + _cursorCurrent.Height / 2);
-			SetDirtyAt(_lastMouseX + _cursorCurrent.Width, _drawTicksAvgCycle + _cursorCurrent.Height);
+			setDirtyAt(_lastMouseX, _lastMouseY);
+			setDirtyAt(_lastMouseX + _cursorCurrent.Width / 2, _lastMouseY + _cursorCurrent.Height / 2);
+			setDirtyAt(_lastMouseX + _cursorCurrent.Width, _drawTicksAvgCycle + _cursorCurrent.Height);
 			
 			_lastMouseX += event.X_Delta;
 			_lastMouseY -= event.Y_Delta;
 			
-			_lastMouseX = Math.Clamp(_lastMouseX, 0, _ctx.Width());
-			_lastMouseY = Math.Clamp(_lastMouseY, 0, _ctx.Height());
+			_lastMouseX = Math.clamp(_lastMouseX, 0, _ctx.Width());
+			_lastMouseY = Math.clamp(_lastMouseY, 0, _ctx.Height());
 			
 			if (_is_dragging && _selectedWindow != null && _selectedWindow.isDraggable())
-			{
 				_selectedWindow.moveBy(event.X_Delta, -event.Y_Delta);
-			}
 		}
 		
 		if (event.LeftButtonPressed())
@@ -232,83 +212,74 @@ public class WindowManager extends Task
 			if (_leftButtonAlreadyDown)
 			{
 				if (!_is_dragging)
-				{
-					StartDrag();
-				}
+					startDrag();
 				
 			}
 			else
 			{
 				Logger.trace("WIN", "Mouse Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
-				SetSelectedAt(_lastMouseX, _lastMouseY);
+				setSelectedAt(_lastMouseX, _lastMouseY);
 				boolean consumedBySelected = false;
 				if (_selectedWindow != null)
 				{
 					if (_selectedWindow.contains(_lastMouseX, _lastMouseY))
-					{
 						consumedBySelected = _selectedWindow.absoluteLeftClickAt(_lastMouseX, _lastMouseY);
-					}
 				}
+				
 				if (!consumedBySelected)
-				{
 					_desktop.absoluteLeftClickAt(_lastMouseX, _lastMouseY);
-				}
 				_leftButtonAlreadyDown = true;
 			}
 		}
 		else
 		{
-			StopDrag();
+			stopDrag();
 			_leftButtonAlreadyDown = false;
 		}
 		
 		if (event.RightButtonPressed())
-		{
 			Logger.trace("WIN", "Mouse Right Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
-		}
 		
 		if (event.MiddleButtonPressed())
-		{
 			Logger.trace("WIN", "Mouse Middle Click at ".append(_lastMouseX).append(", ").append(_lastMouseY));
-		}
 	}
 	
-	private void StartDrag()
+	private void startDrag()
 	{
 		_cursorCurrent = _cursorHand;
 		_is_dragging = true;
 	}
 	
-	private void StopDrag()
+	private void stopDrag()
 	{
 		_cursorCurrent = _cursorModern;
 		_is_dragging = false;
 	}
 	
-	private void SetSelectedAt(int x, int y)
+	private void setSelectedAt(int x, int y)
 	{
 		for (int i = _widgets.size() - 1; i >= 0; i--)
 		{
 			Window window = _widgets.get(i);
+			
 			if (window == null || !window.isSelectable())
-			{
 				continue;
-			}
+			
 			if (window.contains(x, y))
 			{
-				SetSelectedTo(window);
+				setSelectedTo(window);
 				return;
 			}
 		}
 	}
 	
-	private void SetSelectedTo(Window window)
+	private void setSelectedTo(Window window)
 	{
 		Logger.trace("WIN", "Selected ".append(window.name));
+		
 		if (_selectedWindow != null)
-		{
 			_selectedWindow.setSelected(false);
-		}
+		
 		_selectedWindow = window;
 		_selectedWindow.setSelected(true);
 		
@@ -317,44 +288,44 @@ public class WindowManager extends Task
 		_widgets.add(window);
 	}
 	
-	private void SetDirtyAt(int x, int y)
+	private void setDirtyAt(int x, int y)
 	{
 		for (int i = _widgets.size() - 1; i >= 0; i--)
 		{
 			Window window = _widgets.get(i);
 			if (window == null)
-			{
 				continue;
-			}
+			
 			if (window.contains(x, y))
-			{
 				window.setDirty();
-			}
 		}
 	}
 	
-	private boolean ConsumedInternalOnKeyPressed(char keyCode)
+	private boolean consumedInternalOnKeyPressed(char keyCode)
 	{
 		switch (keyCode)
 		{
 			case Key.F9:
 				new EndlessTask().register();
 				return true;
+				
 			case Key.LCTRL:
 				_ctrlDown = true;
 				return true;
+				
 			default:
 				return false;
 		}
 	}
 	
-	private boolean ConsumedInternalOnKeyReleased(char keyCode)
+	private boolean consumedInternalOnKeyReleased(char keyCode)
 	{
 		switch (keyCode)
 		{
 			case Key.LCTRL:
 				_ctrlDown = false;
 				return true;
+				
 			default:
 				return false;
 		}

@@ -18,7 +18,6 @@ public class VecInt
 	{
 		if (initialCapacity < 0)
 			Kernel.panic("Illegal Capacity");
-		
 		this.elements = new int[initialCapacity];
 		this.size = 0;
 	}
@@ -33,7 +32,6 @@ public class VecInt
 	{
 		if (index < 0 || index >= size)
 			Kernel.panic("Index out of bounds for vector access");
-
 		return elements[index];
 	}
 	
@@ -48,11 +46,15 @@ public class VecInt
 		{
 			int newCapacity = elements.length * 2;
 			if (newCapacity < minCapacity)
+			{
 				newCapacity = minCapacity;
+			}
 			
 			int[] newElements = new int[newCapacity];
 			for (int i = 0; i < size; i++)
+			{
 				newElements[i] = elements[i];
+			}
 			elements = newElements;
 		}
 	}

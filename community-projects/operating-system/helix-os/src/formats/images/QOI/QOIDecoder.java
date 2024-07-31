@@ -29,7 +29,7 @@ public class QOIDecoder
 		return (hash & 0x3F) << 2;
 	}
 	
-	public static QOIImage Decode(byte[] inputStream, int channels)
+	public static QOIImage decode(byte[] inputStream, int channels)
 	{
 		if (channels != 0 && channels != 3 && channels != 4)
 			Kernel.panic("Invalid channel count, must be 0, 3 or 4");
@@ -89,7 +89,7 @@ public class QOIDecoder
 	
 	private static byte[] read3(Input in, int width, int height)
 	{
-		int pixelDataLength = Math.MultiplyExact(Math.MultiplyExact(width, height), 3);
+		int pixelDataLength = Math.multiplyExact(Math.multiplyExact(width, height), 3);
 		byte[] pixelData = new byte[pixelDataLength];
 		byte[] index = new byte[HASH_TABLE_SIZE * 4];
 		
@@ -181,7 +181,7 @@ public class QOIDecoder
 	private static byte[] read4(Input in, int width, int height)
 	{
 		// Check for overflow on big images
-		int pixelDataLength = Math.MultiplyExact(Math.MultiplyExact(width, height), 4);
+		int pixelDataLength = Math.multiplyExact(Math.multiplyExact(width, height), 4);
 		
 		byte[] pixelData = new byte[pixelDataLength];
 		
@@ -285,7 +285,7 @@ public class QOIDecoder
 		{
 			if (this.position >= this.buffer.length)
 				Kernel.panic("Unexpected end of stream");
-			
+				
 			return this.buffer[this.position++];
 		}
 		
@@ -324,5 +324,6 @@ public class QOIDecoder
 			Kernel.panic("Invalid Color Space");
 			return -1;
 		}
+		
 	}
 }

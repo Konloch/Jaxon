@@ -16,7 +16,7 @@ public class Bluescreen
 		DisplayModes.ActivateTextMode();
 		TM3.DisableCursorCaret();
 		int pos = 0;
-		pos = printHeader(pos, title, message);
+		pos = PrintHeader(pos, title, message);
 	}
 	
 	public static void show(String title, String reason, int ebp, int eip)
@@ -24,9 +24,9 @@ public class Bluescreen
 		DisplayModes.ActivateTextMode();
 		TM3.DisableCursorCaret();
 		int pos = 0;
-		pos = printHeader(pos, title, reason);
+		pos = PrintHeader(pos, title, reason);
 		pos = TM3.sNewLine(pos);
-		pos = printStackTrace(pos, ebp, eip);
+		pos = PrintStackTrace(pos, ebp, eip);
 	}
 	
 	public static void show(String title, String reason, int ebp, int eip, int rEDI, int rESI, int rEBP, int rESP, int rEBX, int rEDX, int rECX, int rEAX)
@@ -34,15 +34,15 @@ public class Bluescreen
 		DisplayModes.ActivateTextMode();
 		TM3.DisableCursorCaret();
 		int pos = 0;
-		pos = printHeader(pos, title, reason);
+		pos = PrintHeader(pos, title, reason);
 		pos = TM3.sNewLine(pos);
-		pos = printRegisters(pos, rEDI, rESI, rEBP, rESP, rEBX, rEDX, rECX, rEAX);
+		pos = PrintRegisters(pos, rEDI, rESI, rEBP, rESP, rEBX, rEDX, rECX, rEAX);
 		pos = TM3.sNewLine(pos);
 		pos = TM3.sNewLine(pos);
-		pos = printStackTrace(pos, ebp, eip);
+		pos = PrintStackTrace(pos, ebp, eip);
 	}
 	
-	private static int printHeader(int pos, String title, String reasib)
+	private static int PrintHeader(int pos, String title, String reasib)
 	{
 		pos = TM3.sPrint(title, pos, COL_HEADLINE);
 		pos = TM3.sNewLine(pos);
@@ -54,7 +54,7 @@ public class Bluescreen
 		return pos;
 	}
 	
-	private static int printRegisters(int pos, int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax)
+	private static int PrintRegisters(int pos, int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax)
 	{
 		pos = TM3.sPrintln("Registers: ", pos, COL_HEADLINE);
 		
@@ -90,7 +90,7 @@ public class Bluescreen
 		return pos;
 	}
 	
-	private static int printStackTrace(int pos, int ebp, int eip)
+	private static int PrintStackTrace(int pos, int ebp, int eip)
 	{
 		pos = TM3.sPrintln("Stacktrace: ", pos, COL_HEADLINE);
 		pos = TM3.sPrintln("  EBP        |  EIP       | Method", pos, COL_HEADLINE);
@@ -106,7 +106,7 @@ public class Bluescreen
 			pos = TM3.sPrint(eip, 16, 8, '0', pos, COL_MESSAGE);
 			pos = TM3.sPrint(" | ", pos, COL_HEADLINE);
 			
-			SMthdBlock m = SymbolResolution.resolve(eip);
+			SMthdBlock m = SymbolResolution.Resolve(eip);
 			if (m != null)
 			{
 				int maxLen = 51;

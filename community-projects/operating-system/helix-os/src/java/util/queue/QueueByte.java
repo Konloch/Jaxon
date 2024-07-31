@@ -17,46 +17,46 @@ public class QueueByte
 		_count = 0;
 	}
 	
-	public void put(byte c)
+	public void Put(byte c)
 	{
 		_buffer[_headIdx] = c;
-		incHead();
+		IncHead();
 	}
 	
-	public byte get()
+	public byte Get()
 	{
 		byte c = _buffer[_tailIdx];
-		incTail();
+		IncTail();
 		return c;
 	}
 	
 	@SJC.Inline
-	public int count()
+	public int Count()
 	{
 		return _count;
 	}
 	
 	@SJC.Inline
-	public boolean isEmpty()
+	public boolean IsEmpty()
 	{
 		return _count == 0;
 	}
 	
 	@SJC.Inline
-	public boolean containsNewElements()
+	public boolean ContainsNewElements()
 	{
 		return _headIdx != _tailIdx;
 	}
 	
 	@SJC.Inline
-	private void incHead()
+	private void IncHead()
 	{
 		_headIdx = (_headIdx + 1) % _size;
 		_count++;
 	}
 	
 	@SJC.Inline
-	private void incTail()
+	private void IncTail()
 	{
 		_tailIdx = (_tailIdx + 1) % _size;
 		_count--;

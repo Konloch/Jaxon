@@ -19,7 +19,6 @@ public class VecVesaMode
 	{
 		if (initialCapacity < 0)
 			Kernel.panic("Illegal Capacity");
-
 		this.elements = new VESAMode[initialCapacity];
 		this.size = 0;
 	}
@@ -34,7 +33,6 @@ public class VecVesaMode
 	{
 		if (index < 0 || index >= size)
 			Kernel.panic("Index out of bounds for vector access");
-		
 		return elements[index];
 	}
 	
@@ -49,11 +47,15 @@ public class VecVesaMode
 		{
 			int newCapacity = elements.length * 2;
 			if (newCapacity < minCapacity)
+			{
 				newCapacity = minCapacity;
+			}
 			
 			VESAMode[] newElements = new VESAMode[newCapacity];
 			for (int i = 0; i < size; i++)
+			{
 				newElements[i] = elements[i];
+			}
 			elements = newElements;
 		}
 	}

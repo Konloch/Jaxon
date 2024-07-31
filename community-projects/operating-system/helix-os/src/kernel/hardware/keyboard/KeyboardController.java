@@ -29,17 +29,19 @@ public class KeyboardController
 	private static boolean _altPressed;
 	private static boolean _capsLocked;
 	
-	public static void initialize()
+	public static void Initialize()
 	{
 		_layout = null;
 		packet = new int[3];
 		_eventBuffer = new QueueKeyEvent(32);
-		for (int i = 0; i < _eventBuffer.capacity(); i++)
-			_eventBuffer.put(new KeyEvent());
+		for (int i = 0; i < _eventBuffer.Capacity(); i++)
+		{
+			_eventBuffer.Put(new KeyEvent());
+		}
 		
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("KeyboardController"));
-		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("KeyboardController", "KeyboardHandler"));
-		IDT.registerIrqHandler(IRQ_KEYBOARD, handlerOffset);
+		int handlerOffset = IDT.CodeOffset(dscAddr, MAGIC.mthdOff("KeyboardController", "KeyboardHandler"));
+		IDT.RegisterIrqHandler(IRQ_KEYBOARD, handlerOffset);
 	}
 	
 	@SJC.Interrupt
@@ -76,11 +78,17 @@ public class KeyboardController
 		if (cycle == 0)
 		{
 			if (code == KEYCODE_EXTEND1)
+			{
 				expectedLength = 2;
+			}
 			else if (code == KEYCODE_EXTEND2)
+			{
 				expectedLength = 3;
+			}
 			else
+			{
 				expectedLength = 1;
+			}
 		}
 		
 		packet[cycle++] = code;
@@ -184,8 +192,8 @@ public class KeyboardController
 			int c1 = Integer.ubyte(packet[1]);
 			
 			// 0xE0_2A
-			keyCode = BitHelper.setRange(keyCode, 8, 8, c0);
-			keyCode = BitHelper.setRange(keyCode, 0, 8, c1);
+			keyCode = BitHelper.SetRange(keyCode, 8, 8, c0);
+			keyCode = BitHelper.SetRange(keyCode, 0, 8, c1);
 		}
 		else if (c0 == KEYCODE_EXTEND2)
 		{
@@ -193,9 +201,9 @@ public class KeyboardController
 			int c2 = Integer.ubyte(packet[2]);
 			
 			// 0xE1_2A_2A
-			keyCode = BitHelper.setRange(keyCode, 16, 8, c0);
-			keyCode = BitHelper.setRange(keyCode, 8, 8, c1);
-			keyCode = BitHelper.setRange(keyCode, 0, 8, c2);
+			keyCode = BitHelper.SetRange(keyCode, 16, 8, c0);
+			keyCode = BitHelper.SetRange(keyCode, 8, 8, c1);
+			keyCode = BitHelper.SetRange(keyCode, 0, 8, c2);
 		}
 		else
 		{

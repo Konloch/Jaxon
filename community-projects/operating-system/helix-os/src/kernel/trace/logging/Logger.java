@@ -1,7 +1,7 @@
 package kernel.trace.logging;
 
 import kernel.hardware.RTC;
-import java.lang.StringBuilder;
+import java.util.StrBuilder;
 import java.util.queue.QueueLogEntry;
 
 public class Logger
@@ -22,7 +22,6 @@ public class Logger
 	public static void initialize(byte logLevel, int capactiy, boolean logTime)
 	{
 		logBuffer = new QueueLogEntry(capactiy);
-		
 		for (int i = 0; i < capactiy; i++)
 			logBuffer.Put(new LogEntry("", "", NONE, ""));
 		
@@ -67,13 +66,11 @@ public class Logger
 			return;
 		
 		LogEntry log = logBuffer.Get();
-		log.setCategory(category);
-		log.setMessage(message);
-		log.setPriority(priority);
-		
+		log.SetCategory(category);
+		log.SetMessage(message);
+		log.SetPriority(priority);
 		if (_logTime)
-			log.setTimeHMS(GetTimeHMS());
-		
+			log.SetTimeHMS(getTimeHMS());
 		logSerial(log);
 		logBuffer.Put(log);
 		logTicks++;
@@ -81,13 +78,13 @@ public class Logger
 	
 	public static void logSerial(LogEntry entry)
 	{
-		logSerial(entry.timeHMS());
+		logSerial(entry.TimeHMS());
 		logSerial(" [");
-		logSerial(entry.oriorityString());
+		logSerial(entry.PriorityString());
 		logSerial("] ");
-		logSerial(entry.category());
+		logSerial(entry.Category());
 		logSerial(": ");
-		logSerial(entry.message());
+		logSerial(entry.Message());
 		logSerial("\n");
 	}
 	
@@ -110,18 +107,18 @@ public class Logger
 	}
 	
 	@SJC.Inline
-	public static LogEntry GetChronologicalLog(int i)
+	public static LogEntry getChronologicalLog(int i)
 	{
 		return logBuffer.PeekBack(i);
 	}
 	
 	@SJC.Inline
-	public static int LogTicks()
+	public static int logTicks()
 	{
 		return logTicks;
 	}
 	
-	private static String GetTimeHMS()
+	private static String getTimeHMS()
 	{
 		int hours = RTC.ReadHour();
 		int minutes = RTC.ReadMinute();
@@ -129,24 +126,24 @@ public class Logger
 		boolean hoursIsTwoDigits = hours >= 10;
 		boolean minutesIsTwoDigits = minutes >= 10;
 		boolean secondsIsTwoDigits = seconds >= 10;
-		StringBuilder sb = new StringBuilder(10);
+		StrBuilder sb = new StrBuilder(10);
 		
 		if (!hoursIsTwoDigits)
-			sb.append('0');
+			sb.Append('0');
 		
-		sb.append(hours);
-		sb.append(':');
+		sb.Append(hours);
+		sb.Append(':');
 		
 		if (!minutesIsTwoDigits)
-			sb.append('0');
+			sb.Append('0');
 		
-		sb.append(minutes);
-		sb.append(':');
+		sb.Append(minutes);
+		sb.Append(':');
 		
 		if (!secondsIsTwoDigits)
-			sb.append('0');
+			sb.Append('0');
 		
-		sb.append(seconds);
+		sb.Append(seconds);
 		return sb.toString();
 	}
 }

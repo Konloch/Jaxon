@@ -1,6 +1,7 @@
 package java.lang;
 
 import kernel.Kernel;
+
 import java.util.NoAllocConv;
 
 public class Long
@@ -26,6 +27,7 @@ public class Long
 		if (i < 0)
 		{
 			chars[0] = (byte) '-';
+			
 			for (int j = 0; j < digitCount; j++)
 				chars[j + 1] = BUFFER[j + offest];
 		}
@@ -43,7 +45,7 @@ public class Long
 	{
 		if (l > Integer.MAX || l < Integer.MIN)
 			Kernel.panic("Long to int conversion failed");
-
+		
 		return (int) l;
 	}
 	

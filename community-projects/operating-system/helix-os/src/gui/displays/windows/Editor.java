@@ -20,7 +20,6 @@ public class Editor extends Window
 		_textField = new TextField(0, 0, contentWidth, contentHeight, border, charSpacing, lineSpacing, fg, bg, true, font);
 	}
 	
-	@Override
 	public void drawContent()
 	{
 		if (_textField.needsRedraw())
@@ -43,10 +42,10 @@ public class Editor extends Window
 		switch (key)
 		{
 			case '\n':
-				_textField.newLine();
+				_textField.NewLine();
 				break;
 			case '\b':
-				_textField.backspace();
+				_textField.Backspace();
 				break;
 			case Key.ARROW_UP:
 				MoveCursorUp();
@@ -63,7 +62,7 @@ public class Editor extends Window
 			default:
 				if (Key.Ascii(key) != 0)
 				{
-					_textField.write((byte) key);
+					_textField.Write((byte) key);
 				}
 				break;
 		}
@@ -78,53 +77,53 @@ public class Editor extends Window
 		}
 		
 		int cellW = relX / (_textField.Font.width() + _textField.SpacingW);
-		int cx = Math.Clamp(cellW, 0, _textField.LineLength - 1);
+		int cx = Math.clamp(cellW, 0, _textField.LineLength - 1);
 		
 		int cellH = relY / (_textField.Font.height() + _textField.SpacingH);
-		int cy = Math.Clamp(cellH, 0, _textField.LineCount - 1);
+		int cy = Math.clamp(cellH, 0, _textField.LineCount - 1);
 		
-		_textField.setCursor(cx, cy);
+		_textField.SetCursor(cx, cy);
 		Logger.info("Cursor", "set to".append(cx).append(" ").append(cy));
 		return true;
 	}
 	
 	private void MoveCursorUp()
 	{
-		int x = _textField.getCursorX();
-		int y = _textField.getCursorY();
+		int x = _textField.GetCursorX();
+		int y = _textField.GetCursorY();
 		if (y > 0)
 		{
-			_textField.setCursor(x, y - 1);
+			_textField.SetCursor(x, y - 1);
 		}
 	}
 	
 	private void MoveCursorDown()
 	{
-		int x = _textField.getCursorX();
-		int y = _textField.getCursorY();
+		int x = _textField.GetCursorX();
+		int y = _textField.GetCursorY();
 		if (y < _textField.LineCount - 1)
 		{
-			_textField.setCursor(x, y + 1);
+			_textField.SetCursor(x, y + 1);
 		}
 	}
 	
 	private void MoveCursorLeft()
 	{
-		int x = _textField.getCursorX();
-		int y = _textField.getCursorY();
+		int x = _textField.GetCursorX();
+		int y = _textField.GetCursorY();
 		if (x > 0)
 		{
-			_textField.setCursor(x - 1, y);
+			_textField.SetCursor(x - 1, y);
 		}
 	}
 	
 	private void MoveCursorRight()
 	{
-		int x = _textField.getCursorX();
-		int y = _textField.getCursorY();
+		int x = _textField.GetCursorX();
+		int y = _textField.GetCursorY();
 		if (x < _textField.LineLength - 1)
 		{
-			_textField.setCursor(x + 1, y);
+			_textField.SetCursor(x + 1, y);
 		}
 	}
 	

@@ -13,7 +13,7 @@ public class Font9x16 extends AFont
 	public static final int FONT_CHARACHTERS = FONT_CHARACHTERS_LAST - FONT_CHARACHTERS_START + 1;
 	public static final int BYTES_PER_CHAR = 9;
 	
-	public static final Font9x16 Instance = new Font9x16();
+	public static final Font9x16 INSTANCE = new Font9x16();
 	
 	@Override
 	public int width()

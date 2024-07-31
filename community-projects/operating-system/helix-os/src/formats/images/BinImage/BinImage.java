@@ -15,9 +15,9 @@ public abstract class BinImage extends Image
 	protected BinImage(byte[] data)
 	{
 		super();
-		Width = parseWidth(data);
-		Height = parseHeight(data);
-		PixelData = decodeData(data);
+		width = parseWidth(data);
+		height = parseHeight(data);
+		pixelData = decodeData(data);
 	}
 	
 	protected static int[] decodeData(byte[] data)

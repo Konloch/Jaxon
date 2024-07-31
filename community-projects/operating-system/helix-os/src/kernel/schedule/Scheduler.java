@@ -23,11 +23,10 @@ public class Scheduler
 	public static void addTask(Task task)
 	{
 		Logger.info("SCHED", "Added Task ".append(task.name));
+		
 		if (_taskCount >= MAX_TASKS)
-		{
 			Kernel.panic("Too many tasks");
-			return;
-		}
+		
 		_tasks[_taskCount++] = task;
 	}
 	
@@ -63,7 +62,7 @@ public class Scheduler
 	{
 		Logger.info("SCHED", "Starting Schedeuler");
 		
-		MemoryManager.enableGarbageCollection();
+		MemoryManager.EnableGarbageCollection();
 		Logger.info("SCHED", "Enabled Garbage Collection");
 		
 		MAGIC.inline(0x89, 0x2D);
@@ -82,10 +81,11 @@ public class Scheduler
 			{
 				_currentTask = _tasks[i];
 				_currentTask.run();
+				
 			}
 			
-			if (MemoryManager.shouldCollectGarbage())
-				MemoryManager.triggerGarbageCollection();
+			if (MemoryManager.ShouldCollectGarbage())
+				MemoryManager.TriggerGarbageCollection();
 			
 			// x86.hlt();
 		}
@@ -109,7 +109,7 @@ public class Scheduler
 		loop();
 	}
 	
-	public static int GetTaskCount()
+	public static int getTaskCount()
 	{
 		return _taskCount;
 	}

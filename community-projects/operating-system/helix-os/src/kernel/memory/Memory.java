@@ -1,18 +1,22 @@
 package kernel.memory;
 
-import java.lang.StringBuilder;
+import java.util.StrBuilder;
 
 public class Memory
 {
-	public static void memset(int start, int len, byte value)
+	public static void Memset(int start, int len, byte value)
 	{
 		int end = start + len;
 		if (len % 4 == 0)
-			memset32(start, len / 4, value);
+		{
+			Memset32(start, len / 4, value);
+		}
 		else
 		{
 			for (int i = start; i < end; i++)
+			{
 				MAGIC.wMem8(i, value);
+			}
 		}
 	}
 	
@@ -24,7 +28,7 @@ public class Memory
 	 * Cannot be inlined since it has fixed offsets to function argument pointers.
 	 */
 	@SJC.NoInline
-	public static void memset32(int start, int numberOf32BitBlocks, int value)
+	public static void Memset32(int start, int numberOf32BitBlocks, int value)
 	{
 		MAGIC.inlineBlock("memset32");
 	}
@@ -32,10 +36,12 @@ public class Memory
 	/*
 	 * Copy bytes from one memory location to another.
 	 */
-	public static void memcopy(int from, int to, int len)
+	public static void Memcopy(int from, int to, int len)
 	{
 		if (len % 4 == 0)
-			memcopy32(from, to, len / 4);
+		{
+			Memcopy32(from, to, len / 4);
+		}
 		else
 		{
 			while (len > 0)
@@ -56,33 +62,41 @@ public class Memory
 	 * Cannot be inlined since it has fixed offsets to function argument pointers.
 	 */
 	@SJC.NoInline
-	public static void memcopy32(int from, int to, int cnt)
+	public static void Memcopy32(int from, int to, int cnt)
 	{
 		MAGIC.inlineBlock("memcopy32");
 	}
 	
-	public static String formatBytes(int bytes)
+	public static String FormatBytes(int bytes)
 	{
-		StringBuilder sb = new StringBuilder();
-
+		StrBuilder sb = new StrBuilder();
 		if (bytes < 1024)
-			sb.append(bytes).append(" B");
+		{
+			sb.Append(bytes).Append(" B");
+		}
 		else if (bytes < 1024 * 1024)
-			sb.append(bytes / 1024).append(" KB");
+		{
+			sb.Append(bytes / 1024).Append(" KB");
+		}
 		else if (bytes < 1024 * 1024 * 1024)
-			sb.append(bytes / 1024 / 1024).append(" MB");
+		{
+			sb.Append(bytes / 1024 / 1024).Append(" MB");
+		}
 		else if (bytes < 1024 * 1024 * 1024 * 1024)
-			sb.append(bytes / 1024 / 1024 / 1024).append(" GB");
+		{
+			sb.Append(bytes / 1024 / 1024 / 1024).Append(" GB");
+		}
 		else
-			sb.append(bytes / 1024 / 1024 / 1024 / 1024).append(" TB");
-		
+		{
+			sb.Append(bytes / 1024 / 1024 / 1024 / 1024).Append(" TB");
+		}
 		return sb.toString();
 	}
 	
-	public static String formatBytesToKb(int bytes)
+	public static String FormatBytesToKb(int bytes)
 	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(bytes / 1024).append(" KB");
+		StrBuilder sb = new StrBuilder();
+		sb.Append(bytes / 1024).Append(" KB");
 		return sb.toString();
 	}
 }

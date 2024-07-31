@@ -9,9 +9,9 @@ public class BitmapButton extends Button
 	
 	public BitmapButton(String name, int x, int y, int size, Bitmap icon, IButtonListener listener)
 	{
-		super(name, x, y, size, size, 0, 0, "", Font3x6.Instance, listener);
+		super(name, x, y, size, size, 0, 0, "", Font3x6.INSTANCE, listener);
 		_icon = icon.Scale(size, size);
-		draw();
+		this.draw();
 	}
 	
 	@Override

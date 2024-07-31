@@ -13,7 +13,7 @@ public class Font5x7 extends AFont
 	public static final int FONT_CHARACHTERS = FONT_CHARACHTERS_LAST - FONT_CHARACHTERS_START + 1;
 	public static final int BYTES_PER_CHAR = 5;
 	
-	public static final Font5x7 Instance = new Font5x7();
+	public static final Font5x7 INSTANCE = new Font5x7();
 	
 	@Override
 	public int width()
@@ -49,7 +49,7 @@ public class Font5x7 extends AFont
 	{
 		if (ch < FONT_CHARACHTERS_START || ch > FONT_CHARACHTERS_LAST)
 			return 0;
-
+		
 		if (offset >= FONT_HEIGHT)
 			return 0;
 		

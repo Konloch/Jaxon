@@ -6,17 +6,16 @@ import kernel.display.Bitmap;
 
 public class Logo extends QOIImage
 {
-	@SuppressWarnings("static-access")
-	public static final byte[] DATA = Binimp.ByteData.logo_qoi;
+	public static final byte[] DATA = binimp.ByteData.logo_qoi;
 	
 	protected Logo(int width, int height, int channels, int colorSpace, int[] pixelData)
 	{
 		super(width, height, channels, colorSpace, pixelData);
 	}
 	
-	public static Bitmap Load()
+	public static Bitmap load()
 	{
-		QOIImage img = QOIDecoder.Decode(DATA, 3);
-		return new Bitmap(img.Width, img.Height, img.PixelData);
+		QOIImage img = QOIDecoder.decode(DATA, 3);
+		return new Bitmap(img.width, img.height, img.pixelData);
 	}
 }

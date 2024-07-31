@@ -34,7 +34,7 @@ public class FlowFieldView extends Widget
 		}
 	}
 	
-	public void update()
+	public void Update()
 	{
 		if (_controls.particleAmount != particles.length)
 		{
@@ -42,7 +42,7 @@ public class FlowFieldView extends Widget
 		}
 		for (Particle p : particles)
 		{
-			p.run();
+			p.Run();
 		}
 		frameCount++;
 	}
@@ -76,22 +76,22 @@ public class FlowFieldView extends Widget
 		}
 		
 		@SJC.Inline
-		public void run()
+		public void Run()
 		{
-			move();
-			checkEdges();
-			checkLifeTime();
+			Move();
+			CheckEdges();
+			CheckLifeTime();
 			
 			float magn = this.vel.mag();
-			double fac_x = Math.Abs(this.vel.x) / magn;
-			double fac_y = Math.Abs(this.vel.y) / magn;
+			double fac_x = Math.abs(this.vel.x) / magn;
+			double fac_y = Math.abs(this.vel.y) / magn;
 			double avg = (fac_x + fac_y) / 2;
 			this.color = Kernel.Display.Rgb((int) (fac_x * 255), (int) (150 * avg), (int) (fac_y * 255));
 			
 		}
 		
 		@SJC.Inline
-		public void move()
+		public void Move()
 		{
 			float angle = noise.noise(this.loc.x / _controls.noiseScale, this.loc.y / _controls.noiseScale, (frameCount * _controls.noiseChangeSpeed) / _controls.noiseScale) * Math.TWO_PI * _controls.noiseStrength;
 			this.vel.x = Math.Cos(angle);
@@ -101,17 +101,21 @@ public class FlowFieldView extends Widget
 		}
 		
 		@SJC.Inline
-		public void checkEdges()
+		public void CheckEdges()
 		{
 			if (this.loc.x > width || this.loc.x < 0)
+			{
 				this.loc.x = random.range(0, width);
+			}
 			
 			if (this.loc.y > height || this.loc.y < 0)
+			{
 				this.loc.y = random.range(0, height);
+			}
 		}
 		
 		@SJC.Inline
-		public void checkLifeTime()
+		public void CheckLifeTime()
 		{
 			if (lifetime <= 0)
 			{
@@ -119,7 +123,6 @@ public class FlowFieldView extends Widget
 				this.loc.y = random.range(0, height);
 				this.lifetime = random.range(20, 200);
 			}
-
 			lifetime--;
 		}
 	}

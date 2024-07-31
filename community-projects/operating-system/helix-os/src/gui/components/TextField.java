@@ -3,7 +3,7 @@ package gui.components;
 import formats.fonts.AFont;
 import gui.Widget;
 import kernel.hardware.keyboard.Key;
-import java.lang.StringBuilder;
+import java.util.StrBuilder;
 
 public class TextField extends Widget
 {
@@ -44,35 +44,38 @@ public class TextField extends Widget
 		_enableCursor = enableCursor;
 	}
 	
-	public void setCursor(int x, int y)
+	public void SetCursor(int x, int y)
 	{
 		this._cursorX = x;
 		this._cursorY = y;
 		setDirty();
 	}
 	
-	public int getCursorX()
+	public int GetCursorX()
 	{
 		return _cursorX;
 	}
 	
-	public int getCursorY()
+	public int GetCursorY()
 	{
 		return _cursorY;
 	}
 	
-	public void setBrushColor(int color)
+	public void SetBrushColor(int color)
 	{
 		this._fg = color;
 	}
 	
-	public void write(byte c)
+	public void Write(byte c)
 	{
 		if (_cursorX >= LineLength)
-			newLine();
-
+		{
+			NewLine();
+		}
 		if (_cursorY >= LineCount)
-			newLine();
+		{
+			NewLine();
+		}
 		
 		_characters[_cursorY][_cursorX] = c;
 		_characterColors[_cursorY][_cursorX] = _fg;
@@ -80,7 +83,7 @@ public class TextField extends Widget
 		setDirty();
 	}
 	
-	public void newLine()
+	public void NewLine()
 	{
 		_cursorX = 0;
 		_cursorY++;
@@ -92,7 +95,7 @@ public class TextField extends Widget
 		setDirty();
 	}
 	
-	public void backspace()
+	public void Backspace()
 	{
 		if (_cursorX > 0)
 		{
@@ -109,39 +112,41 @@ public class TextField extends Widget
 				{
 					lastCharInLine++;
 				}
-				
-				_cursorX = Math.Clamp(lastCharInLine, 0, LineLength - 1);
+				_cursorX = Math.clamp(lastCharInLine, 0, LineLength - 1);
 				_characters[_cursorY][_cursorX] = (byte) 0;
 			}
 		}
 		setDirty();
 	}
 	
-	public void write(String s)
+	public void Write(String s)
 	{
 		for (int i = 0; i < s.length(); i++)
 		{
 			byte c = (byte) s.get(i);
 			if (c == '\n')
-				newLine();
+			{
+				NewLine();
+			}
 			else
-				write(c);
+			{
+				Write(c);
+			}
 		}
-		
 		setDirty();
 	}
 	
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
+		StrBuilder sb = new StrBuilder();
 		for (int i = 0; i < LineCount; i++)
 		{
 			for (int j = 0; j < LineLength; j++)
-				sb.append((char) _characters[i][j]);
-			
-			sb.append('\n');
+			{
+				sb.Append((char) _characters[i][j]);
+			}
+			sb.Append('\n');
 		}
-		
 		return sb.toString();
 	}
 	
@@ -155,7 +160,6 @@ public class TextField extends Widget
 				_characterColors[i][j] = _characterColors[i + 1][j];
 			}
 		}
-		
 		for (int j = 0; j < LineLength; j++)
 		{
 			_characters[LineCount - 1][j] = (byte) ' ';
@@ -164,21 +168,25 @@ public class TextField extends Widget
 		setDirty();
 	}
 	
-	public void clearText()
+	public void ClearText()
 	{
 		for (int i = 0; i < LineCount; i++)
+		{
 			for (int j = 0; j < LineLength; j++)
+			{
 				_characters[i][j] = (byte) '\0';
-		
-		setCursor(0, 0);
+			}
+		}
+		SetCursor(0, 0);
 		setDirty();
 	}
 	
-	public void clearLine(int line)
+	public void ClearLine(int line)
 	{
 		for (int j = 0; j < LineLength; j++)
+		{
 			_characters[line][j] = (byte) 0;
-		
+		}
 		setDirty();
 	}
 	
@@ -214,18 +222,19 @@ public class TextField extends Widget
 				
 				// Skip rendering if the character is not visible
 				if (characterColor == _bg || Key.Ascii(character) == 0)
+				{
 					continue;
-				
+				}
 				int x = xOffset + j * xFactor;
 				int y = yOffset + i * yFactor;
 				
 				Font.renderToBitmap(renderTarget, x, y, character, characterColor);
 			}
 		}
-		
 		if (_enableCursor)
+		{
 			DrawCursor();
-		
+		}
 		clearDirty();
 	}
 }

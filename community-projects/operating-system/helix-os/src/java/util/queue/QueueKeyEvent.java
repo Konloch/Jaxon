@@ -20,12 +20,12 @@ public class QueueKeyEvent
 	}
 	
 	@SJC.Inline
-	public int capacity()
+	public int Capacity()
 	{
 		return _capacity;
 	}
 	
-	public void put(KeyEvent c)
+	public void Put(KeyEvent c)
 	{
 		_buffer[_headIdx] = c;
 		IncHead();

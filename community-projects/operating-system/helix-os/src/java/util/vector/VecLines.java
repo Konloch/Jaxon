@@ -18,7 +18,6 @@ public class VecLines
 	{
 		if (initialCapacity < 0)
 			Kernel.panic("Illegal Capacity");
-		
 		this.elements = new VecChar[initialCapacity];
 		this.size = 0;
 	}
@@ -26,8 +25,9 @@ public class VecLines
 	public void clearKeepCapacity()
 	{
 		for (int i = 0; i < size; i++)
+		{
 			elements[i] = null;
-		
+		}
 		size = 0;
 	}
 	
@@ -43,7 +43,6 @@ public class VecLines
 	{
 		if (index < 0 || index >= size)
 			Kernel.panic("Index out of bounds for vector access");
-		
 		return elements[index];
 	}
 	
@@ -65,11 +64,15 @@ public class VecLines
 		{
 			int newCapacity = elements.length * 2;
 			if (newCapacity < minCapacity)
+			{
 				newCapacity = minCapacity;
+			}
 			
 			VecChar[] newElements = new VecChar[newCapacity];
 			for (int i = 0; i < size; i++)
+			{
 				newElements[i] = elements[i];
+			}
 			elements = newElements;
 		}
 	}

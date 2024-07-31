@@ -16,25 +16,25 @@ public class LogEntry
 	}
 	
 	@SJC.Inline
-	public String category()
+	public String Category()
 	{
 		return _category;
 	}
 	
 	@SJC.Inline
-	public String message()
+	public String Message()
 	{
 		return _message;
 	}
 	
 	@SJC.Inline
-	public byte priority()
+	public byte Priority()
 	{
 		return _priority;
 	}
 	
 	@SJC.Inline
-	public String oriorityString()
+	public String PriorityString()
 	{
 		switch (_priority)
 		{
@@ -56,31 +56,31 @@ public class LogEntry
 	}
 	
 	@SJC.Inline
-	public String timeHMS()
+	public String TimeHMS()
 	{
 		return _timeHMS;
 	}
 	
 	@SJC.Inline
-	public void setCategory(String category)
+	public void SetCategory(String category)
 	{
 		this._category = category;
 	}
 	
 	@SJC.Inline
-	public void setMessage(String message)
+	public void SetMessage(String message)
 	{
 		this._message = message;
 	}
 	
 	@SJC.Inline
-	public void setPriority(byte priority)
+	public void SetPriority(byte priority)
 	{
 		this._priority = priority;
 	}
 	
 	@SJC.Inline
-	public void setTimeHMS(String time_HMS)
+	public void SetTimeHMS(String time_HMS)
 	{
 		this._timeHMS = time_HMS;
 	}

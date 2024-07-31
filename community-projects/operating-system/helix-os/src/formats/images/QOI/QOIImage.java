@@ -12,19 +12,19 @@ import formats.images.Image;
  */
 public class QOIImage extends Image
 {
-	public int Channels;
+	public int channels;
 	/*
 	 * 0: SRGB
 	 * 1: Linear
 	 */
-	public int ColorSpace;
+	public int colorSpace;
 	
 	public QOIImage(int width, int height, int channels, int colorSpace, int[] pixelData)
 	{
-		this.Width = width;
-		this.Height = height;
-		this.PixelData = pixelData;
-		this.Channels = channels;
-		this.ColorSpace = colorSpace;
+		this.width = width;
+		this.height = height;
+		this.pixelData = pixelData;
+		this.channels = channels;
+		this.colorSpace = colorSpace;
 	}
 }

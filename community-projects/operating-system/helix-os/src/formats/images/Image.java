@@ -2,14 +2,14 @@ package formats.images;
 
 public abstract class Image
 {
-	public int Width;
-	public int Height;
-	public int[] PixelData;
+	public int width;
+	public int height;
+	public int[] pixelData;
 	
 	protected Image()
 	{
-		this.Width = 0;
-		this.Height = 0;
-		this.PixelData = null;
+		this.width = 0;
+		this.height = 0;
+		this.pixelData = null;
 	}
 }

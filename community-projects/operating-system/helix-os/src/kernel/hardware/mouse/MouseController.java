@@ -39,8 +39,8 @@ public class MouseController
 		_packet = new byte[3];
 		_workingPacket = new byte[3];
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("MouseController"));
-		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("MouseController", "MouseHandler"));
-		IDT.registerIrqHandler(IRQ_MOUSE, handlerOffset);
+		int handlerOffset = IDT.CodeOffset(dscAddr, MAGIC.mthdOff("MouseController", "MouseHandler"));
+		IDT.RegisterIrqHandler(IRQ_MOUSE, handlerOffset);
 	}
 	
 	private static byte[] _workingPacket;
@@ -51,10 +51,10 @@ public class MouseController
 	public static void MouseHandler()
 	{
 		byte status = MAGIC.rIOs8(PORT_STATUS);
-		if (BitHelper.getFlag(status, BIT_DATA_AVAILABLE))
+		if (BitHelper.GetFlag(status, BIT_DATA_AVAILABLE))
 		{
 			byte mouse_in = MAGIC.rIOs8(PORT_DATA);
-			if (BitHelper.getFlag(status, BIT_FROM_MOUSE))
+			if (BitHelper.GetFlag(status, BIT_FROM_MOUSE))
 			{
 				switch (cycle)
 				{
@@ -91,18 +91,18 @@ public class MouseController
 		int packetXMovement = _packet[1];
 		int packetYMovement = _packet[2];
 		
-		if (!BitHelper.getFlag(packetMetaData, BIT_ALWAYS_ONE) || BitHelper.getFlag(packetMetaData, BIT_Y_OVERFLOW) || BitHelper.getFlag(packetMetaData, BIT_X_OVERFLOW))
+		if (!BitHelper.GetFlag(packetMetaData, BIT_ALWAYS_ONE) || BitHelper.GetFlag(packetMetaData, BIT_Y_OVERFLOW) || BitHelper.GetFlag(packetMetaData, BIT_X_OVERFLOW))
 		{
 			Logger.warning("Mouse", "Bad packet received");
 			return false;
 		}
 		
-		if (BitHelper.getFlag(packetMetaData, BIT_X_SIGN))
+		if (BitHelper.GetFlag(packetMetaData, BIT_X_SIGN))
 		{
 			packetXMovement |= 0xFFFFFF00;
 		}
 		
-		if (BitHelper.getFlag(packetMetaData, BIT_Y_SIGN))
+		if (BitHelper.GetFlag(packetMetaData, BIT_Y_SIGN))
 		{
 			packetYMovement |= 0xFFFFFF00;
 		}
@@ -125,22 +125,22 @@ public class MouseController
 		_packet[1] = 0;
 		_packet[2] = 0;
 		
-		if (!BitHelper.getFlag(packetMetaData, BIT_ALWAYS_ONE) || BitHelper.getFlag(packetMetaData, BIT_Y_OVERFLOW) || BitHelper.getFlag(packetMetaData, BIT_X_OVERFLOW))
+		if (!BitHelper.GetFlag(packetMetaData, BIT_ALWAYS_ONE) || BitHelper.GetFlag(packetMetaData, BIT_Y_OVERFLOW) || BitHelper.GetFlag(packetMetaData, BIT_X_OVERFLOW))
 		{
 			Logger.warning("Mouse", "Bad packet received");
 			return false;
 		}
 		
 		int buttonState = 0;
-		if (BitHelper.getFlag(packetMetaData, BIT_LEFT_BTN))
+		if (BitHelper.GetFlag(packetMetaData, BIT_LEFT_BTN))
 		{
 			buttonState |= MouseEvent.LEFT_BUTTON;
 		}
-		if (BitHelper.getFlag(packetMetaData, BIT_RIGHT_BTN))
+		if (BitHelper.GetFlag(packetMetaData, BIT_RIGHT_BTN))
 		{
 			buttonState |= MouseEvent.RIGHT_BUTTON;
 		}
-		if (BitHelper.getFlag(packetMetaData, BIT_MIDDLE_BTN))
+		if (BitHelper.GetFlag(packetMetaData, BIT_MIDDLE_BTN))
 		{
 			buttonState |= MouseEvent.MIDDLE_BUTTON;
 		}
@@ -220,7 +220,7 @@ public class MouseController
 		{
 			while (--timeout > 0)
 			{
-				if (BitHelper.getFlag(MAGIC.rIOs8(PORT_STATUS), 0))
+				if (BitHelper.GetFlag(MAGIC.rIOs8(PORT_STATUS), 0))
 				{
 					return;
 				}
@@ -232,7 +232,7 @@ public class MouseController
 		{
 			while (--timeout > 0)
 			{
-				if (!BitHelper.getFlag(MAGIC.rIOs8(PORT_STATUS), 1))
+				if (!BitHelper.GetFlag(MAGIC.rIOs8(PORT_STATUS), 1))
 				{
 					return;
 				}

@@ -13,7 +13,7 @@ public class Font3x6 extends AFont
 	public static final int FONT_CHARACHTERS = FONT_CHARACHTERS_LAST - FONT_CHARACHTERS_START + 1;
 	public static final int BYTES_PER_CHAR = 3;
 	
-	public static final Font3x6 Instance = new Font3x6();
+	public static final Font3x6 INSTANCE = new Font3x6();
 	
 	@Override
 	public int width()
@@ -52,7 +52,7 @@ public class Font3x6 extends AFont
 		
 		if (offset >= FONT_HEIGHT)
 			return 0;
-
+		
 		ch -= FONT_CHARACHTERS_START;
 		byte b = FONT_BYTES[ch * BYTES_PER_CHAR + offset];
 		return Integer.ubyte(b);
