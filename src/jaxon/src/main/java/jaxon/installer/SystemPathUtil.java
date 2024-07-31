@@ -19,6 +19,7 @@ public class SystemPathUtil
 			System.out.println("This command is currently windows only, let us know if you need this feature");
 			System.out.println("By opening an issue on https://konloch.com/jaxon or by submitting a pull request!");
 			System.out.println();
+			
 			if(isNix())
 			{
 				System.out.println("Linux OS Hint:");
@@ -169,14 +170,19 @@ public class SystemPathUtil
 			if (!currentPath.contains(path))
 				updatedPath = currentPath + ";" + path;
 			else
-				return;
+				updatedPath = currentPath;
 		}
 		else
 		{
 			if (currentPath.contains(path))
-				updatedPath = currentPath.replace(";" + path, "").replace(path + ";", "").replace(path, "");
+				updatedPath = currentPath
+						//remove instance of surrounding
+						.replace(";" + path + ";", ";")
+						//check for all other instances of path entry
+						.replace(";" + path, "")
+						.replace(path + ";", "");
 			else
-				return;
+				updatedPath = currentPath;
 		}
 		
 		EasyProcess process = EasyProcess.from(new ProcessBuilder(
