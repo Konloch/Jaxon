@@ -59,10 +59,10 @@ public class Kernel
 		
 		PrintAllPciDevices();
 		
-		PIT.Initialize();
+		PIT.initialize();
 		Logger.info("BOOT", "Initialized PIT");
 		
-		PIT.SetRate(1000);
+		PIT.setRate(1000);
 		Logger.info("BOOT", "Set PIT Rate to 1000Hz");
 		
 		KeyboardController.initialize();
@@ -113,9 +113,9 @@ public class Kernel
 	{
 		Logger.info("BOOT", "Detecting PCI Devices..");
 		LazyPciDeviceReader reader = new LazyPciDeviceReader();
-		while (reader.HasNext())
+		while (reader.hasNext())
 		{
-			PciDevice device = reader.Next();
+			PciDevice device = reader.next();
 			if (device == null)
 				continue;
 			Logger.info("BOOT", "Found Device ".append(device.debug()));

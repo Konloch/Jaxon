@@ -14,9 +14,10 @@ public class LazyPciDeviceReader extends PCI
 		_currentFunction = 0;
 	}
 	
-	public PciDevice Next()
+	public PciDevice next()
 	{
 		PciDevice device = read(_currentBus, _currentDevice, _currentFunction);
+		
 		_currentFunction++;
 		if (_currentFunction >= MAX_FUNCTIONS)
 		{
@@ -26,6 +27,7 @@ public class LazyPciDeviceReader extends PCI
 			{
 				_currentDevice = 0;
 				_currentBus++;
+				
 				if (_currentBus >= MAX_BUS)
 				{
 					_currentBus = MAX_BUS;
@@ -38,12 +40,12 @@ public class LazyPciDeviceReader extends PCI
 	}
 	
 	@SJC.Inline
-	public boolean HasNext()
+	public boolean hasNext()
 	{
 		return !_isFinished;
 	}
 	
-	public void Reset()
+	public void reset()
 	{
 		_currentBus = 0;
 		_currentDevice = 0;

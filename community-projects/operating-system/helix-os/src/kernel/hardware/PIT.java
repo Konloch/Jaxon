@@ -16,7 +16,7 @@ public class PIT
 	private static final double INTERNAL_CLOCK_SPEED = 1193131.666;
 	private static double _rateHz = 18.2;
 	
-	public static void Initialize()
+	public static void initialize()
 	{
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("PIT"));
 		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("PIT", "TimerHandler"));
@@ -24,7 +24,7 @@ public class PIT
 	}
 	
 	@SJC.Interrupt
-	public static void TimerHandler()
+	public static void timerHandler()
 	{
 		Timer.doTick();
 		PIC.acknowledge(IRQ_PIT);
@@ -36,7 +36,7 @@ public class PIT
 	 *
 	 * @param hz The desired rate in Hz.
 	 */
-	public static void SetRate(int hz)
+	public static void setRate(int hz)
 	{
 		short divisor = (short) (INTERNAL_CLOCK_SPEED / hz);
 		MAGIC.wIOs8(PIT_CTRL, PIT_SET);
@@ -51,7 +51,7 @@ public class PIT
 	 * @return The current rate in Hz.
 	 */
 	@SJC.Inline
-	public static double RateHz()
+	public static double rateHz()
 	{
 		return _rateHz;
 	}

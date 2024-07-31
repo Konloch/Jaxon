@@ -185,7 +185,7 @@ public class WindowManager extends Task
 	
 	public void distributeMouseEvents()
 	{
-		if (MouseController.ReadEvent(_mouseEvent))
+		if (MouseController.readEvent(_mouseEvent))
 			processMouseEvent(_mouseEvent);
 	}
 	

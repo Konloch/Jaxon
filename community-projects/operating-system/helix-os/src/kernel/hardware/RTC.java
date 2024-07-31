@@ -18,10 +18,10 @@ public class RTC
 	 * Read current hours in integer format.
 	 */
 	@SJC.Inline
-	public static int ReadHour()
+	public static int readHour()
 	{
-		int hours = ReadHourBCD();
-		hours = HourBcdToBinary(hours);
+		int hours = readHourBCD();
+		hours = hourBcdToBinary(hours);
 		return hours;
 	}
 	
@@ -29,10 +29,10 @@ public class RTC
 	 * Read current minutes in integer format.
 	 */
 	@SJC.Inline
-	public static int ReadMinute()
+	public static int readMinute()
 	{
-		int minutes = ReadMinuteBCD();
-		minutes = BcdToBinary(minutes);
+		int minutes = readMinuteBCD();
+		minutes = bcdToBinary(minutes);
 		return minutes;
 	}
 	
@@ -40,10 +40,10 @@ public class RTC
 	 * Read current seconds in integer format.
 	 */
 	@SJC.Inline
-	public static int ReadSecond()
+	public static int readSecond()
 	{
-		int seconds = ReadSecondBCD();
-		seconds = BcdToBinary(seconds);
+		int seconds = readSecondBCD();
+		seconds = bcdToBinary(seconds);
 		return seconds;
 	}
 	
@@ -51,10 +51,10 @@ public class RTC
 	 * Read current day in integer format.
 	 */
 	@SJC.Inline
-	public static int ReadDayOfMonth()
+	public static int readDayOfMonth()
 	{
-		int day = ReadDay();
-		day = BcdToBinary(day);
+		int day = readDay();
+		day = bcdToBinary(day);
 		return day;
 	}
 	
@@ -62,10 +62,10 @@ public class RTC
 	 * Read current month in integer format.
 	 */
 	@SJC.Inline
-	public static int ReadMonthOfYear()
+	public static int readMonthOfYear()
 	{
-		int month = ReadMonth();
-		month = BcdToBinary(month);
+		int month = readMonth();
+		month = bcdToBinary(month);
 		return month;
 	}
 	
@@ -74,51 +74,51 @@ public class RTC
 	 * The year is the last two digits of the year.
 	 */
 	@SJC.Inline
-	public static int ReadYearOfCentury()
+	public static int readYearOfCentury()
 	{
-		int year = ReadYear();
-		year = BcdToBinary(year);
+		int year = readYear();
+		year = bcdToBinary(year);
 		return year;
 	}
 	
 	@SJC.Inline
-	public static int ReadSecondBCD()
+	public static int readSecondBCD()
 	{
-		return ReadRTC((byte) 0);
+		return readRTC((byte) 0);
 	}
 	
 	@SJC.Inline
-	public static int ReadMinuteBCD()
+	public static int readMinuteBCD()
 	{
-		return ReadRTC((byte) 2);
+		return readRTC((byte) 2);
 	}
 	
 	@SJC.Inline
-	public static int ReadHourBCD()
+	public static int readHourBCD()
 	{
-		return ReadRTC((byte) 4);
+		return readRTC((byte) 4);
 	}
 	
 	@SJC.Inline
-	public static int ReadDay()
+	public static int readDay()
 	{
-		return ReadRTC((byte) 7);
+		return readRTC((byte) 7);
 	}
 	
 	@SJC.Inline
-	public static int ReadMonth()
+	public static int readMonth()
 	{
-		return ReadRTC((byte) 8);
+		return readRTC((byte) 8);
 	}
 	
 	@SJC.Inline
-	public static int ReadYear()
+	public static int readYear()
 	{
-		return ReadRTC((byte) 9);
+		return readRTC((byte) 9);
 	}
 	
 	@SJC.Inline
-	public static int ReadRTC(byte field)
+	public static int readRTC(byte field)
 	{
 		MAGIC.wIOs8(RTC_BASE, field);
 		int value = MAGIC.rIOs8(RTC_DATA);
@@ -126,14 +126,14 @@ public class RTC
 	}
 	
 	@SJC.Inline
-	private static int BcdToBinary(int value)
+	private static int bcdToBinary(int value)
 	{
 		value = (value & 0xF) + ((value >> 4) * 10);
 		return value;
 	}
 	
 	@SJC.Inline
-	private static int HourBcdToBinary(int hours)
+	private static int hourBcdToBinary(int hours)
 	{
 		hours = (hours & 0xF) + ((hours & 0x70) >> 4) * 10 + (hours & 0x80);
 		return hours;

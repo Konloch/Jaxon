@@ -22,7 +22,7 @@ public class Timer
 	
 	public static void sleep(int ms)
 	{
-		double rate = PIT.RateHz();
+		double rate = PIT.rateHz();
 		int ticks = (int) (rate / 1000.0 * (double) ms);
 		int start = ticks();
 		while (ticks() - start < ticks)
@@ -35,7 +35,7 @@ public class Timer
 	@SJC.Inline
 	public static int tickDifferenceMs(int start, int end)
 	{
-		double rate = PIT.RateHz();
+		double rate = PIT.rateHz();
 		return (int) ((end - start) / rate * 1000.0);
 	}
 	
@@ -48,7 +48,7 @@ public class Timer
 	@SJC.Inline
 	public static int ticksToMs(int ticks)
 	{
-		double rate = PIT.RateHz();
+		double rate = PIT.rateHz();
 		return (int) (ticks / rate * 1000.0);
 	}
 }

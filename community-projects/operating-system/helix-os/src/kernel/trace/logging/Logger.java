@@ -120,9 +120,9 @@ public class Logger
 	
 	private static String getTimeHMS()
 	{
-		int hours = RTC.ReadHour();
-		int minutes = RTC.ReadMinute();
-		int seconds = RTC.ReadSecond();
+		int hours = RTC.readHour();
+		int minutes = RTC.readMinute();
+		int seconds = RTC.readSecond();
 		boolean hoursIsTwoDigits = hours >= 10;
 		boolean minutesIsTwoDigits = minutes >= 10;
 		boolean secondsIsTwoDigits = seconds >= 10;

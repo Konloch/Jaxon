@@ -30,26 +30,29 @@ public class MouseController
 	// Commands
 	private static final int CMD_WRITE = 0xD4;
 	
+	private static byte[] _workingPacket;
+	private static byte[] _packet;
+	private static int cycle = 0;
+	
+	private static int _accumulatedX = 0;
+	private static int _accumulatedY = 0;
+	
 	public static void initialize()
 	{
 		install();
 		setSampleRate(500);
-		setResolution(5);
+		setResolution(4);
 		setScaling(1);
 		
 		_packet = new byte[3];
 		_workingPacket = new byte[3];
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("MouseController"));
-		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("MouseController", "MouseHandler"));
+		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("MouseController", "mouseHandler"));
 		IDT.registerIrqHandler(IRQ_MOUSE, handlerOffset);
 	}
 	
-	private static byte[] _workingPacket;
-	private static byte[] _packet;
-	private static int cycle = 0;
-	
 	@SJC.Interrupt
-	public static void MouseHandler()
+	public static void mouseHandler()
 	{
 		byte status = MAGIC.rIOs8(PORT_STATUS);
 		if (BitHelper.getFlag(status, BIT_DATA_AVAILABLE))
@@ -78,6 +81,7 @@ public class MouseController
 				}
 			}
 		}
+		
 		PIC.acknowledge(IRQ_MOUSE);
 	}
 	
@@ -107,7 +111,7 @@ public class MouseController
 		return true;
 	}
 	
-	public static boolean ReadEvent(MouseEvent readInto)
+	public static boolean readEvent(MouseEvent readInto)
 	{
 		if (_packet[0] == 0)
 			return false;
@@ -143,9 +147,6 @@ public class MouseController
 		return true;
 	}
 	
-	private static int _accumulatedX = 0;
-	private static int _accumulatedY = 0;
-	
 	private static void install()
 	{
 		wait(1);
@@ -158,37 +159,37 @@ public class MouseController
 		MAGIC.wIOs8(PORT_STATUS, (byte) 0x60);
 		wait(1);
 		MAGIC.wIOs8(PORT_DATA, (byte) status);
-		Write(0xF6);
+		write(0xF6);
 		read();
-		Write(0xF4);
+		write(0xF4);
 		read();
 	}
 	
 	private static void setSampleRate(int rate)
 	{
-		Write(0xF3);
+		write(0xF3);
 		read();
-		Write(rate);
+		write(rate);
 		read();
 	}
 	
 	private static void setResolution(int resolution)
 	{
-		Write(0xE8);
+		write(0xE8);
 		read();
-		Write(resolution);
+		write(resolution);
 		read();
 	}
 	
 	private static void setScaling(int scaling)
 	{
-		Write(0xE6);
+		write(0xE6);
 		read();
-		Write(scaling);
+		write(scaling);
 		read();
 	}
 	
-	private static void Write(int data)
+	private static void write(int data)
 	{
 		wait(1);
 		MAGIC.wIOs8(PORT_STATUS, (byte) CMD_WRITE);
