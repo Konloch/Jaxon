@@ -1,4 +1,4 @@
 package rte;
 
-public class SIntfDesc {
-}
+public class SIntfDesc
+{}

@@ -1,5 +1,6 @@
 package java.lang;
 
-public class binimp {
-    public static final ByteData ByteData = new ByteData();
+public class Binimp
+{
+	public static final ByteData ByteData = new ByteData();
 }

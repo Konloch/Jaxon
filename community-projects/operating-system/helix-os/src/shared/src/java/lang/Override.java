@@ -1,5 +1,7 @@
 package java.lang;
 
 @SJC.IgnoreUnit
-public @interface Override {
+public @interface Override
+{
+
 }

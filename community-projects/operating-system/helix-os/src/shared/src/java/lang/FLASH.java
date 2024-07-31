@@ -1,5 +1,5 @@
 package java.lang;
 
 @SJC.IgnoreUnit
-public class FLASH {
-}
+public class FLASH
+{}
