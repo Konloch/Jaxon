@@ -5,45 +5,45 @@ import java.lang.StringBuilder;
 
 public class PciDevice implements IDebug
 {
-	public final int VendorId;
-	public final int DeviceId;
-	public final int Command;
-	public final int Status;
-	public final int Revision;
-	public final int Itf;
-	public final int SubClassCode;
-	public final int BaseClassCode;
-	public final int Cls;
-	public final int Latency;
-	public final int Header;
-	public final int Bist;
+	public final int vendorId;
+	public final int deviceId;
+	public final int command;
+	public final int status;
+	public final int revision;
+	public final int itf;
+	public final int subClassCode;
+	public final int baseClassCode;
+	public final int cls;
+	public final int latency;
+	public final int header;
+	public final int bist;
 	
-	public final int Bus;
-	public final int Device;
-	public final int Function;
+	public final int bus;
+	public final int device;
+	public final int function;
 	
-	public PciDevice(int bus, int device, int function, int vendorId, int deviceId, int command, int status, int revision, int itf, int subclasscode, int baseclasscode, int cls, int latency, int header, int bist)
+	public PciDevice(int bus, int device, int function, int vendorId, int deviceId, int command, int status, int revision, int itf, int subClassCode, int baseClassCode, int cls, int latency, int header, int bist)
 	{
-		VendorId = vendorId;
-		DeviceId = deviceId;
-		Command = command;
-		Status = status;
-		Revision = revision;
-		Itf = itf;
-		SubClassCode = subclasscode;
-		BaseClassCode = baseclasscode;
-		Cls = cls;
-		Latency = latency;
-		Header = header;
-		Bist = bist;
-		Bus = bus;
-		Device = device;
-		Function = function;
+		this.vendorId = vendorId;
+		this.deviceId = deviceId;
+		this.command = command;
+		this.status = status;
+		this.revision = revision;
+		this.itf = itf;
+		this.subClassCode = subClassCode;
+		this.baseClassCode = baseClassCode;
+		this.cls = cls;
+		this.latency = latency;
+		this.header = header;
+		this.bist = bist;
+		this.bus = bus;
+		this.device = device;
+		this.function = function;
 	}
 	
 	public String BaseClassName()
 	{
-		switch (BaseClassCode)
+		switch (baseClassCode)
 		{
 			case 0x00:
 				return "Old Device";
@@ -85,7 +85,7 @@ public class PciDevice implements IDebug
 	public String debug()
 	{
 		StringBuilder sb = new StringBuilder(512);
-		sb.append("PCI(").append(Bus).append(':').append(Device).append(':').append(Function).append("){").append("Vendor=").append(VendorId).append(", ").append("Device=").append(DeviceId).append(", ").append("Command=").append(Command).append(", ").append("Status=").append(Status).append(", ").append("Revision=").append(Revision).append(", ").append("Itf=").append(Itf).append(", ").append("SubClass=").append(SubClassCode).append(", ").append("BaseClass=").append(BaseClassCode).append(" (").append(BaseClassName()).append("), ").append("Cls=").append(Cls).append(", ").append("Latency=").append(Latency).append(", ").append("Header=").append(Header).append(", ").append("Bist=").append(Bist).append("}");
+		sb.append("PCI(").append(bus).append(':').append(device).append(':').append(function).append("){").append("Vendor=").append(vendorId).append(", ").append("Device=").append(deviceId).append(", ").append("Command=").append(command).append(", ").append("Status=").append(status).append(", ").append("Revision=").append(revision).append(", ").append("Itf=").append(itf).append(", ").append("SubClass=").append(subClassCode).append(", ").append("BaseClass=").append(baseClassCode).append(" (").append(BaseClassName()).append("), ").append("Cls=").append(cls).append(", ").append("Latency=").append(latency).append(", ").append("Header=").append(header).append(", ").append("Bist=").append(bist).append("}");
 		return sb.toString();
 	}
 }

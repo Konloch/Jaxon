@@ -12,20 +12,18 @@ public class PCI
 	public static final int CONFIG_ADDRESS = 0x0CF8;
 	public static final int CONFIG_DATA = 0x0CFC;
 	
-	public static PciDevice Read(int busIdx, int deviceIdx, int functionIdx)
+	public static PciDevice read(int busIdx, int deviceIdx, int functionIdx)
 	{
-		int addrReg0 = BuildAddress(0, functionIdx, deviceIdx, busIdx);
-		int addrReg1 = BuildAddress(1, functionIdx, deviceIdx, busIdx);
-		int addrReg2 = BuildAddress(2, functionIdx, deviceIdx, busIdx);
-		int addrReg3 = BuildAddress(3, functionIdx, deviceIdx, busIdx);
+		int addrReg0 = buildAddress(0, functionIdx, deviceIdx, busIdx);
+		int addrReg1 = buildAddress(1, functionIdx, deviceIdx, busIdx);
+		int addrReg2 = buildAddress(2, functionIdx, deviceIdx, busIdx);
+		int addrReg3 = buildAddress(3, functionIdx, deviceIdx, busIdx);
 		
 		MAGIC.wIOs32(CONFIG_ADDRESS, addrReg0);
 		int dataReg0 = MAGIC.rIOs32(CONFIG_DATA);
 		
 		if (dataReg0 == 0 || dataReg0 == -1)
-		{
 			return null;
-		}
 		
 		MAGIC.wIOs32(CONFIG_ADDRESS, addrReg1);
 		int dataReg1 = MAGIC.rIOs32(CONFIG_DATA);
@@ -51,12 +49,10 @@ public class PCI
 		return device;
 	}
 	
-	public static int BuildAddress(int register, int function, int device, int bus)
+	public static int buildAddress(int register, int function, int device, int bus)
 	{
 		if (register < 0 || register > 63 || bus < 0 || bus > 255 || device < 0 || device > 31 || function < 0 || function > 7)
-		{
 			Kernel.panic("PCI build Addr invalid Params");
-		}
 		
 		int addr = 0;
 		addr = BitHelper.setRange(addr, 0, 2, 0);

@@ -16,7 +16,7 @@ public class LazyPciDeviceReader extends PCI
 	
 	public PciDevice Next()
 	{
-		PciDevice device = Read(_currentBus, _currentDevice, _currentFunction);
+		PciDevice device = read(_currentBus, _currentDevice, _currentFunction);
 		_currentFunction++;
 		if (_currentFunction >= MAX_FUNCTIONS)
 		{

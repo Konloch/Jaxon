@@ -116,7 +116,7 @@ public class KeyboardController
 		if (isBreak)
 			keyCode = unsetBreakCode(keyCode);
 		
-		char logicalKey = _layout.LogicalKey(keyCode, isUpper(), _altPressed);
+		char logicalKey = _layout.logicalKey(keyCode, isUpper(), _altPressed);
 		updateKeyboardState(logicalKey, isBreak);
 		readInto.key = logicalKey;
 		readInto.isDown = !isBreak;
