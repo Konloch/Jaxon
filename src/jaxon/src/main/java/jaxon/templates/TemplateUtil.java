@@ -13,6 +13,27 @@ import java.net.URL;
  */
 public class TemplateUtil
 {
+	public static void init(String[] args) throws IOException
+	{
+		String name = (args.length >= 2) ? args[1] : null;
+		
+		//download the console template
+		templateCLI(new String[]{"", "console"});
+		
+		//process the folder
+		File console = new File("console");
+		if(name != null)
+		{
+			File newLocation = new File(name);
+			if(!console.renameTo(newLocation))
+				System.out.println("Unable to rename directory, open your project using Intellij: " + console.getAbsolutePath());
+			else
+				System.out.println("Open your project using Intellij: " + newLocation.getAbsolutePath());
+		}
+		else
+			System.out.println("Open your project using Intellij: " + console.getAbsolutePath());
+	}
+	
 	public static void templateCLI(String[] args) throws IOException
 	{
 		String template = args[1];

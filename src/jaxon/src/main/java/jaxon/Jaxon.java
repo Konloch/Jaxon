@@ -41,6 +41,8 @@ public class Jaxon
 			JDKUtil.jdkCLI(args);
 		else if (command.equalsIgnoreCase("system-path") && args.length >= 2)
 			SystemPathUtil.systemPathCLI(args);
+		else if (command.equalsIgnoreCase("init"))
+			TemplateUtil.init(args);
 		else if (command.equalsIgnoreCase("install"))
 			Installer.install();
 		else if (command.equalsIgnoreCase("uninstall"))

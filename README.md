@@ -56,6 +56,9 @@ Jaxon is a "with the batteries" SDK built on top of SJC - a compiler that compil
     + A minified operating system runtime with nothing more than a video buffer.
 
 ## Jaxon Command Line
++ `init` - Create a blank project with the latest runtime.
+  + Example Command: `jaxon init project-name`
+    + `jaxon init` - *No name needs to be specified, it will just use 'console' by default*
 + `template` - Create a new template in the current directory
   + Available Templates: (`Console`, `Graphical`, `ATmega`, `Operating-System`)
   + Example Command: `jaxon template console`
