@@ -6,11 +6,14 @@
 	<groupId>jaxon</groupId>
 	<artifactId>helix-os</artifactId>
 	<version>1.0.0</version>
-	<packaging>pom</packaging>
 
-	<modules>
-		<module>src/operating-system</module>
-		<module>src/shared</module>
-	</modules>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+			</resource>
+		</resources>
+	</build>
 
 </project>
