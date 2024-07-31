@@ -42,7 +42,7 @@ public class Kernel
 		SymbolResolution.initialize();
 		Logger.info("BOOT", "Initialized Symbol Resolution");
 		
-		IDT.Initialize();
+		IDT.initialize();
 		Logger.info("BOOT", "Initialized Interrupt Descriptor Table");
 		
 		MAGIC.doStaticInit();
@@ -74,7 +74,7 @@ public class Kernel
 		MouseController.Initialize();
 		Logger.info("BOOT", "Initialized PS2 Mouse Controller");
 		
-		IDT.Enable();
+		IDT.enable();
 		Logger.info("BOOT", "Enabled Interrupts");
 		
 		Scheduler.initialize();
@@ -138,9 +138,7 @@ public class Kernel
 		MAGIC.inlineOffset(1, ebp);
 		int eip = x86.eipForFunction(ebp);
 		Bluescreen.show("PANIC", msg, ebp, eip);
-		while (true)
-		{
-		}
+		while (true);
 	}
 	
 	public static void panic(int i)

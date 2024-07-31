@@ -39,8 +39,8 @@ public class MouseController
 		_packet = new byte[3];
 		_workingPacket = new byte[3];
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("MouseController"));
-		int handlerOffset = IDT.CodeOffset(dscAddr, MAGIC.mthdOff("MouseController", "MouseHandler"));
-		IDT.RegisterIrqHandler(IRQ_MOUSE, handlerOffset);
+		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("MouseController", "MouseHandler"));
+		IDT.registerIrqHandler(IRQ_MOUSE, handlerOffset);
 	}
 	
 	private static byte[] _workingPacket;
@@ -77,7 +77,7 @@ public class MouseController
 				}
 			}
 		}
-		PIC.Acknowledge(IRQ_MOUSE);
+		PIC.acknowledge(IRQ_MOUSE);
 	}
 	
 	private static boolean BufferMovementEvents()

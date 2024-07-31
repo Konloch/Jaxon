@@ -39,15 +39,15 @@ public class KeyboardController
 		}
 		
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("KeyboardController"));
-		int handlerOffset = IDT.CodeOffset(dscAddr, MAGIC.mthdOff("KeyboardController", "KeyboardHandler"));
-		IDT.RegisterIrqHandler(IRQ_KEYBOARD, handlerOffset);
+		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("KeyboardController", "KeyboardHandler"));
+		IDT.registerIrqHandler(IRQ_KEYBOARD, handlerOffset);
 	}
 	
 	@SJC.Interrupt
 	public static void KeyboardHandler()
 	{
 		KeyboardController.Handle();
-		PIC.Acknowledge(IRQ_KEYBOARD);
+		PIC.acknowledge(IRQ_KEYBOARD);
 	}
 	
 	public static void SetLayout(ALayout layout)
@@ -106,7 +106,7 @@ public class KeyboardController
 			
 			if (event.Key == Key.F10 && event.IsDown)
 			{
-				PIC.Acknowledge(IRQ_KEYBOARD);
+				PIC.acknowledge(IRQ_KEYBOARD);
 				Scheduler.taskBreak();
 			}
 		}

@@ -35,7 +35,7 @@ public class BIOS
 		MAGIC.wMem8(MemoryLayout.BIOS_MEMORY + 61, (byte) inter); // set interrupt number
 		MAGIC.inline(0x9C); // pushf
 		MAGIC.inline(0xFA); // cli
-		IDT.LoadTableRealMode();// load idt with real mode interrupt table
+		IDT.loadTableRealMode();// load idt with real mode interrupt table
 		
 		// call 16 bit code
 		MAGIC.inline(0x56); // push e/rsi
@@ -60,7 +60,7 @@ public class BIOS
 		}
 		MAGIC.inline(0x5F); // pop e/rdi
 		MAGIC.inline(0x5E); // pop e/rsi
-		IDT.LoadTableProtectedMode(); // load idt with protected/long mode interrupt table
+		IDT.loadTableProtectedMode(); // load idt with protected/long mode interrupt table
 		MAGIC.inline(0x9D); // popf
 	}
 	
