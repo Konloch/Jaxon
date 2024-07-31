@@ -18,9 +18,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.konloch</groupId>
-			<artifactId>jaxon-shared</artifactId>
+			<groupId>jaxon</groupId>
+			<artifactId>shared-runtime</artifactId>
 			<version>1.0.0</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
