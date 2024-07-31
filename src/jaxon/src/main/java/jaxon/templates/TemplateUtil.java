@@ -64,6 +64,7 @@ public class TemplateUtil
 			File templateFile = new File(template);
 			GitHubAPICloneRepo.cloneRepo(templateFile,
 					downloadURL);
+			System.out.println();
 			System.out.println("Finished downloading all resources.");
 			System.out.println("Open your new template using Intellij: " + templateFile.getAbsolutePath());
 		}
