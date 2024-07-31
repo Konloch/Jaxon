@@ -13,10 +13,10 @@ public class Installer
 {
 	public static void install() throws IOException
 	{
-		File jaxonRoot = SystemPathUtil.resolveJaxonRoot();
+		File jaxonRoot = resolveJaxonRoot();
 		File jaxonBin = new File(jaxonRoot, "bin");
 		File jaxonJDK = new File(jaxonRoot, "JDK");
-		File jaxonBinary = new File(jaxonBin, SystemPathUtil.isWindows() ? "jaxon.exe" : "jaxon");
+		File jaxonBinary = new File(jaxonBin, isWindows() ? "jaxon.exe" : "jaxon");
 		
 		if(jaxonBinary.exists())
 		{
@@ -42,5 +42,41 @@ public class Installer
 	public static void uninstall()
 	{
 		SystemPathUtil.systemPathCLI(new String[]{"", "remove"});
+	}
+	
+	public static boolean isWindows()
+	{
+		return System.getProperty("os.name").toLowerCase().contains("win");
+	}
+	
+	public static boolean isNix()
+	{
+		String os = System.getProperty("os.name").toLowerCase();
+		return os.contains("nix") || os.contains("nux") || os.contains("bsd");
+	}
+	
+	public static File resolveJaxonRoot()
+	{
+		File defaultLocation =  new File(System.getProperty("user.home"), ".jaxon");
+		
+		//if jaxon was previously installed using the default directory, continue to use that
+		if(defaultLocation.exists())
+			return defaultLocation;
+		
+		//handle XDG Base Directory - https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+		if(isNix())
+		{
+			File homeLocal = new File(System.getProperty("user.home"), ".local");
+			
+			if(homeLocal.exists())
+				return new File(new File(homeLocal, "share"), ".jaxon");
+			
+			File homeConfig = new File(System.getProperty("user.home"), ".config");
+			if(homeConfig.exists())
+				return new File(homeConfig, ".jaxon");
+		}
+		
+		//return jaxon default location
+		return defaultLocation;
 	}
 }
