@@ -33,8 +33,8 @@ public class MouseController
 	public static void initialize()
 	{
 		install();
-		setSampleRate(100);
-		setResolution(4);
+		setSampleRate(500);
+		setResolution(5);
 		setScaling(1);
 		
 		_packet = new byte[3];
