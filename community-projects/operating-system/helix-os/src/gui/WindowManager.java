@@ -157,25 +157,25 @@ public class WindowManager extends Task
 		if (_selectedWindow == null)
 			return;
 		
-		while (KeyboardController.HasNewEvent())
+		while (KeyboardController.hasNewEvent())
 		{
-			KeyEvent keyEvent = KeyboardController.ReadEvent();
+			KeyEvent keyEvent = KeyboardController.readEvent();
 			if (keyEvent != null)
 			{
 				Logger.trace("WIN", "Handling ".append(keyEvent.debug()));
-				if (keyEvent.IsDown)
+				if (keyEvent.isDown)
 				{
-					if (consumedInternalOnKeyPressed(keyEvent.Key))
+					if (consumedInternalOnKeyPressed(keyEvent.key))
 						continue;
 					
-					_selectedWindow.onKeyPressed(keyEvent.Key);
+					_selectedWindow.onKeyPressed(keyEvent.key);
 				}
 				else
 				{
-					if (consumedInternalOnKeyReleased(keyEvent.Key))
+					if (consumedInternalOnKeyReleased(keyEvent.key))
 						continue;
 					
-					_selectedWindow.onKeyReleased(keyEvent.Key);
+					_selectedWindow.onKeyReleased(keyEvent.key);
 				}
 			}
 		}

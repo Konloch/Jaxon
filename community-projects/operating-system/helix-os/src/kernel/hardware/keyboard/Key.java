@@ -145,16 +145,15 @@ public class Key
 	public static final char EURO_SIGN = Key.DOLLAR_KEY;
 	public static final char AGUE_ACCENT = Key.GRAVE_ACCENT;
 	
-	public static char Ascii(char key)
+	public static char ascii(char key)
 	{
 		if (key >= 0x20 && key <= 0x7E)
-		{
 			return key;
-		}
+		
 		return 0;
 	}
 	
-	public static String Name(char key)
+	public static String name(char key)
 	{
 		if (key >= 0x20 && key <= 0x7E)
 		{
@@ -163,6 +162,7 @@ public class Key
 			chars[0] = (byte) c;
 			return new String(chars);
 		}
+		
 		switch (key)
 		{
 			case Key.LSHIFT:

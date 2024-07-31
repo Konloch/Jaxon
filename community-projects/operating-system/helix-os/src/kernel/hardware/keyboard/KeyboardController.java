@@ -28,44 +28,42 @@ public class KeyboardController
 	private static boolean _altPressed;
 	private static boolean _capsLocked;
 	
-	public static void Initialize()
+	static int expectedLength = -1;
+	private static int[] packet;
+	private static int cycle = 0;
+	
+	public static void initialize()
 	{
 		_layout = null;
 		packet = new int[3];
 		_eventBuffer = new QueueKeyEvent(32);
 		for (int i = 0; i < _eventBuffer.capacity(); i++)
-		{
 			_eventBuffer.put(new KeyEvent());
-		}
 		
 		int dscAddr = MAGIC.cast2Ref(MAGIC.clssDesc("KeyboardController"));
-		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("KeyboardController", "KeyboardHandler"));
+		int handlerOffset = IDT.codeOffset(dscAddr, MAGIC.mthdOff("KeyboardController", "keyboardHandler"));
 		IDT.registerIrqHandler(IRQ_KEYBOARD, handlerOffset);
 	}
 	
 	@SJC.Interrupt
-	public static void KeyboardHandler()
+	public static void keyboardHandler()
 	{
-		KeyboardController.Handle();
+		KeyboardController.handle();
 		PIC.acknowledge(IRQ_KEYBOARD);
 	}
 	
-	public static void SetLayout(ALayout layout)
+	public static void setLayout(ALayout layout)
 	{
 		_layout = layout;
 	}
 	
 	@SJC.Inline
-	public static boolean HasNewEvent()
+	public static boolean hasNewEvent()
 	{
 		return _eventBuffer.containsNewElements();
 	}
 	
-	static int expectedLength = -1;
-	private static int[] packet;
-	private static int cycle = 0;
-	
-	public static void Handle()
+	public static void handle()
 	{
 		byte code = MAGIC.rIOs8(PORT_KEYCODE);
 		if (code >= 0xE2)
@@ -77,17 +75,11 @@ public class KeyboardController
 		if (cycle == 0)
 		{
 			if (code == KEYCODE_EXTEND1)
-			{
 				expectedLength = 2;
-			}
 			else if (code == KEYCODE_EXTEND2)
-			{
 				expectedLength = 3;
-			}
 			else
-			{
 				expectedLength = 1;
-			}
 		}
 		
 		packet[cycle++] = code;
@@ -97,14 +89,14 @@ public class KeyboardController
 			cycle = 0;
 			expectedLength = 0;
 			KeyEvent event = _eventBuffer.peek();
-			ReadPacket(event);
+			readPacket(event);
 			_eventBuffer.incHead();
 			
 			packet[0] = 0;
 			packet[1] = 0;
 			packet[2] = 0;
 			
-			if (event.Key == Key.F10 && event.IsDown)
+			if (event.key == Key.F10 && event.isDown)
 			{
 				PIC.acknowledge(IRQ_KEYBOARD);
 				Scheduler.taskBreak();
@@ -112,77 +104,59 @@ public class KeyboardController
 		}
 	}
 	
-	public static KeyEvent ReadEvent()
+	public static KeyEvent readEvent()
 	{
 		return _eventBuffer.get();
 	}
 	
-	private static void ReadPacket(KeyEvent readInto)
+	private static void readPacket(KeyEvent readInto)
 	{
-		int keyCode = ReadKeyCode();
-		boolean isBreak = IsBreakCode(keyCode);
+		int keyCode = readKeyCode();
+		boolean isBreak = isBreakCode(keyCode);
 		if (isBreak)
-		{
-			keyCode = UnsetBreakCode(keyCode);
-		}
+			keyCode = unsetBreakCode(keyCode);
 		
-		char logicalKey = _layout.LogicalKey(keyCode, IsUpper(), _altPressed);
-		UpdateKeyboardState(logicalKey, isBreak);
-		readInto.Key = logicalKey;
-		readInto.IsDown = !isBreak;
+		char logicalKey = _layout.LogicalKey(keyCode, isUpper(), _altPressed);
+		updateKeyboardState(logicalKey, isBreak);
+		readInto.key = logicalKey;
+		readInto.isDown = !isBreak;
 	}
 	
-	private static void UpdateKeyboardState(char logicalKey, boolean isBreak)
+	private static void updateKeyboardState(char logicalKey, boolean isBreak)
 	{
 		switch (logicalKey)
 		{
 			case Key.LSHIFT:
 			case Key.RSHIFT:
 				if (isBreak)
-				{
 					_shiftPressed = false;
-				}
 				else
-				{
 					_shiftPressed = true;
-				}
 				break;
 			case Key.LCTRL:
 			case Key.RCTRL:
 				if (isBreak)
-				{
 					_ctrlPressed = false;
-				}
 				else
-				{
 					_ctrlPressed = true;
-				}
 				break;
 			case Key.LALT:
 			case Key.RALT:
 				if (isBreak)
-				{
 					_altPressed = false;
-				}
 				else
-				{
 					_altPressed = true;
-				}
 				break;
 			case Key.CAPSLOCK:
 				if (isBreak)
-				{
 					_capsLocked = false;
-				}
 				else
-				{
 					_capsLocked = true;
-				}
 				break;
 		}
 	}
 	
-	private static int ReadKeyCode()
+	private static int readKeyCode()
 	{
 		int c0 = Integer.ubyte(packet[0]);
 		int keyCode = 0;
@@ -219,35 +193,29 @@ public class KeyboardController
 	 * For E1 codes, the 8th and 16th bits are set.
 	 */
 	@SJC.Inline
-	private static int UnsetBreakCode(int keyCode)
+	private static int unsetBreakCode(int keyCode)
 	{
 		if (keyCode > 0xE10000)
-		{
 			return keyCode & MASK_0111111101111111;
-		}
 		else
-		{
 			return keyCode & MASK_01111111;
-		}
 	}
 	
 	@SJC.Inline
-	private static boolean IsBreakCode(int keyCode)
+	private static boolean isBreakCode(int keyCode)
 	{
 		return (keyCode & MASK_10000000) != 0;
 	}
 	
 	@SJC.Inline
-	private static boolean IsUpper()
+	private static boolean isUpper()
 	{
 		if (_shiftPressed)
-		{
 			return true;
-		}
+		
 		if (_capsLocked)
-		{
 			return true;
-		}
+		
 		return false;
 	}
 }

@@ -4,7 +4,7 @@ import kernel.hardware.keyboard.Key;
 
 public class QWERTZ extends ALayout
 {
-	public static final QWERTZ Instance = new QWERTZ();
+	public static final QWERTZ INSTANCE = new QWERTZ();
 	
 	@Override
 	public char LogicalKey(int physicalKey, boolean shift, boolean alt)
@@ -231,13 +231,11 @@ public class QWERTZ extends ALayout
 	private static char Key(boolean shift, boolean alt, char keyLower, char keyUpper, char keyAlt)
 	{
 		if (alt)
-		{
 			return keyAlt;
-		}
+		
 		if (shift)
-		{
 			return keyUpper;
-		}
+		
 		return keyLower;
 	}
 	
@@ -245,9 +243,8 @@ public class QWERTZ extends ALayout
 	private static char Key(boolean shift, boolean alt, char keyLower, char keyUpper)
 	{
 		if (shift)
-		{
 			return keyUpper;
-		}
+		
 		return keyLower;
 	}
 	

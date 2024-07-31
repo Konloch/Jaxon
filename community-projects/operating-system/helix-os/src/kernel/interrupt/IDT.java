@@ -56,6 +56,7 @@ public class IDT
 			Kernel.panic("IDT not initialized");
 			return;
 		}
+		
 		Logger.info("IDT", new StringBuilder(64).append("Registering IRQ handler for IRQ ").append(irq).append(" at 0x").append(handlerAddr, 16).toString());
 		writeTableEntry(irq + 32, handlerAddr);
 	}

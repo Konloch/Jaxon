@@ -65,10 +65,10 @@ public class Kernel
 		PIT.SetRate(1000);
 		Logger.info("BOOT", "Set PIT Rate to 1000Hz");
 		
-		KeyboardController.Initialize();
+		KeyboardController.initialize();
 		Logger.info("BOOT", "Initialized PS2 Keyboard Controller");
 		
-		KeyboardController.SetLayout(new QWERTZ());
+		KeyboardController.setLayout(new QWERTZ());
 		Logger.info("BOOT", "Set Keyboard Layout to QWERTZ");
 		
 		MouseController.Initialize();

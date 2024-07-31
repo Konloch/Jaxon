@@ -221,7 +221,7 @@ public class TextField extends Widget
 				int characterColor = _characterColors[i][j];
 				
 				// Skip rendering if the character is not visible
-				if (characterColor == _bg || Key.Ascii(character) == 0)
+				if (characterColor == _bg || Key.ascii(character) == 0)
 				{
 					continue;
 				}

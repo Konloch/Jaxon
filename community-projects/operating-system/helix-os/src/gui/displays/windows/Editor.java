@@ -60,7 +60,7 @@ public class Editor extends Window
 				MoveCursorRight();
 				break;
 			default:
-				if (Key.Ascii(key) != 0)
+				if (Key.ascii(key) != 0)
 				{
 					_textField.Write((byte) key);
 				}
