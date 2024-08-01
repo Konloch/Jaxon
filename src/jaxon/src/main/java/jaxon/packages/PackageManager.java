@@ -36,9 +36,14 @@ public class PackageManager
 	
 	public static void preformCLI(String[] args) throws IOException
 	{
-		String template = args[1];
+		String pack = args[1];
 		String version = args.length >= 3 ? args[2] : null;
+		String name = args.length >= 4 ? args[3] : null;
 		boolean downloadLatest = version == null;
+		
+		if(version != null && version.equalsIgnoreCase("latest"))
+			version = null;
+		
 		String[] packageList = readPackageList();
 		
 		String highestVersion = null;
@@ -57,7 +62,7 @@ public class PackageManager
 			String packageVersion = packageInfo[1];
 			String packageURL = packageInfo[2];
 			
-			if(!packageName.equalsIgnoreCase(template))
+			if(!packageName.equalsIgnoreCase(pack))
 				continue;
 				
 			if(downloadLatest)
@@ -69,25 +74,39 @@ public class PackageManager
 					downloadURL = packageURL;
 				}
 			}
-			else if(version.equalsIgnoreCase(packageVersion))
+			else if(packageVersion.equalsIgnoreCase(version))
 				downloadURL = packageURL;
 		}
 		
 		if(downloadURL == null)
 		{
 			if(!downloadLatest)
-				System.out.println("Could not find the template '" + template + "' with version `" + version + "`");
+				System.out.println("Could not find the template '" + pack + "' with version `" + version + "`");
 			else
-				System.out.println("Could not find the template '" + template + "'");
+				System.out.println("Could not find the template '" + pack + "'");
 		}
 		else
 		{
-			File templateFile = new File(template);
-			GitHubAPICloneRepo.cloneRepo(templateFile,
-					downloadURL);
+			File packageDirectory = new File(pack);
+			
+			//clone the package
+			GitHubAPICloneRepo.cloneRepo(packageDirectory, downloadURL);
+			
 			System.out.println();
 			System.out.println("Finished downloading all resources.");
-			System.out.println("Open your new template using Intellij: " + templateFile.getAbsolutePath());
+			System.out.println();
+			
+			//rename to the new package
+			if(name != null)
+			{
+				File newLocation = new File(name);
+				if(!packageDirectory.renameTo(newLocation))
+					System.out.println("Unable to rename directory, open your project using Intellij: " + packageDirectory.getAbsolutePath());
+				else
+					System.out.println("Open your project using Intellij: " + newLocation.getAbsolutePath());
+			}
+			else
+				System.out.println("Open your project using Intellij: " + packageDirectory.getAbsolutePath());
 		}
 	}
 	
