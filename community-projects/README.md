@@ -1,33 +1,59 @@
 # Jaxon Community Projects
-This repository is a mono repo containing Jaxon / SJC projects that have been contributed by several members of the Jaxon community. It's meant to act as a single location that contains the modern Jaxon build system.
 
-Whether you're a seasoned SJC developer or just getting started, this repository offers a wealth of resources to help you get the most out of the compiler. From build scripts to custom operating-systems, you'll find a wide variety of projects to explore and contribute to.
+---
 
-Join the Jaxon community today and help us build a brighter future for SJC development!
+This is a mono repo containing Jaxon / SJC projects that have been contributed by several members of the Jaxon community. It's meant to act as a single location that contains the modern Jaxon build system.
+
+Whether you're a seasoned SJC developer or just getting started, this repository offers a wealth of resources to help you learn. From build scripts to custom operating-systems, you'll find a wide variety of projects to explore and contribute to.
+
+You'll find all the community projects listed here. To install them, use the information provided for each entry. For exact versioning information, visit the [package.list](https://github.com/Konloch/Jaxon/blob/master/community-projects/package.list).
+
+---
 
 ## Applications
-+ [Console Demo](application/demo-console/) - A cross platform hello world. Compiles to Win32 Executable & Linux
-    + **Note** This template contains the in-development runtime library.
++ [Console Template](application/demo-console/) - Cross-platform template for printing to console. *(Compiles to Win32 Executable & Linux)*
+    + Install with `jaxon package console`
+    + **Note** This template contains the latest in-development runtime library.
     + This version is considered the most 'cutting edge' and will contain the most complete runtime API.
-+ [Barebones Demo](application/demo-barebones/) - A cross platform barebones version of hello world. Compiles to Win32 Executable & Linux
-	+ This contains a very minified runtime which requires the developer to implement the expected features.
-+ [Graphical Demo](application/demo-graphical/) - A cross platform example of windowed graphical drawing. Compiles to Win32 Executable & Linux
-    + The graphical template is currently paused until the runtime has been completed more.
++ [Graphical Template](application/demo-graphical/) - Cross-platform template for windowed graphical applications. *(Compiles to Win32 Executable & Linux)*
+    + Install with `jaxon package graphical`
+    + This contains a proof of concept for shared windowing between Linux and Windows.
+    + The runtime is outdated and is planned to be updated with a windowing API.
++ [Barebones Demo](application/demo-barebones/) - A cross-platform barebones version of hello world. *(Compiles to Win32 Executable & Linux)*
+    + Install with `jaxon package barebones`
+    + This contains a very minified runtime which requires the developer to implement the expected features.
 + [Fake Javac](application/fake-javac/) - A tiny program that pretends to be javac 1.8.
+    + Install with `jaxon package fake-javac`
     + Used in the Jaxon Blank SDK.
+
+---
 
 ## Operating-Systems
 + **Note** To run these operating systems, use QEMU - example scripts are included to get you started!
-+ [Hello World](operating-system/hello-world/) - A slimmed down hello world demo
++ [Operating System Template](operating-system/picos/) - An operating system written in Java
+    + Install with `jaxon package operating-system`
++ [Operating System Hello World Template](operating-system/hello-world/) - A slimmed down operating system that says hello world
+    + Install with `jaxon package operating-system-hello-world`
 + [PicOS](operating-system/picos/) - The original OS written with SJC
+    + Install with `jaxon package picos`
 + [Bearded Robot](operating-system/bearded-robot/) - An operating system written in Java
-	+ Currently has a bug on boot, this is planned to be fixed
+    + Install with `jaxon package bearded-robot`
+	+ *Currently has a bug on boot, this is planned to be fixed*
 + [Self-Made-OS](operating-system/self-made-os/) - An operating system written in Java
+    + Install with `jaxon package self-made-os`
 + [Winux](operating-system/winux/) - An operating system written in Java
+    + Install with `jaxon package winux`
++ [Helix-OS](operating-system/helix-os/) - An operating system written in Java
+    + Install with `jaxon package helix-os`
+
+---
 
 ## Embedded
 + [ATmega](embedded/atmega/) - A demo controlling an ATmega board
-	+ This is currently not compiling, this is planned to be fixed
+    + Install with `jaxon package atmega`
+	+ *This is currently not compiling, this is planned to be fixed*
+
+---
 
 ## Links
 + [Jaxon](https://konloch.com/jaxon)
