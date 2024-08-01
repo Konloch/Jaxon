@@ -60,10 +60,11 @@ At some point you're going to want to get Intellij working.
 + `init` - Create a blank project with the latest runtime.
   + Example Command: `jaxon init project-name`
     + `jaxon init` - *Name is optional, it will just use 'console' by default*
-+ `package` - Create a new package template in the current directory
-  + Example Command: `jaxon package console`
++ `package` - Download a Jaxon package source code from the Jaxon Community Project mono repo.
+  + **Optional Commands:** `jaxon package [name] [version*] [project-name*]` - * *denotes optional command*
+  + Example Commands: `jaxon package console`, `jaxon package console 0.1.0`, `jaxon package console 0.1.0 project-name`
 + `build` - Build using a specific profile
-  + Available Profiles: (`win-exe`, `win-app`, `lin`, `atmega`, `os-32`, `os-64`)
+  + **Available Profiles:** (`win-exe`, `win-app`, `lin`, `atmega`, `os-32`, `os-64`)
   + Example Command: `jaxon build win-exe src/shared/src src/windows/src`
 + `install` - Install Jaxon to the computer
   + Example Command: `jaxon install`
@@ -84,6 +85,7 @@ At some point you're going to want to get Intellij working.
   + Add Jaxon to System-Path: `jaxon system-path add`
   + Remove Jaxon from System-Path: `jaxon system-path remove`
 + `sjc` - Access underlying SJC command-line
+  + For a [complete list of SJC commands click here](https://www.fam-frenz.de/stefan/man042_0182eng.pdf)
 
 ---
 
