@@ -96,7 +96,7 @@ public class PackageManager
 				//move the index forward
 				if(dependencyInfo.length != 2)
 				{
-					index += (tempIndex - index);
+					index += ((tempIndex - index) - 1);
 					break;
 				}
 				
@@ -151,12 +151,7 @@ public class PackageManager
 		{
 			File packageDirectory = new File(inputName);
 			
-			//clone dependencies in order
-			for(JaxonDependency dependency : latestVersion.dependencies)
-				GitHubAPICloneRepo.cloneRepo(packageDirectory, packageFromDependency(dependency).url);
-			
-			//clone the package
-			GitHubAPICloneRepo.cloneRepo(packageDirectory, latestVersion.url);
+			cloneWithDependencies(packageDirectory, latestVersion);
 			
 			System.out.println();
 			System.out.println("Finished downloading all resources.");
@@ -176,10 +171,24 @@ public class PackageManager
 		}
 	}
 	
+	private static void cloneWithDependencies(File packageDirectory, JaxonPackage jaxonPackage) throws IOException
+	{
+		//clone dependencies in order
+		for(JaxonDependency dependency : jaxonPackage.dependencies)
+		{
+			JaxonPackage jaxonDependency = packageFromDependency(dependency);
+			cloneWithDependencies(packageDirectory, jaxonDependency);
+		}
+		
+		//clone the package
+		GitHubAPICloneRepo.cloneRepo(packageDirectory, jaxonPackage.url);
+	}
+	
 	private static JaxonPackage packageFromDependency(JaxonDependency dependency)
 	{
 		List<JaxonPackage> jaxonPackages = packages.get(dependency.name);
 		
+		//this means package.list was misconfigured, out of developer scope
 		if(jaxonPackages == null || jaxonPackages.isEmpty())
 			throw new RuntimeException("Dependency Not Found (Package Name Not Matching): " + dependency);
 		
@@ -189,6 +198,7 @@ public class PackageManager
 				return jaxonPackage;
 		}
 		
+		//this means package.list was misconfigured, out of developer scope
 		throw new RuntimeException("Dependency Not Found (Package Version Not Matching): " + dependency);
 	}
 	
