@@ -82,7 +82,7 @@ public class PackageManager
 			
 			//peek forward and read dependencies
 			int tempIndex = index;
-			while(tempIndex < packageList.length)
+			while(tempIndex + 1 < packageList.length)
 			{
 				tempIndex++;
 				
