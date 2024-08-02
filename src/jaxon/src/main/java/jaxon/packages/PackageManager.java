@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Konloch
@@ -17,7 +14,7 @@ import java.util.Map;
  */
 public class PackageManager
 {
-	private static final Map<String, List<JaxonPackage>> packages = new HashMap<>();
+	protected static final Map<String, List<JaxonPackage>> packages = new HashMap<>();
 	
 	public static void init(String[] args) throws IOException
 	{
@@ -55,6 +52,7 @@ public class PackageManager
 		
 		//announce that we're attempting to fetch the package
 		System.out.println("Fetching package '" + inputName + "'" + (((!downloadLatest) ? " version '" + inputVersion + "'" : "")) + "...");
+		System.out.println();
 		
 		//clear any previous actions
 		packages.clear();
@@ -125,6 +123,11 @@ public class PackageManager
 		{
 			System.out.println(couldNotFind);
 			System.out.println("Reason: Package '" + inputName + "' not found");
+			System.out.println();
+			
+			//recommend package names that are close to the input name
+			for(JaxonPackage recommendedPackage : PackageManagerUtils.recommendClosestPackageByName(inputName))
+				System.out.println(" + Did you mean '" + recommendedPackage.name + "'?");
 			return;
 		}
 		
@@ -135,7 +138,7 @@ public class PackageManager
 			if(downloadLatest)
 			{
 				//compare versions
-				if(latestVersion == null || compare(latestVersion.version, jaxonPackage.version))
+				if(latestVersion == null || PackageManagerUtils.compare(latestVersion.version, jaxonPackage.version))
 					latestVersion = jaxonPackage;
 			}
 			else if(jaxonPackage.version.equalsIgnoreCase(inputVersion))
@@ -149,6 +152,11 @@ public class PackageManager
 		{
 			System.out.println(couldNotFind);
 			System.out.println("Reason: Version '" + inputVersion + "' not found");
+			System.out.println();
+			
+			//recommend versions that are close to the input version
+			for(JaxonPackage recommendedPackage : PackageManagerUtils.recommendClosestPackageByVersion(inputVersion, jaxonPackages))
+				System.out.println(" + Did you mean '" + recommendedPackage.version + "'?");
 		}
 		else
 		{
@@ -212,24 +220,5 @@ public class PackageManager
 		return new BufferedReader(new InputStreamReader(connection.getInputStream()))
 				.lines()
 				.toArray(String[]::new);
-	}
-	
-	private static boolean compare(String versionA, String versionB)
-	{
-		String[] aVersionParts = versionA.split("\\.");
-		String[] bVersionParts = versionB.split("\\.");
-		
-		for (int i = 0; i < 3; i++)
-		{
-			int aPart = Integer.parseInt(aVersionParts[i]);
-			int bPart = Integer.parseInt(bVersionParts[i]);
-			
-			if (aPart > bPart)
-				return true;
-			else if (aPart < bPart)
-				return false;
-		}
-		
-		return false;
 	}
 }
