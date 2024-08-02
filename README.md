@@ -93,7 +93,7 @@ At some point you're going to want to get Intellij working.
 
 ---
 
-### Jaxon Upgrade Procedure
+## Jaxon Upgrade Procedure
 [First start by downloading Jaxon for your platform](https://github.com/Konloch/Jaxon/releases/latest)
 + Run the command `jaxon upgrade`
     + If you're not on windows you'll have to **add Jaxon to your System-Path manually**
@@ -159,7 +159,7 @@ At some point you're going to want to get Intellij working.
 
 ---
 
-### Jaxon Community Projects
+## Jaxon Community Projects
 + Jaxon packages are hosted in the [Community Projects](https://github.com/Konloch/Jaxon/tree/master/community-projects) area of the repo.
 
 ---
