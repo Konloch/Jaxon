@@ -1,22 +1,22 @@
-console=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/application/demo-console
+console=0.1.0=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/application/demo-console
 
-barebones=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/application/demo-barebones
+barebones=0.1.0=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/application/demo-barebones
 
-graphical=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/application/demo-graphical
+graphical=0.1.0=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/application/demo-graphical
 
-operating-system=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/operating-system/picos
+operating-system=0.1.0=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/operating-system/picos
 
-operating-system-hello-world=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/operating-system/hello-world
+operating-system-hello-world=0.1.0=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/operating-system/hello-world
 
-atmega=0.0.1=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/embedded/atmega
+atmega=0.0.1=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/embedded/atmega
 
-fake-javac=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/application/fake-javac
+fake-javac=0.1.0=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/application/fake-javac
 
-picos=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/operating-system/picos
+picos=0.1.0=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/operating-system/picos
 
-self-made-os=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/operating-system/self-made-os
+self-made-os=0.1.0=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/operating-system/self-made-os
 
-winux=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/operating-system/winux
+winux=0.1.0=https://github.com/Konloch/Jaxon/tree/053e90efa657cc65d35eb462fe0dd6abb6896585/community-projects/operating-system/winux
 
 helix-os=0.1.0=https://github.com/Konloch/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b/community-projects/operating-system/helix-os
 
