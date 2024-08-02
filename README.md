@@ -57,34 +57,38 @@ At some point you're going to want to get Intellij working.
 ---
 
 ## Jaxon Command Line
-+ `init` - Create a blank project with the latest runtime.
-  + Example Command: `jaxon init project-name`
-    + `jaxon init` - *Name is optional, it will just use 'console' by default*
-+ `package` - Download a Jaxon package source code from the Jaxon Community Project mono repo.
++ `init` - Create a blank project with the latest runtime
+  + **Optional Commands:** `jaxon init [project-name*]` - * *denotes optional command*
+  + Example Command:
+    + `jaxon init`
+    + `jaxon init project-name`
++ `package` - Download a Jaxon package source code from the Jaxon Community Project mono repo
   + **Optional Commands:** `jaxon package [name] [version*] [project-name*]` - * *denotes optional command*
-  + Example Commands: `jaxon package console`, `jaxon package console 0.1.0`, `jaxon package console 0.1.0 project-name`
+  + Example Commands:
+    + `jaxon package console`
+    + `jaxon package console 0.1.0`
+    + `jaxon package console 0.1.0 project-name`
 + `build` - Build using a specific profile
   + **Available Profiles:** (`win-exe`, `win-app`, `lin`, `atmega`, `os-32`, `os-64`)
   + Example Command: `jaxon build win-exe src/shared/src src/windows/src`
 + `install` - Install Jaxon to the computer
   + Example Command: `jaxon install`
-  + Copy the Jaxon binary into {user}/.jaxon/binaries
-  + Add Jaxon to the System-Path
-  + Copy the Jaxon JDK into {user}/.jaxon/JDK
 + `uninstall` - Uninstall Jaxon from the computer
-  + Delete the {user}/.jaxon/bin/ folder
-  + Remove all traces of Jaxon from the System-Path
-+ `jdk` - Create a Jaxon-Blank-SDK that will resolve all issues with Jaxon projects.
+  + Example Command: `jaxon uninstall`
++ `upgrade` - Upgrade the Jaxon installation on the computer
+  + Example Command: `jaxon upgrade`
++ `jdk` - Create a Jaxon-Blank-SDK that will resolve all issues with Jaxon projects
   + Example Command: `jaxon jdk jdk-1.8`
   * **Load the SDK Into Intellij:**
     + F4 for Module Settings
-      + Project > SDK > Edit
-      + Click the Plus > Add JDK...
-      + Paste in the path sent from the Jaxon CLI
-+ `system-path` - Manage the system path by adding or removing jaxon to it.
+    + Project > SDK > Edit
+    + Click the Plus > Add JDK...
+    + Paste in the path sent from the Jaxon CLI
++ `system-path` - Manage the system path by adding or removing jaxon to it
   + Add Jaxon to System-Path: `jaxon system-path add`
   + Remove Jaxon from System-Path: `jaxon system-path remove`
 + `sjc` - Access underlying SJC command-line
+  + Example Command: `jaxon sjc sc -s 1m -a 4198912 -l -o boot -O #win`
   + For a [complete list of SJC commands click here](https://www.fam-frenz.de/stefan/man042_0182eng.pdf)
 
 ---
@@ -155,8 +159,7 @@ At some point you're going to want to get Intellij working.
 
 ### Jaxon Upgrade Procedure
 [First start by downloading Jaxon for your platform](https://github.com/Konloch/Jaxon/releases/latest)
-+ Run the command `jaxon uninstall`
-+ Run the command `jaxon install`
++ Run the command `jaxon upgrade`
     + If you're not on windows you'll have to **add Jaxon to your System-Path manually**
 
 ---

@@ -4,6 +4,7 @@ import jaxon.jdk.JDKUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  * @author Konloch
@@ -42,6 +43,18 @@ public class Installer
 	public static void uninstall()
 	{
 		SystemPathUtil.systemPathCLI(new String[]{"", "remove"});
+	}
+	
+	public static void upgrade() throws IOException
+	{
+		File jaxonRoot = resolveJaxonRoot();
+		File jaxonBin = new File(jaxonRoot, "bin");
+		File jaxonBinary = new File(jaxonBin, isWindows() ? "jaxon.exe" : "jaxon");
+		
+		while(jaxonBinary.exists())
+			Files.delete(jaxonBinary.toPath());
+		
+		install();
 	}
 	
 	public static boolean isWindows()

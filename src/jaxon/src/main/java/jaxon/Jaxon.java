@@ -47,6 +47,8 @@ public class Jaxon
 			Installer.install();
 		else if (command.equalsIgnoreCase("uninstall"))
 			Installer.uninstall();
+		else if (command.equalsIgnoreCase("upgrade"))
+			Installer.upgrade();
 		else if (command.equalsIgnoreCase("version"))
 			VersionUtil.versionCLI(args);
 		else
