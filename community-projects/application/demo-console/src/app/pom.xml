@@ -4,15 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>jaxon</groupId>
-	<artifactId>jaxon-console-application</artifactId>
+	<artifactId>app</artifactId>
 	<version>1.0.0</version>
-	<packaging>pom</packaging>
 
-	<modules>
-		<module>src/linux</module>
-		<module>src/windows</module>
-		<module>src/shared</module>
-		<module>src/app</module>
-	</modules>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+			</resource>
+		</resources>
+	</build>
 
 </project>

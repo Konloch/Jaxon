@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>jaxon</groupId>
-	<artifactId>windows-runtime</artifactId>
+	<artifactId>shared-runtime</artifactId>
 	<version>1.0.0</version>
 
 	<build>
@@ -15,13 +15,5 @@
 			</resource>
 		</resources>
 	</build>
-
-	<dependencies>
-		<dependency>
-			<groupId>jaxon</groupId>
-			<artifactId>shared-runtime</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-	</dependencies>
 
 </project>

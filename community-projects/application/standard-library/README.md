@@ -7,9 +7,6 @@ Prints Hello World to the console
 + **To build a Windows binary** run `Build-Windows-App` or `Build-Windows-Executable`
 	+ Note: 'app' won't have console output
 
-# How To Setup
-+ Run `jaxon package console` to pull the dependencies and setup the repo
-
 # How To Run
 + Build files will output at `build/windows/build.exe` and `build/linux/build`
 + Run them like you would a normal program `./build`

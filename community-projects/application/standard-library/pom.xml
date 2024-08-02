@@ -4,24 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>jaxon</groupId>
-	<artifactId>linux-runtime</artifactId>
+	<artifactId>jaxon-console-application</artifactId>
 	<version>1.0.0</version>
+	<packaging>pom</packaging>
 
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<resources>
-			<resource>
-				<directory>src</directory>
-			</resource>
-		</resources>
-	</build>
-
-	<dependencies>
-		<dependency>
-			<groupId>jaxon</groupId>
-			<artifactId>shared-runtime</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-	</dependencies>
+	<modules>
+		<module>src/linux</module>
+		<module>src/windows</module>
+		<module>src/shared</module>
+	</modules>
 
 </project>
