@@ -46,7 +46,7 @@ public class PackageManager
 		String inputVersion = args.length >= 3 ? args[2] : null;
 		String name = args.length >= 4 ? args[3] : null;
 		boolean downloadLatest = inputVersion == null;
-		String couldNotFoundWithVersion = "Could not find the package '" + inputName + "' with version `" + inputVersion + "`";
+		String couldNotFoundWithVersion = "Could not find the package '" + inputName + "' with version '" + inputVersion + "'";
 		String couldNotFound = "Could not find the package '" + inputName + "'";
 		
 		//latest version is an optional parameter
@@ -121,7 +121,7 @@ public class PackageManager
 		if(jaxonPackages == null || jaxonPackages.isEmpty())
 		{
 			System.out.println(!downloadLatest ? couldNotFoundWithVersion : couldNotFound);
-			System.out.println("Reason: Package `" + inputName + "` not found");
+			System.out.println("Reason: Package '" + inputName + "' not found");
 			return;
 		}
 		
@@ -145,7 +145,7 @@ public class PackageManager
 		if(latestVersion == null)
 		{
 			System.out.println(!downloadLatest ? couldNotFoundWithVersion : couldNotFound);
-			System.out.println("Reason: Version `" + inputVersion + "` not found");
+			System.out.println("Reason: Version '" + inputVersion + "' not found");
 		}
 		else
 		{
