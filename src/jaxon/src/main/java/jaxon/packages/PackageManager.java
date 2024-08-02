@@ -93,7 +93,7 @@ public class PackageManager
 				
 				String[] dependencyInfo = packageData.split("=");
 				
-				//move the index forward
+				//move the index forward and rollback the initial peek
 				if(dependencyInfo.length != 2)
 				{
 					index += ((tempIndex - index) - 1);
@@ -121,7 +121,7 @@ public class PackageManager
 		if(jaxonPackages == null || jaxonPackages.isEmpty())
 		{
 			System.out.println(!downloadLatest ? couldNotFoundWithVersion : couldNotFound);
-			System.out.println("Package not found");
+			System.out.println("Reason: Package not found");
 			return;
 		}
 		
@@ -145,7 +145,7 @@ public class PackageManager
 		if(latestVersion == null)
 		{
 			System.out.println(!downloadLatest ? couldNotFoundWithVersion : couldNotFound);
-			System.out.println("Version not found");
+			System.out.println("Reason: Version not found");
 		}
 		else
 		{
