@@ -21,7 +21,7 @@ public class Jaxon
 	{
 		if (args.length <= 0)
 		{
-			System.out.println("Incorrect Usage: Read the documentation at https://konloch.com/Jaxon");
+			System.out.println(JaxonConstants.INCORRECT_USAGE);
 			return;
 		}
 		
@@ -50,6 +50,6 @@ public class Jaxon
 		else if (command.equalsIgnoreCase("version"))
 			VersionUtil.versionCLI(args);
 		else
-			System.out.println("Incorrect Usage: Read the documentation at https://konloch.com/Jaxon");
+			System.out.println(JaxonConstants.INCORRECT_USAGE);
 	}
 }

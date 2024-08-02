@@ -1,5 +1,7 @@
 package jaxon.installer;
 
+import jaxon.JaxonConstants;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -47,10 +49,7 @@ public class SystemPathUtil
 		else if(option.equalsIgnoreCase("remove"))
 			adjustSystemPathWindows(false);
 		else
-		{
-			System.out.println("Unknown option: `" + option + "`");
-			System.out.println("Valid options are: add, remove");
-		}
+			System.out.println(JaxonConstants.INCORRECT_USAGE);
 	}
 	
 	private static void adjustSystemPathWindows(boolean addOrRemove)

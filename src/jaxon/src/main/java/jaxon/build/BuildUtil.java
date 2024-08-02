@@ -1,6 +1,7 @@
 package jaxon.build;
 
 import jaxon.Jaxon;
+import jaxon.JaxonConstants;
 import jaxon.sjc.SJCUtil;
 
 import java.io.*;
@@ -105,9 +106,7 @@ public class BuildUtil
 			exportBuild("syminfo.txt", "build/build_sym_info.txt");
 		}
 		else
-		{
-			System.out.println("Read the documentation at https://konloch.com/Jaxon");
-		}
+			System.out.println(JaxonConstants.INCORRECT_USAGE);
 	}
 	
 	public static void setupEnv(String environment)
@@ -152,6 +151,8 @@ public class BuildUtil
 			setupEnvFile("/environment/operating-system/bts_dsk.bin", "bts_dsk.bin");
 			setupEnvFile("/environment/operating-system/b64_dsk.bin", "b64_dsk.bin");
 		}
+		else
+			System.out.println(JaxonConstants.INCORRECT_USAGE);
 		
 		tempDir.deleteOnExit();
 	}
