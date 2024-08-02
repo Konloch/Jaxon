@@ -153,6 +153,14 @@ At some point you're going to want to get Intellij working.
 
 ---
 
+### Jaxon Upgrade Procedure
+[First start by downloading Jaxon for your platform](https://github.com/Konloch/Jaxon/releases/latest)
++ Run the command `jaxon uninstall`
++ Run the command `jaxon install`
+    + If you're not on windows you'll have to **add Jaxon to your System-Path manually**
+
+---
+
 ## Requirements
 + Jaxon runs out of the box without any requirements.
   + **Just make sure to install Jaxon via** `jaxon install` and you'll be good to go for full development.
