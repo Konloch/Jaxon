@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Konloch
@@ -13,6 +17,8 @@ import java.net.URL;
  */
 public class PackageManager
 {
+	private static final Map<String, List<JaxonPackage>> packages = new HashMap<>();
+	
 	public static void init(String[] args) throws IOException
 	{
 		String name = (args.length >= 2) ? args[1] : null;
@@ -36,61 +42,121 @@ public class PackageManager
 	
 	public static void preformCLI(String[] args) throws IOException
 	{
-		String pack = args[1];
-		String version = args.length >= 3 ? args[2] : null;
+		String inputName = args[1];
+		String inputVersion = args.length >= 3 ? args[2] : null;
 		String name = args.length >= 4 ? args[3] : null;
-		boolean downloadLatest = version == null;
+		boolean downloadLatest = inputVersion == null;
+		String couldNotFoundWithVersion = "Could not find the package '" + inputName + "' with version `" + inputVersion + "`";
+		String couldNotFound = "Could not find the package '" + inputName + "'";
 		
-		if(version != null && version.equalsIgnoreCase("latest"))
-			version = null;
+		//latest version is an optional parameter
+		if(inputVersion != null && inputVersion.equalsIgnoreCase("latest"))
+			inputVersion = null;
 		
+		//clear any previous actions
+		packages.clear();
+		
+		//read the package list from GitHub
 		String[] packageList = readPackageList();
 		
-		String highestVersion = null;
-		String downloadURL = null;
-		for(String packageData : packageList)
+		//process the package list
+		int index;
+		for(index = 0; index < packageList.length; index++)
 		{
+			String packageData = packageList[index];
 			String packageDataTrimmed = packageData.trim();
+			
 			if(packageDataTrimmed.startsWith("#") || !packageDataTrimmed.contains("="))
 				continue;
 			
 			String[] packageInfo = packageData.split("=", 3);
-			if(packageInfo.length < 3)
+			
+			if(packageInfo.length != 3)
 				continue;
 			
+			//extract package info
 			String packageName = packageInfo[0];
 			String packageVersion = packageInfo[1];
 			String packageURL = packageInfo[2];
+			JaxonPackage jaxonPackage = new JaxonPackage(packageName, packageVersion, packageURL);
 			
-			if(!packageName.equalsIgnoreCase(pack))
-				continue;
+			//peek forward and read dependencies
+			int tempIndex = index;
+			while(tempIndex < packageList.length)
+			{
+				tempIndex++;
 				
+				String nextLine = packageList[tempIndex];
+				
+				if(nextLine.startsWith("#") || !nextLine.contains("="))
+					continue;
+				
+				String[] dependencyInfo = packageData.split("=");
+				
+				//move the index forward
+				if(dependencyInfo.length != 2)
+				{
+					index += (tempIndex - index);
+					break;
+				}
+				
+				//extract dependency info
+				String dependencyName = packageInfo[0];
+				String dependencyVersion = packageInfo[1];
+				JaxonDependency dependency = new JaxonDependency(dependencyName, dependencyVersion);
+				
+				//add the dependency to the jaxon dependencies
+				jaxonPackage.dependencies.add(dependency);
+			}
+			
+			//insert package into known packages
+			List<JaxonPackage> jaxonPackages = packages.getOrDefault(packageName, new ArrayList<>());
+			jaxonPackages.add(jaxonPackage);
+			packages.putIfAbsent(packageName, jaxonPackages);
+		}
+		
+		//search for matching package name based on input name
+		List<JaxonPackage> jaxonPackages = packages.get(inputName);
+		
+		if(jaxonPackages == null || jaxonPackages.isEmpty())
+		{
+			System.out.println(!downloadLatest ? couldNotFoundWithVersion : couldNotFound);
+			System.out.println("Package not found");
+			return;
+		}
+		
+		//search for matching package version based on input version
+		JaxonPackage latestVersion = null;
+		for(JaxonPackage jaxonPackage : jaxonPackages)
+		{
 			if(downloadLatest)
 			{
 				//compare versions
-				if(highestVersion == null || compare(highestVersion, packageVersion))
-				{
-					highestVersion = packageVersion;
-					downloadURL = packageURL;
-				}
+				if(latestVersion == null || compare(latestVersion.version, jaxonPackage.version))
+					latestVersion = jaxonPackage;
 			}
-			else if(packageVersion.equalsIgnoreCase(version))
-				downloadURL = packageURL;
+			else if(jaxonPackage.version.equalsIgnoreCase(inputVersion))
+			{
+				latestVersion = jaxonPackage;
+				break;
+			}
 		}
 		
-		if(downloadURL == null)
+		if(latestVersion == null)
 		{
-			if(!downloadLatest)
-				System.out.println("Could not find the template '" + pack + "' with version `" + version + "`");
-			else
-				System.out.println("Could not find the template '" + pack + "'");
+			System.out.println(!downloadLatest ? couldNotFoundWithVersion : couldNotFound);
+			System.out.println("Version not found");
 		}
 		else
 		{
-			File packageDirectory = new File(pack);
+			File packageDirectory = new File(inputName);
+			
+			//clone dependencies in order
+			for(JaxonDependency dependency : latestVersion.dependencies)
+				GitHubAPICloneRepo.cloneRepo(packageDirectory, packageFromDependency(dependency).url);
 			
 			//clone the package
-			GitHubAPICloneRepo.cloneRepo(packageDirectory, downloadURL);
+			GitHubAPICloneRepo.cloneRepo(packageDirectory, latestVersion.url);
 			
 			System.out.println();
 			System.out.println("Finished downloading all resources.");
@@ -108,6 +174,22 @@ public class PackageManager
 			else
 				System.out.println("Open your project using Intellij: " + packageDirectory.getAbsolutePath());
 		}
+	}
+	
+	private static JaxonPackage packageFromDependency(JaxonDependency dependency)
+	{
+		List<JaxonPackage> jaxonPackages = packages.get(dependency.name);
+		
+		if(jaxonPackages == null || jaxonPackages.isEmpty())
+			throw new RuntimeException("Dependency Not Found (Package Name Not Matching): " + dependency);
+		
+		for(JaxonPackage jaxonPackage : jaxonPackages)
+		{
+			if(jaxonPackage.version.equalsIgnoreCase(dependency.version))
+				return jaxonPackage;
+		}
+		
+		throw new RuntimeException("Dependency Not Found (Package Version Not Matching): " + dependency);
 	}
 	
 	private static String[] readPackageList() throws IOException
