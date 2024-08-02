@@ -53,6 +53,11 @@ public class PackageManager
 		if(inputVersion != null && inputVersion.equalsIgnoreCase("latest"))
 			inputVersion = null;
 		
+		if(inputVersion != null)
+			System.out.println("Fetching '" + inputName + "' version '" + inputVersion + "'...");
+		else
+			System.out.println("Fetching '" + inputName + "'...");
+		
 		//clear any previous actions
 		packages.clear();
 		
