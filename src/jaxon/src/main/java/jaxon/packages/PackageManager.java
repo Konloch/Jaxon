@@ -121,7 +121,7 @@ public class PackageManager
 		if(jaxonPackages == null || jaxonPackages.isEmpty())
 		{
 			System.out.println(!downloadLatest ? couldNotFoundWithVersion : couldNotFound);
-			System.out.println("Reason: Package not found");
+			System.out.println("Reason: Package `" + inputName + "` not found");
 			return;
 		}
 		
@@ -145,7 +145,7 @@ public class PackageManager
 		if(latestVersion == null)
 		{
 			System.out.println(!downloadLatest ? couldNotFoundWithVersion : couldNotFound);
-			System.out.println("Reason: Version not found");
+			System.out.println("Reason: Version `" + inputVersion + "` not found");
 		}
 		else
 		{
