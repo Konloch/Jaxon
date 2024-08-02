@@ -6,5 +6,5 @@ package jaxon;
  */
 public class JaxonConstants
 {
-	public static final String INCORRECT_USAGE = "Incorrect Usage: Read the documentation at https://konloch.com/Jaxon/tree/3e5ca89bc287912ecc11439c61a3715a7a2eb09b?tab=readme-ov-file#jaxon-command-line";
+	public static final String INCORRECT_USAGE = "Incorrect Usage: Read the documentation at https://konloch.com/Jaxon/tree/b2b27d016c2e5cb75b66d47819090721303febd9?tab=readme-ov-file#jaxon-command-line";
 }
