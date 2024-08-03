@@ -82,28 +82,23 @@ public class PackageManager
 			JaxonPackage jaxonPackage = new JaxonPackage(packageName, packageVersion, packageURL);
 			
 			//peek forward and read dependencies
-			int tempIndex = index;
+			int tempIndex = index + 1;
 			while(tempIndex + 1 < packageList.length)
 			{
-				tempIndex++;
-				
-				String nextLine = packageList[tempIndex];
+				String nextLine = packageList[tempIndex++];
 				
 				if(nextLine.startsWith("#") || !nextLine.contains("="))
 					continue;
 				
-				String[] dependencyInfo = packageData.split("=");
+				String[] dependencyInfo = nextLine.split("=");
 				
-				//move the index forward and rollback the initial peek
+				//exit after we've reached the end of dependencies
 				if(dependencyInfo.length != 2)
-				{
-					index += ((tempIndex - index) - 1);
 					break;
-				}
 				
 				//extract dependency info
-				String dependencyName = packageInfo[0];
-				String dependencyVersion = packageInfo[1];
+				String dependencyName = dependencyInfo[0];
+				String dependencyVersion = dependencyInfo[1];
 				JaxonDependency dependency = new JaxonDependency(dependencyName, dependencyVersion);
 				
 				//add the dependency to the jaxon dependencies
