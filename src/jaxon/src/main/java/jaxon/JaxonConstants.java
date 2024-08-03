@@ -35,5 +35,5 @@ public class JaxonConstants
 		}
 	}
 	
-	public static final String INCORRECT_USAGE = "Incorrect Usage: Read the documentation at https://konloch.com/Jaxon/tree/056a39d31e89b9d1bc78b14ed9e33dd17a78a040?tab=readme-ov-file#jaxon-command-line";
+	public static final String INCORRECT_USAGE = "Incorrect Usage: Read the documentation at https://konloch.com/Jaxon/tree/1098e98fae4160a172b49eed7db396923f70fd93?tab=readme-ov-file#jaxon-command-line";
 }
