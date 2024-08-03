@@ -23,7 +23,7 @@ To help get new users started, use the following guide to get yourself setup.
 Start an initial blank project based off the console package
 + Run the command `jaxon init`
   + If you have a project name in mind, use `jaxon init [project-name]`
-+ This will create a new project, following the on-screen directions open that directory in your Java IDE of choice.
++ This will create a new project, following the on-screen directions open that directory in your Java IDE of choice
 ### Jaxon Package Manager
 Community projects are accessible through Jaxon package manager
 + Run the command `jaxon package [name] [version*] [project-name*]` - * *denotes optional command*
@@ -32,9 +32,9 @@ Community projects are accessible through Jaxon package manager
   + `jaxon package console 0.1.0`
   + `jaxon package console 0.1.0 project-name`
 + For a [full list of packages click here](https://github.com/Konloch/Jaxon/tree/master/community-projects)
-+ Use the build scripts to build binaries.
++ Use the build scripts to build binaries
 ### Jaxon JetBrains Tooling (Intellij)
-At some point you're going to want to get Intellij working.
+At some point you're going to want to get Intellij working:
 + If you've already ran `jaxon install`
   + Your JDK will be in {user}/.jaxon/JDK
 + If you haven't done that, just run the following command
@@ -110,13 +110,13 @@ At some point you're going to want to get Intellij working.
 ---
 
 ## Jaxon vs SJC Differences
-+ Jaxon is built on top of SJC and requires it to do anything
-+ Jaxon acts as a package manager for the community projects repository
-+ Jaxon provides built-in packages - allowing you to easily start new projects
++ Jaxon is built on top of SJC and requires it to build.
++ Jaxon acts as a package manager for the community projects repository.
++ Jaxon provides built-in packages - allowing you to easily start new projects.
     + `jaxon package console`
-+ Jaxon projects use Maven to separate the modules
-+ Jaxon provides a tool to create a Jaxon-Blank-SDK to make all Jaxon templates compatible with JetBrains tooling (Intellij)
-+ Jaxon provides a build wrapper on top of the SJC build system
++ Jaxon projects use Maven to separate the modules.
++ Jaxon provides a tool to create a Jaxon-Blank-SDK to make all Jaxon templates compatible with JetBrains tooling. (Intellij)
++ Jaxon provides a build wrapper on top of the SJC build system.
     + `jaxon build win-exe` is the equivalent of `sjc sc -s 1m -a 4198912 -l -o boot -O #win`
 
 ---
