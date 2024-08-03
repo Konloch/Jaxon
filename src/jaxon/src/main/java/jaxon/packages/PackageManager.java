@@ -1,12 +1,19 @@
 package jaxon.packages;
 
+import jaxon.installer.Installer;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+
+import static jaxon.JaxonConstants.API_TOKEN_FILE;
 
 /**
  * @author Konloch
@@ -187,7 +194,29 @@ public class PackageManager
 		}
 		
 		//clone the package
-		GitHubAPICloneRepo.cloneRepo(packageDirectory, jaxonPackage.url);
+		boolean success = GitHubAPICloneRepo.cloneRepo(packageDirectory, jaxonPackage.url);
+		
+		if(!success)
+		{
+			if(GitHubAPICloneRepo.RATE_LIMITED)
+			{
+				System.out.println("You are being rate-limited by the GitHub API");
+				System.out.println();
+				System.out.println("To get around this:");
+				System.out.println(" A) Either wait the rate-limit out (1 hour)");
+				System.out.println(" B) Provide Jaxon your GitHub API Token to continue accessing the GitHub API");
+				System.out.println();
+				System.out.println("To give Jaxon your GitHub API Token:");
+				System.out.println(" 1) Visit this URL in a web-browser: https://github.com/settings/personal-access-tokens/new");
+				System.out.println("    + This should open 'Fine-Grained Tokens' which is the newer and safer version");
+				System.out.println(" 2) Click 'Generate Token' and copy it");
+				System.out.println(" 3) Paste it into the command 'jaxon api [token]");
+				System.out.println("    + Command Example: 'jaxon api github_pat_rlgygRBVVL_93TmkDOkWy_Az972SIU4L'");
+				System.out.println();
+			}
+			
+			throw new RuntimeException(GitHubAPICloneRepo.FAIL_REASON);
+		}
 	}
 	
 	private static JaxonPackage packageFromDependency(JaxonDependency dependency)
@@ -215,5 +244,15 @@ public class PackageManager
 		return new BufferedReader(new InputStreamReader(connection.getInputStream()))
 				.lines()
 				.toArray(String[]::new);
+	}
+	
+	public static void createAPIFile(String[] args) throws IOException
+	{
+		String token = args[1];
+		
+		//write API key to disk
+		Files.write(API_TOKEN_FILE.toPath(), token.getBytes(StandardCharsets.UTF_8));
+		
+		System.out.println("GitHub API Token Saved");
 	}
 }

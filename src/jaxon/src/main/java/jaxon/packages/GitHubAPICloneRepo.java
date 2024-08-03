@@ -11,12 +11,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 
+import static jaxon.JaxonConstants.API_TOKEN;
+import static jaxon.JaxonConstants.API_TOKEN_EXISTS;
+
 /**
  * @author Konloch
  * @since 7/30/2024
  */
 public class GitHubAPICloneRepo
 {
+	public static boolean RATE_LIMITED = false;
+	public static String FAIL_REASON = null;
+	
 	public static boolean cloneRepo(File repoDir, String repoURL) throws IOException
 	{
 		String[] parts = repoURL.split("/");
@@ -35,6 +41,12 @@ public class GitHubAPICloneRepo
 		URL url = new URL("https://api.github.com/repos/" + owner + "/" + repo + "/contents/" + path + "?ref=" + ref);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("GET");
+		
+		if(API_TOKEN_EXISTS)
+		{
+			connection.setRequestProperty("Authorization", "Bearer " + API_TOKEN);
+			connection.setRequestProperty("Accept", "application/vnd.github+json");
+		}
 		
 		int responseCode = connection.getResponseCode();
 		if (responseCode == 200)
@@ -57,7 +69,8 @@ public class GitHubAPICloneRepo
 					{
 						File newDir = new File(currentDir, name);
 						newDir.mkdir();
-						//String treeUrl = node.get("_links").get("self").asText();
+						
+						//String treeUrl = node.get("_links").get("self").asText(); //optional method of obtaining the URL
 						downloadContents(newDir, owner, repo, dirPath, ref);
 					}
 				}
@@ -65,12 +78,17 @@ public class GitHubAPICloneRepo
 				return true;
 			}
 			
-			System.err.println("Failed to parse contents: " + jsonNode.asText());
+			FAIL_REASON = "GitHub repo clone failed to parse contents: " + jsonNode.asText();
 			return false;
 		}
 		else
 		{
-			System.err.println("Failed to fetch contents: " + connection.getResponseMessage());
+			String response = connection.getResponseMessage();
+			
+			FAIL_REASON = "GitHub repo clone failed to fetch contents: " + response;
+			if(response.toLowerCase().contains("rate limit"))
+				RATE_LIMITED = true;
+			
 			return false;
 		}
 	}

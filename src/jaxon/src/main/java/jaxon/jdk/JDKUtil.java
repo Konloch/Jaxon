@@ -3,10 +3,7 @@ package jaxon.jdk;
 import jaxon.build.BuildUtil;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 
 /**
  * @author Konloch

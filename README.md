@@ -84,9 +84,6 @@ At some point you're going to want to get Intellij working.
     + Project > SDK > Edit
     + Click the Plus > Add JDK...
     + Paste in the path sent from the Jaxon CLI
-+ `system-path` - Manage the system path by adding or removing jaxon to it
-  + Add Jaxon to System-Path: `jaxon system-path add`
-  + Remove Jaxon from System-Path: `jaxon system-path remove`
 + `sjc` - Access underlying SJC command-line
   + Example Command: `jaxon sjc sc -s 1m -a 4198912 -l -o boot -O #win`
   + For a [complete list of SJC commands click here](https://www.fam-frenz.de/stefan/man042_0182eng.pdf)
