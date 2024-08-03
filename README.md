@@ -27,8 +27,11 @@ Start an initial blank project based off the console package
 ### Jaxon Package Manager
 Community projects are accessible through Jaxon package manager
 + Run the command `jaxon package [name] [version*] [project-name*]` - * *denotes optional command*
-+ Example commands: `jaxon package console`, `jaxon package console 0.1.0`, `jaxon package console 0.1.0 project-name`
-  + For a [full list of packages click here](https://github.com/Konloch/Jaxon/tree/master/community-projects)
++ Example Commands:
+  + `jaxon package console`
+  + `jaxon package console 0.1.0`
+  + `jaxon package console 0.1.0 project-name`
++ For a [full list of packages click here](https://github.com/Konloch/Jaxon/tree/master/community-projects)
 + Use the build scripts to build binaries.
 ### Jaxon JetBrains Tooling (Intellij)
 At some point you're going to want to get Intellij working.
